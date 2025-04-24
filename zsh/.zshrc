@@ -81,4 +81,8 @@ export TURTLEBOT3_MODEL=burger
 export ROS_DOMAIN_ID=50 # Für Kurs-WLAN / Roboter
 
 # ROS 2 Workspace sourcen
-source ~/ros2_ws/install/local_setup.zsh
+ROS2_SETUP_FILE="$HOME/ros2_ws/install/local_setup.zsh"
+if [ -f "$ROS2_SETUP_FILE" ]; then
+  # shellcheck disable=SC1090 # Disable warning about non-constant source path
+  source "$ROS2_SETUP_FILE"
+fi
