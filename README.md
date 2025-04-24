@@ -25,7 +25,7 @@ Ziel ist es, alle wichtigen Einstellungen, Aliase, Funktionen und installierten 
     Klone das Repository in dein Home-Verzeichnis:
 
     ```bash
-    git clone git@github.com:smn-hrtzsch/dotfiles.git ~/dotfiles
+    git clone https://github.com/smn-hrtzsch/dotfiles.git ~/dotfiles
     ```
 
 3. **Setup-Skript ausführen:**
