@@ -3,3 +3,5 @@
 	email = simon@hoertzsch.de
 [push]
 	autoSetupRemote = true
+[pull]
+	rebase = false
