@@ -2,7 +2,7 @@
 # Based on romkatv/powerlevel10k/config/p10k-lean-8colors.zsh, checksum 37096.
 # Wizard options: nerdfont-v3 + powerline, small icons, unicode, lean_8colors, 24h time,
 # 2 lines, solid, left frame, green-ornaments, sparse, many icons, concise,
-# transient_prompt, instant_prompt=verbose.
+# instant_prompt=verbose.
 # Type `p10k configure` to generate another config.
 #
 # Config for Powerlevel10k with 8-color lean prompt style. Type `p10k configure` to generate
