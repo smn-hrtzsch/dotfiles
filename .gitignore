@@ -26,6 +26,7 @@ ssh/known_hosts
 .gradle/
 .android/
 node_modules/
+vscode/.vscode/extensions/
 
 # Ggf. sensible Anwendungsdaten innerhalb von .config ausschließen
 # config/.config/some_app_with_secrets/
