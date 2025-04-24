@@ -1,10 +1,5 @@
 # ~/dotfiles/Brewfile
 
-# Taps
-tap "homebrew/bundle"
-tap "homebrew/cask"
-tap "homebrew/cask-fonts" # Wichtig für Fonts!
-
 # Wichtige Tools für unser Setup
 brew "git"   # Sicherstellen, dass es aktuell ist
 brew "stow"  # Zum Verwalten der Symlinks
@@ -30,10 +25,6 @@ cask "maccy"
 cask "rectangle"
 
 # Benötigte Fonts (inkl. Meslo Nerd Font)
-cask "font-meslo-lgs-nerd-font"
-# Füge hier weitere Fonts hinzu, z.B.:
-# cask "font-fira-code"
-# cask "font-jetbrains-mono"
-
-# Mac App Store Apps (optional, finde IDs mit 'mas search <Name>')
-# mas "Xcode", id: 497799835
+cask "font-meslo-lg-nerd-font"
+cask "font-fira-code"
+cask "font-jetbrains-mono"
