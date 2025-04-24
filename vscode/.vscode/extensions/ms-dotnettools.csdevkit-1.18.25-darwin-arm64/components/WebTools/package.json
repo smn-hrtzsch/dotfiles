@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "dependencies": {
+    "@microsoft/vscode.webtools": "17.14.76"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://devdiv.visualstudio.com/DefaultCollection/DevDiv/_git/WebTools",
+    "branch": "main"
+  }
+}

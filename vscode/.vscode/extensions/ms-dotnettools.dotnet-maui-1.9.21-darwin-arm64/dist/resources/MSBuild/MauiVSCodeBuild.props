@@ -1,0 +1,10 @@
+<Project>
+	<PropertyGroup>
+		<BuildDependsOn>$(BuildDependsOn);GatherVSCodeMauiBuildOutput</BuildDependsOn>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<GetAndroidDependenciesDependsOn>$(GetAndroidDependenciesDependsOn);_GetAndroidEmulatorDependencies</GetAndroidDependenciesDependsOn>
+	</PropertyGroup>
+
+</Project>

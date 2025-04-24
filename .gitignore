@@ -1,0 +1,35 @@
+# SSH private keys & sensitive files
+.ssh/id_*
+.ssh/*.key
+.ssh/known_hosts
+ssh/id_*
+ssh/*.key
+ssh/known_hosts
+
+# History files
+.*history
+.lesshst
+.zcompdump
+.zsh_sessions/
+
+# Cache / OS specific files
+.cache/
+.DS_Store
+.Trash/
+*~
+*.swp
+
+# Large directories / Installations
+.conda/
+.pyenv/versions/
+.npm/ # Das Verzeichnis, nicht .npmrc
+.gradle/
+.android/
+node_modules/
+
+# Ggf. sensible Anwendungsdaten innerhalb von .config ausschließen
+# config/.config/some_app_with_secrets/
+
+# Lokale Setup-Datei oder Geheimnisse
+setup-local.sh
+secrets.*

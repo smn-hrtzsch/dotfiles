@@ -1,0 +1,633 @@
+{
+	"name": "dotnet-maui",
+	"displayName": "%extension.title%",
+	"description": "%extension.description%",
+	"publisher": "ms-dotnettools",
+	"version": "1.9.21",
+	"icon": "dist/resources/maui/Market_CSDevKitDOTNETMAUI_256.png",
+	"aiKey": "0c6ae279ed8443289764825290e4f9e2-1a736e7c-1324-4338-be46-fc2a58ae4d14-7255",
+	"license": "SEE LICENSE IN LICENSE.md",
+	"preview": false,
+	"bugs": {
+		"url": "https://github.com/microsoft/vscode-dotnettools/issues"
+	},
+	"qna": "https://github.com/microsoft/vscode-dotnettools/issues",
+	"engines": {
+		"vscode": "^1.72.0"
+	},
+	"categories": [
+		"Linters",
+		"Programming Languages",
+		"Debuggers",
+		"Other"
+	],
+	"keywords": [
+		"mobile",
+		"dotnet",
+		"xaml"
+	],
+	"activationEvents": [
+		"vscode-maui.configure",
+		"vscode-maui.android.autosdk.learnMore",
+		"vscode-maui.android.autosdk.refresh",
+		"vscode-maui.apple.autosdk.learnMore",
+		"vscode-maui.apple.autosdk.refresh",
+		"vscode-maui.mauiSdk.autosdk.refresh",
+		"vscode-maui.installMauiSdk",
+		"vscode-maui.searchNewProjectFromCommandPalette",
+		"vscode-maui.searchFromCommandPalette",
+		"workspaceContains:**/*.csproj",
+		"onLanguage:csharp",
+		"onLanguage:xaml"
+	],
+	"serviceHubServiceDirectories": [
+		"dist/components/MicrosoftVisualStudioMauiDevices",
+		"dist/components/MicrosoftVisualStudioMauiProjectSystem"
+	],
+	"brokeredServices": [
+		{
+			"moniker": {
+				"name": "Microsoft.VisualStudio.Maui.MauiLaunchCustomizerService",
+				"version": "0.1"
+			}
+		}
+	],
+	"main": "./dist/extension.js",
+	"l10n": "./l10n",
+	"contributes": {
+		"problemMatchers": [
+			{
+				"name": "maui-problem-matcher",
+				"owner": "maui",
+				"source": "maui",
+				"fileLocation": "autoDetect",
+				"pattern": {
+					"kind": "file",
+					"regexp": "^\\s*(?:\\d+>)?(\\S[^:(]*)\\s*(?:\\((\\d+|\\d+,\\d+|\\d+,\\d+,\\d+,\\d+)\\))?\\s*:(?:\\s*[^:]+)?\\s+(error|warning|info)\\s+(\\w+\\d+)\\s*:\\s*(.*)$",
+					"severity": 3,
+					"code": 4,
+					"message": 5,
+					"file": 1
+				}
+			},
+			{
+				"name": "maui-problem-matcher-location",
+				"owner": "maui",
+				"source": "maui",
+				"fileLocation": "autoDetect",
+				"pattern": {
+					"kind": "location",
+					"regexp": "^\\s*(?:\\d+>)?(\\S[^:(]*)\\s*(?:\\((\\d+|\\d+,\\d+|\\d+,\\d+,\\d+,\\d+)\\))\\s*:(?:\\s*[^:]+)?\\s+(error|warning|info)\\s+(\\w+\\d+)\\s*:\\s*(.*)$",
+					"message": 5,
+					"severity": 3,
+					"code": 4,
+					"file": 1,
+					"location": 2
+				}
+			},
+			{
+				"name": "maui-problem-matcher-multiline",
+				"owner": "maui",
+				"source": "maui",
+				"fileLocation": "autoDetect",
+				"pattern": [
+					{
+						"kind": "file",
+						"regexp": "^\\s*(?:\\d+>)?(\\S[^:(]*)\\s*(?:\\((\\d+|\\d+,\\d+|\\d+,\\d+,\\d+,\\d+)\\))?\\s*:(?:\\s*[^:]+)?\\s+(error|warning|info)\\s+(\\w+\\d+)?\\s*:",
+						"severity": 3,
+						"code": 4,
+						"file": 1
+					},
+					{
+						"regexp": "^(?!.*\\[\\S+::\\S+\\])(.*)$",
+						"message": 1,
+						"loop": true
+					}
+				]
+			},
+			{
+				"name": "maui-problem-matcher-location-multiline",
+				"owner": "maui",
+				"source": "maui",
+				"fileLocation": "autoDetect",
+				"pattern": [
+					{
+						"regexp": "^\\s*(?:\\d+>)?(\\S[^:(]*)\\s*(?:\\((\\d+|\\d+,\\d+|\\d+,\\d+,\\d+,\\d+)\\))\\s*:(?:\\s*[^:]+)?\\s+(error|warning|info)\\s+(\\w+\\d+)?\\s*:",
+						"severity": 3,
+						"code": 4,
+						"file": 1,
+						"location": 2
+					},
+					{
+						"regexp": "^(?!.*\\[\\S+::\\S+\\])(.*)$",
+						"message": 1,
+						"loop": true
+					}
+				]
+			}
+		],
+		"menus": {
+			"commandPalette": [
+				{
+					"command": "vscode-maui.apple.xcsync.sync",
+					"when": "vscodeMauiExtensionIsMac"
+				},
+				{
+					"command": "vscode-maui.apple.xcsync.generate",
+					"when": "vscodeMauiExtensionIsMac"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "vscode-maui.configure",
+				"title": "%maui.command.configure%",
+				"category": "%maui.command.category%",
+				"enablement": "vscodeMauiExtensionEnabled"
+			},
+			{
+				"command": "vscode-maui.android.autosdk.configure",
+				"title": "%maui.command.android.autosdk.configure%",
+				"category": "%maui.command.category%",
+				"enablement": "vscodeMauiPlatformEnabledandroid"
+			},
+			{
+				"command": "vscode-maui.apple.autosdk.configure",
+				"title": "%maui.command.apple.autosdk.configure%",
+				"category": "%maui.command.category%",
+				"enablement": "vscodeMauiPlatformEnabledios || vscodeMauiPlatformEnabledmaccatalyst"
+			},
+			{
+				"command": "vscode-maui.apple.xcsync.generate",
+				"title": "%maui.command.apple.xcsync.generate%",
+				"category": "%maui.command.category%",
+				"enablement": "vscodeMauiPlatformEnabledios || vscodeMauiPlatformEnabledmaccatalyst"
+			},
+			{
+				"command": "vscode-maui.apple.xcsync.sync",
+				"title": "%maui.command.apple.xcsync.sync%",
+				"category": "%maui.command.category%",
+				"enablement": "vscodeMauiPlatformEnabledios || vscodeMauiPlatformEnabledmaccatalyst"
+			},
+			{
+				"command": "vscode-maui.pickStartUpProject",
+				"title": "%maui.command.pickStartUpProject%",
+				"category": "%maui.command.category%",
+				"enablement": "vscodeMauiExtensionStartUpProjectEnabled"
+			},
+			{
+				"command": "vscode-maui.pickDebugTarget",
+				"title": "%maui.command.pickDebugTarget%",
+				"category": "%maui.command.category%",
+				"enablement": "vscodeMauiExtensionDebugTargetsEnabled"
+			},
+			{
+				"command": "vscode-maui.pickDeviceTargetFilterByAndroid",
+				"title": "%maui.command.pickDeviceTargetFilterByAndroid%",
+				"category": "%maui.command.category%",
+				"enablement": "vscodeMauiExtensionDebugTargetsEnabled && vscodeMauiPlatformEnabledandroid"
+			},
+			{
+				"command": "vscode-maui.pickDeviceTargetFilterByiOS",
+				"title": "%maui.command.pickDeviceTargetFilterByiOS%",
+				"category": "%maui.command.category%",
+				"enablement": "vscodeMauiExtensionDebugTargetsEnabled && vscodeMauiPlatformEnabledios"
+			},
+			{
+				"command": "vscode-maui.pickDeviceTargetFilterByMacCatalyst",
+				"title": "%maui.command.pickDeviceTargetFilterByMacCatalyst%",
+				"category": "%maui.command.category%",
+				"enablement": "vscodeMauiExtensionDebugTargetsEnabled && vscodeMauiPlatformEnabledmaccatalyst"
+			},
+			{
+				"command": "vscode-maui.pickDeviceTargetFilterByWindows",
+				"title": "%maui.command.pickDeviceTargetFilterByWindows%",
+				"category": "%maui.command.category%",
+				"enablement": "vscodeMauiExtensionDebugTargetsEnabled && vscodeMauiPlatformEnabledwindows"
+			}
+		],
+		"configuration": {
+			"properties": {
+				"dotnet.debug.hotReloadXAML": {
+					"order": 3,
+					"type": "boolean",
+					"default": true,
+					"description": "%maui.configuration.hotReloadXAML.description%"
+				},
+				"maui.configuration.debugVerbosity": {
+					"type": "string",
+					"enum": [
+						"minimal",
+						"detailed",
+						"diagnostic"
+					],
+					"enumDescriptions": [
+						"%maui.configuration.debugVerbosity.minimal%",
+						"%maui.configuration.debugVerbosity.detailed%",
+						"%maui.configuration.debugVerbosity.diagnostic%"
+					],
+					"default": "minimal",
+					"description": "%maui.configuration.debugVerbosity.description%"
+				},
+				"maui.configuration.logVerbosity": {
+					"type": "string",
+					"enum": [
+						"minimal",
+						"detailed",
+						"diagnostic"
+					],
+					"enumDescriptions": [
+						"%maui.configuration.logVerbosity.minimal%",
+						"%maui.configuration.logVerbosity.detailed%",
+						"%maui.configuration.logVerbosity.diagnostic%"
+					],
+					"default": "detailed",
+					"description": "%maui.configuration.logVerbosity.description%"
+				},
+				"maui.configuration.androidSdkPreferredPath": {
+					"type": "string",
+					"description": "%maui.configuration.androidSdkPreferredPath.description%",
+					"default": ""
+				},
+				"maui.configuration.javaSdkPreferredPath": {
+					"type": "string",
+					"description": "%maui.configuration.javaSdkPreferredPath.description%",
+					"default": ""
+				},
+				"maui.configuration.useLaunchJsonConfigurations": {
+					"type": "boolean",
+					"description": "%maui.configuration.useLaunchJsonConfigurations.description%",
+					"default": 0
+				},
+				"maui.exceptionOptions": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string",
+						"enum": [
+							"never",
+							"always",
+							"unhandled"
+						],
+						"enumDescriptions": [
+							"%breakMode.never%",
+							"%breakMode.always%",
+							"%breakMode.unhandled%"
+						],
+						"default": "never"
+					},
+					"default": {
+						"System.Exception": "never",
+						"System.SystemException": "never",
+						"System.ArithmeticException": "never",
+						"System.ArrayTypeMismatchException": "never",
+						"System.DivideByZeroException": "never",
+						"System.IndexOutOfRangeException": "never",
+						"System.InvalidCastException": "never",
+						"System.NullReferenceException": "never",
+						"System.OutOfMemoryException": "never",
+						"System.OverflowException": "never",
+						"System.StackOverflowException": "never",
+						"System.TypeInitializationException": "never"
+					}
+				}
+			}
+		},
+		"languages": [
+			{
+				"id": "xaml",
+				"aliases": [
+					"XAML"
+				],
+				"extensions": [
+					".xaml"
+				]
+			},
+			{
+				"id": "csharp",
+				"aliases": [
+					"C#"
+				],
+				"extensions": [
+					".cs"
+				]
+			}
+		],
+		"taskDefinitions": [
+			{
+				"type": "maui",
+				"required": [],
+				"properties": {
+					"targetFramework": {
+						"type": "string",
+						"description": "%maui.task.targetFramework.description%",
+						"default": "undefined"
+					},
+					"configuration": {
+						"type": "string",
+						"description": "%maui.task.targetFramework.description%",
+						"default": "Debug"
+					},
+					"project": {
+						"type": "string",
+						"description": "%maui.task.project.description%",
+						"default": "undefined"
+					}
+				}
+			}
+		],
+		"breakpoints": [
+			{
+				"language": "csharp"
+			},
+			{
+				"language": "fsharp"
+			},
+			{
+				"language": "razor"
+			},
+			{
+				"language": "aspnetcorerazor"
+			}
+		],
+		"debuggers": [
+			{
+				"type": "maui",
+				"label": ".NET MAUI",
+				"hiddenWhen": "maui.debug.useCSharpDebugEntry",
+				"languages": [
+					"csharp",
+					"xaml",
+					"xml",
+					"plaintext",
+					"razor",
+					"aspnetcorerazor"
+				],
+				"initialConfigurations": [
+					{
+						"name": "%maui.launch.config.name%",
+						"type": "maui",
+						"request": "launch",
+						"preLaunchTask": "maui: Build"
+					}
+				],
+				"configurationAttributes": {
+					"launch": {
+						"required": [],
+						"properties": {
+							"project": {
+								"type": "string",
+								"description": "%maui.launch.project.description%",
+								"default": "undefined"
+							},
+							"configuration": {
+								"type": "string",
+								"description": "%maui.launch.configuration.description%",
+								"default": "undefined"
+							},
+							"targetFramework": {
+								"type": "string",
+								"description": "%maui.launch.targetFramework.description%",
+								"default": "undefined"
+							},
+							"device": {
+								"type": "string",
+								"description": "%maui.launch.device.description%",
+								"default": "undefined"
+							},
+							"useVSDbg": {
+								"type": "boolean",
+								"description": "%maui.task.useVSDbg.description%",
+								"default": false
+							}
+						}
+					}
+				},
+				"configurationSnippets": [
+					{
+						"label": "%maui.launch.config.label%",
+						"description": "A new configuration for building and debugging a .NET MAUI app.",
+						"body": {
+							"name": "%maui.launch.config.name%",
+							"type": "maui",
+							"request": "launch",
+							"preLaunchTask": "maui: Build"
+						}
+					}
+				]
+			}
+		],
+		"walkthroughs": [
+			{
+				"id": "vscode-maui.gettingStarted",
+				"title": "%maui.walkthrough.title%",
+				"description": "%maui.walkthrough.description%",
+				"steps": [
+					{
+						"id": "vscode-maui.signInStep",
+						"title": "%maui.walkthrough.signInStep.title%",
+						"description": "%maui.walkthrough.signInStep.description%",
+						"media": {
+							"image": "media/sign-in.png",
+							"altText": "%maui.walkthrough.signInStep.title%"
+						}
+					},
+					{
+						"id": "vscode-maui.setUpDotNetSdkStep-linux",
+						"title": "%maui.walkthrough.setUpDotNetSdkStep.title%",
+						"description": "%maui.walkthrough.setUpDotNetSdkStep.description%",
+						"when": "isLinux",
+						"media": {
+							"markdown": "media/install-dotnet-sdk-linux.md"
+						}
+					},
+					{
+						"id": "vscode-maui.setUpDotNetSdkStep-mac",
+						"title": "%maui.walkthrough.setUpDotNetSdkStep.title%",
+						"description": "%maui.walkthrough.setUpDotNetSdkStep.description%",
+						"when": "isMac",
+						"media": {
+							"markdown": "media/install-dotnet-sdk-mac.md"
+						}
+					},
+					{
+						"id": "vscode-maui.setUpDotNetSdkStep-windows",
+						"title": "%maui.walkthrough.setUpDotNetSdkStep.title%",
+						"description": "%maui.walkthrough.setUpDotNetSdkStep.description-windows%",
+						"when": "isWindows",
+						"media": {
+							"markdown": "media/install-dotnet-sdk-windows.md"
+						}
+					},
+					{
+						"id": "vscode-maui.setUpMauiSdkStep-windows",
+						"title": "%maui.walkthrough.setUpMauiSdkStep.title%",
+						"description": "%maui.walkthrough.setUpMauiSdkStep.description-windows%",
+						"when": "isWindows",
+						"media": {
+							"markdown": "media/install-maui-sdk-windows.md"
+						}
+					},
+					{
+						"id": "vscode-maui.setUpMauiSdkStep-mac",
+						"title": "%maui.walkthrough.setUpMauiSdkStep.title%",
+						"description": "%maui.walkthrough.setUpMauiSdkStep.description%",
+						"when": "isMac",
+						"media": {
+							"markdown": "media/install-maui-sdk-mac.md"
+						}
+					},
+					{
+						"id": "vscode-maui.setUpMauiSdkStep-linux",
+						"title": "%maui.walkthrough.setUpMauiSdkStep.title%",
+						"description": "%maui.walkthrough.setUpMauiSdkStep.description%",
+						"when": "isLinux",
+						"media": {
+							"markdown": "media/install-maui-sdk-linux.md"
+						}
+					},
+					{
+						"id": "vscode-maui.createNewMauiAppStep-windows",
+						"title": "%maui.walkthrough.createNewMauiAppStep.title%",
+						"description": "%maui.walkthrough.createNewMauiAppStep.description%",
+						"when": "isWindows",
+						"media": {
+							"markdown": "media/create-maui-app-windows.md"
+						}
+					},
+					{
+						"id": "vscode-maui.createNewMauiAppStep-mac",
+						"title": "%maui.walkthrough.createNewMauiAppStep.title%",
+						"description": "%maui.walkthrough.createNewMauiAppStep.description%",
+						"when": "isMac",
+						"media": {
+							"markdown": "media/create-maui-app-mac.md"
+						}
+					},
+					{
+						"id": "vscode-maui.createNewMauiAppStep-linux",
+						"title": "%maui.walkthrough.createNewMauiAppStep.title%",
+						"description": "%maui.walkthrough.createNewMauiAppStep.description%",
+						"when": "isLinux",
+						"media": {
+							"markdown": "media/create-maui-app-linux.md"
+						}
+					},
+					{
+						"id": "vscode-maui.buildLaunchAndDebugStep",
+						"title": "%maui.walkthrough.buildLaunchAndDebugStep.title%",
+						"description": "%maui.walkthrough.buildLaunchAndDebugStep.description%",
+						"media": {
+							"markdown": "media/launch-debug-test.md"
+						}
+					},
+					{
+						"id": "vscode-maui.learnMoreStep",
+						"title": "%maui.walkthrough.learnMoreStep.title%",
+						"description": "%maui.walkthrough.learnMoreStep.description%",
+						"media": {
+							"markdown": "media/learn-more.md"
+						}
+					}
+				]
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "yarn run package && dotnet build tools/msbuild/signJs -v:normal &&  dotnet build tools/msbuild/signAssemblies -v:normal",
+		"compile": "webpack",
+		"watch": "webpack --watch",
+		"package": "webpack --mode production --devtool hidden-source-map",
+		"compile-tests": "tsc",
+		"watch-tests": "tsc -w",
+		"lint": "eslint src --ext ts",
+		"unit-test": "jest --testPathIgnorePatterns=src/test/integration",
+		"unit-test-ci": "jest --watchAll=false --passWithNoTests --testPathIgnorePatterns=src/test/integration",
+		"integration-test": "yarn run compile-tests && node ./out/src/test/integration/typescriptIntegrationTests/runIntegrationTests.js",
+		"system-test": "yarn run compile-tests && node ./out/src/test/integration/typescriptIntegrationTests/runSystemTests.js",
+		"public-system-test": "yarn run compile-tests && node ./out/src/test/integration/typescriptIntegrationTests/runPublicSystemTests.js",
+		"test": "yarn unit-test && yarn integration-test && yarn system-test",
+		"prepareLoc": "npx @vscode/l10n-dev export -o ./l10n ./src/Microsoft.VisualStudio.Maui/ && mkdirp ./xliff/ && npx @vscode/l10n-dev generate-xlf -o ./xliff/vscode-maui.xlf ./l10n/bundle.l10n.json ./package.nls.json",
+		"generate-pseudo": "npx @vscode/l10n-dev generate-pseudo -o ./l10n/ ./l10n/bundle.l10n.json ./package.nls.json",
+		"localize": "npx @vscode/l10n-dev import-xlf ./loc/**/vscode-maui.*.xlf -o ./.localization/out",
+		"deployLoc": "copyfiles -u 2 .localization/out/**/package.nls.*.json . && copyfiles -u 2 .localization/out/**/bundle.l10n.*.json ./l10n"
+	},
+	"jest": {
+		"modulePathIgnorePatterns": [
+			"out",
+			"src/test/integration"
+		]
+	},
+	"extensionDependencies": [
+		"ms-dotnettools.csharp",
+		"ms-dotnettools.csdevkit"
+	],
+	"dependencies": {
+		"@microsoft/servicehub-framework": "4.5.37",
+		"@microsoft/visualstudio-testwindow-vscode-client": "17.6.0-beta.23117.1",
+		"@types/screenshot-desktop": "^1.12.3",
+		"@types/vscode": "^1.85.0",
+		"@vscode/debugprotocol": "^1.64.0",
+		"@vscode/extension-telemetry": "0.9.6",
+		"@vsintellicode/completions-csharp": "^1.0.0-beta.gc7e67c8d1b",
+		"lazy-promise": "^4.0.0",
+		"nerdbank-streams": "2.11.74",
+		"tslib": "^2.6.2"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.23.6",
+		"@babel/preset-env": "^7.23.6",
+		"@babel/preset-typescript": "^7.23.3",
+		"@jest/globals": "^29.7.0",
+		"@johanblumenberg/ts-mockito": "^1.0.41",
+		"@types/glob": "^8.0.0",
+		"@types/jest": "^29.5.11",
+		"@types/mocha": "^10.0.6",
+		"@types/node": "16.x",
+		"@types/sinon": "^17.0.3",
+		"@types/uuid": "^9.0.7",
+		"@typescript-eslint/eslint-plugin": "^5.62.0",
+		"@typescript-eslint/parser": "^5.38.1",
+		"@vscode/debugadapter": "^1.58.0",
+		"@vscode/debugadapter-testsupport": "^1.58.0",
+		"@vscode/l10n-dev": "0.0.35",
+		"@vscode/test-electron": "^2.3.8",
+		"@vscode/vsce": "^2.16.0",
+		"assert": "^2.0.0",
+		"babel-jest": "^29.5.0",
+		"copy-webpack-plugin": "^12.0.1",
+		"copyfiles": "^2.4.1",
+		"decompress": "^4.2.1",
+		"eslint": "^8.25.0",
+		"eslint-config-prettier": "9.1.0",
+		"eslint-plugin-import": "2.29.1",
+		"eslint-plugin-jsx-a11y": "6.8.0",
+		"eslint-plugin-prettier": "5.1.3",
+		"glob": "^8.0.3",
+		"gulp": "^5.0.0",
+		"gulp-concat": "^2.6.1",
+		"gulp-filter": "^9.0.1",
+		"gulp-sourcemaps": "^2.6.5",
+		"gulp-typescript": "^6.0.0-alpha.1",
+		"jest": "^29.2.2",
+		"mocha": "^10.0.0",
+		"mocha-junit-reporter": "^2.2.0",
+		"prettier": "^3.2.4",
+		"screenshot-desktop": "^1.15.0",
+		"sinon": "^18.0.0",
+		"tmp-promise": "^3.0.3",
+		"ts-jest": "^29.0.3",
+		"ts-loader": "^9.4.1",
+		"ts-node": "^10.9.1",
+		"typescript": "^5.4.5",
+		"uuid": "^9.0.0",
+		"vsce": "^2.14.0",
+		"vscode-nls-dev": "^4.0.4",
+		"webpack": "^5.96.1",
+		"webpack-cli": "^5.0.1"
+	},
+	"__metadata": {
+		"installedTimestamp": 1745348403318,
+		"targetPlatform": "darwin-arm64",
+		"size": 48003280
+	}
+}

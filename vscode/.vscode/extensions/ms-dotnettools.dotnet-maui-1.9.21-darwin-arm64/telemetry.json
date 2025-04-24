@@ -1,0 +1,11 @@
+{
+	"events": {
+		"commonProperties": {
+			"sessionID": {
+				"classification": "SystemMetaData",
+				"purpose": "FeatureInsight",
+				"endPoint": "none"
+			}
+		}
+	}
+}

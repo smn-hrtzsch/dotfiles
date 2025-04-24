@@ -1,0 +1,104 @@
+{
+	"extension.title": ".NET MAUI",
+	"extension.description": "Extend C# Dev Kit with tools for building .NET Multi-platform App UI (MAUI) apps",
+	"maui.launch.projectPath.description": "The path to the project to launch.",
+	"maui.launch.configuration.description": "Project Configuration (Debug or Release).",
+	"maui.launch.project.description": "The path to the project to launch.",
+	"maui.launch.targetFramework.description": "Target Framework to launch.",
+	"maui.launch.device.description": "Target Device to launch on",
+	"maui.task.useVSDbg.description": "Use the .NET Core Debugger backend (vsdbg) to debug MAUI Apps (supported for .NET 8.0.202 or higher)",
+	"maui.launch.config.name": ".NET MAUI",
+	"maui.launch.config.label": ".NET MAUI",
+	"maui.task.targetFramework.description": "The specific target framework to build for, default is all.",
+	"maui.task.configuration.description": "Build configuration, default is 'Debug'.",
+	"maui.task.project.description": "The project file to build.",
+	"maui.configuration.hotReloadXAML.description": "Enables XAML Hot Reload while debugging.",
+	"maui.configuration.androidSdkPreferredPath.description": "The preferred Android SDK directory to build and debug Android applications",
+	"maui.configuration.javaSdkPreferredPath.description": "The preferred Java SDK directory to build and debug Android applications",
+	"maui.configuration.useLaunchJsonConfigurations.description": "Allow using configuration names from launch.json",
+	"maui.command.category": ".NET MAUI",
+	"maui.command.configure": "Get set up for development...",
+	"maui.command.android.autosdk.configure": "Configure Android",
+	"maui.command.apple.autosdk.configure": "Configure Apple",
+	"maui.command.apple.xcsync.generate": "xcsync- Generate an Xcode Project",
+	"maui.command.apple.xcsync.sync": "xcsync- Sync from an Xcode Project",
+	"maui.command.pickStartUpProject": "Pick Startup Project",
+	"maui.command.pickDebugTarget": "Pick Startup Device",
+	"maui.command.pickDeviceTargetFilterByAndroid": "Pick Android Device",
+	"maui.command.pickDeviceTargetFilterByiOS": "Pick iOS Device",
+	"maui.command.pickDeviceTargetFilterByMacCatalyst": "Pick macOS Device",
+	"maui.command.pickDeviceTargetFilterByWindows": "Pick Windows Device",
+	"maui.walkthrough.title": "Get Started with .NET MAUI",
+	"maui.walkthrough.description": "Get set up to build cross-platform mobile and desktop apps with .NET Multi-platform App UI (MAUI).",
+	"maui.walkthrough.signInStep.title": "Connect account to C# Dev Kit",
+	"maui.walkthrough.signInStep.description": {
+		"message": "You can sign in with your Microsoft account. If you have a Visual Studio subscription, you can get information about your subscription after you've signed in.\n[Connect](command:csdevkit.signIntoVsAccount)",
+		"comment": [
+			"{Locked='](command:csdevkit.signIntoVsAccount)'}",
+			"Do not translate the 'command:*' part inside of the '(..)'. It is an internal command syntax for VS Code"
+		]
+	},
+	"maui.walkthrough.setUpDotNetSdkStep.title": "Set up your .NET environment",
+	"maui.walkthrough.setUpDotNetSdkStep.description": {
+		"message": "The .NET SDK is required to build with .NET in VS Code.\n[Install .NET SDK](https://aka.ms/dotnet-extensionpack-sdk)",
+		"comment": [
+			"{Locked='](https://aka.ms/dotnet-extensionpack-sdk)'}",
+			"Do not translate https link"
+		]
+	},
+	"maui.walkthrough.setUpDotNetSdkStep.description-windows": "The .NET SDK is required to build with .NET in VS Code.",
+	"maui.walkthrough.setUpMauiSdkStep.title": "Set up your .NET MAUI environment",
+	"maui.walkthrough.setUpMauiSdkStep.description": {
+		"message": "The .NET MAUI SDK is required to build a .NET MAUI App in VS Code.\n[Install .NET MAUI SDK](command:vscode-maui.installMauiSdk)",
+		"comment": [
+			"{Locked='](command:vscode-maui.installMauiSdk)'}",
+			"Do not translate the 'command:*' part inside of the '(..)'. It is an internal command syntax for VS Code"
+		]
+	},
+	"maui.walkthrough.setUpMauiSdkStep.description-windows": "The .NET MAUI SDK is required to build a .NET MAUI App in VS Code.",
+	"maui.walkthrough.createNewMauiAppStep.title": "Create your .NET MAUI App",
+	"maui.walkthrough.createNewMauiAppStep.description": {
+		"message": "Create your .NET MAUI App by choosing the .NET MAUI project template from the command palette to scaffold your project.\n[Create .NET MAUI App](command:vscode-maui.searchNewProjectFromCommandPalette)",
+		"comment": [
+			"{Locked='](command:vscode-maui.searchNewProjectFromCommandPalette)'}",
+			"Do not translate the 'command:*' part inside of the '(..)'. It is an internal command syntax for VS Code"
+		]
+	},
+	"maui.walkthrough.setUpAdditionalConfigurationsStep.title": "Set up additional target platforms",
+	"maui.walkthrough.setUpAdditionalConfigurationsStep.description": {
+		"message": "Set up additional target platforms to deploy your .NET MAUI App to all possible platforms!\n[Configure Additional Targets](command:vscode-maui.configure)",
+		"comment": [
+			"{Locked='](command:vscode-maui.configure)'}",
+			"Do not translate the 'command:*' part inside of the '(..)'. It is an internal command syntax for VS Code"
+		]
+	},
+	"maui.walkthrough.buildLaunchAndDebugStep.title": "Build, launch, and debug",
+	"maui.walkthrough.buildLaunchAndDebugStep.description": {
+		"message": "Run and debug your application using the debugger. [Learn more about debugging in VS Code...](https://code.visualstudio.com/docs/editor/debugging)\n[Launch your .NET MAUI App](command:workbench.action.debug.start)",
+		"comment": [
+			"{Locked='](https://code.visualstudio.com/docs/editor/debugging)'}",
+			"Do not translate https link",
+			"{Locked='](command:workbench.action.debug.start)'}",
+			"Do not translate the 'command:*' part inside of the '(..)'. It is an internal command syntax for VS Code"
+		]
+	},
+	"maui.walkthrough.learnMoreStep.title": "Learn more",
+	"maui.walkthrough.learnMoreStep.description": {
+		"message": "Explore all the features the .NET MAUI Tools for C# Dev Kit Extension has to offer by looking for “.NET MAUI:” in the Command Palette.\n[Open Command Palette](command:vscode-maui.searchFromCommandPalette)",
+		"comment": [
+			"{Locked='](command:vscode-maui.searchFromCommandPalette)'}",
+			"Do not translate the 'command:*' part inside of the '(..)'. It is an internal command syntax for VS Code"
+		]
+	},
+	"breakMode.never": "never",
+	"breakMode.always": "always",
+	"breakMode.unhandled": "unhandled",
+	"maui.configuration.logVerbosity.description": "The verbosity of logging in the Output Panel for '.NET MAUI'. The order of levels from least verbose to most verbose is: 'minimal' < 'detailed' < 'diagnostic' (default: 'detailed').",
+	"maui.configuration.logVerbosity.minimal": "Show only minimal information.",
+	"maui.configuration.logVerbosity.detailed": "Show detailed information.",
+	"maui.configuration.logVerbosity.diagnostic": "Show diagnostic information. Useful when diagnosing unexpected behaviors.",
+	"maui.configuration.debugVerbosity.description": "The build task's verbosity when debugging. The order of levels from least verbose to most verbose is: 'minimal' < 'detailed' < 'diagnostic' (default: 'minimal').",
+	"maui.configuration.debugVerbosity.minimal": "Show only minimal information.",
+	"maui.configuration.debugVerbosity.detailed": "Show detailed information.",
+	"maui.configuration.debugVerbosity.diagnostic": "Show diagnostic information and generate a binlog. Useful when diagnosing unexpected behaviors."
+}

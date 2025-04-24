@@ -1,0 +1,7 @@
+{
+	"host": "dotnet",
+	"entryPoint": {
+		"assemblyPath": "Microsoft.VisualStudio.Maui.Devices.dll",
+		"fullClassName": "Microsoft.VisualStudio.Maui.Devices.AppleDeviceManagerFactory"
+	}
+}

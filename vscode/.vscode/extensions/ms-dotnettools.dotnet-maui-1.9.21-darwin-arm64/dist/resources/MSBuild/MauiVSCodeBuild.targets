@@ -1,0 +1,67 @@
+<Project>
+	<Target Name="GatherVSCodeMauiBuildOutput" 
+			DependsOnTargets="CoreBuild" 
+			Condition="'$(MauiVSCodeBuildOutputFile)' != '' And ($(MauiTargetProject) == '' Or $(MauiTargetProject) == '$(MSBuildProjectFullPath)')">
+
+		<ItemGroup>
+			<MauiVSCodeBuildOutput Condition="'$(_MlaunchPath)' != '' AND ('$(_TargetFrameworkPlatform)' == 'ios' OR '$(_TargetFrameworkPlatform)' == 'maccatalyst')" Include="_MLaunchPath=$([System.IO.Path]::GetFullPath($(_MlaunchPath)))" />
+			<MauiVSCodeBuildOutput Condition="'$(_SdkDevPath)' != '' AND ('$(_TargetFrameworkPlatform)' == 'ios' OR '$(_TargetFrameworkPlatform)' == 'maccatalyst')" Include="_SdkDevPath=$([System.IO.Path]::GetFullPath($(_SdkDevPath)))" />
+			<MauiVSCodeBuildOutput Condition="'$(AppBundleDir)' != '' AND ('$(_TargetFrameworkPlatform)' == 'ios' OR '$(_TargetFrameworkPlatform)' == 'maccatalyst')" Include="AppBundleDir=$([System.IO.Path]::GetFullPath($(AppBundleDir)))" />
+			<MauiVSCodeBuildOutput Condition="'$(AppBundleDir)' != '' AND ('$(_TargetFrameworkPlatform)' == 'ios' OR '$(_TargetFrameworkPlatform)' == 'maccatalyst')" Include="AssetsDir=$([System.IO.Path]::GetDirectoryName($([System.IO.Path]::GetFullPath($(AppBundleDir)))))" />
+			<MauiVSCodeBuildOutput Condition="'$(MonoAndroidIntermediateAssetsDir)' != ''" Include="AssetsDir=$([System.IO.Path]::GetDirectoryName($([System.IO.Path]::GetFullPath($(MonoAndroidIntermediateAssetsDir)))))" />
+			<MauiVSCodeBuildOutput Condition="'$(TargetPath)' != ''" Include="ProgramName=$(TargetPath)" />
+		</ItemGroup>
+
+		<WriteLinesToFile
+			File="$(MauiVSCodeBuildOutputFile)"
+			Lines="@(MauiVSCodeBuildOutput)"
+			Overwrite="true" />
+	</Target>
+
+	<Target Name="_GetAndroidEmulatorDependencies" Condition="'$(AndroidSystemImageArchDependency)' != ''">
+		<ItemGroup>
+			<AndroidDependency Include="emulator" />
+			<AndroidDependency Include="system-images/android-$(_AndroidApiLevel)/google_apis/$(AndroidSystemImageArchDependency)" />
+		</ItemGroup>
+	</Target>
+	
+	<Target Name="_GetAndroidDependenciesForDebug" 
+			DependsOnTargets="GetAndroidDependencies" 
+			Condition="'$(MauiVSCodeBuildOutputFile)' != ''">
+		<ItemGroup>
+			<LinesToWrite Include="%(AndroidDependency.Identity)@%(AndroidDependency.Version)" />
+			<LinesToWrite Include="%(JavaDependency.Identity)@%(JavaDependency.Version)" />
+			<LinesToWrite Include="JavaSdkPath=$(_JavaSdkDirectory)" />
+			<LinesToWrite Include="AndroidSdkPath=$(_AndroidSdkDirectory)" />
+		</ItemGroup>
+		
+		<WriteLinesToFile
+			File="$(MauiVSCodeBuildOutputFile)"
+			Lines="@(LinesToWrite)"
+			Overwrite="true" >
+		</WriteLinesToFile>
+	</Target>
+
+	<Target Name="_DeletePriConfigXml" 
+			BeforeTargets="CoreBuild"
+			Condition="'$(_DeletePriConfigXml)' == 'True' AND '$(_TargetFrameworkPlatform)' == 'windows'">
+
+		<Delete Files="$(IntermediateOutputPath)\priconfig.xml" 
+				TreatErrorsAsWarnings="True"
+				/>
+	</Target>
+
+	<Target Name="_GetTargetPath"
+			Condition="'$(_TargetFrameworkPlatform)' == 'windows'">
+		
+		<ItemGroup>
+			<LinesToWrite Include="$(TargetPath)" />
+		</ItemGroup>
+		
+		<WriteLinesToFile
+			File="$(MauiVSCodeBuildOutputFile)"
+			Lines="@(LinesToWrite)"
+			Overwrite="true" >
+		</WriteLinesToFile>
+	</Target>
+</Project>

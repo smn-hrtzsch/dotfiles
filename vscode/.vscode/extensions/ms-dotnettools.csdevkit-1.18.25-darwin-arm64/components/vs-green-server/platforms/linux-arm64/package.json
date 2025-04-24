@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "dependencies": {
+    "@microsoft/visualstudio-code-servicecontroller.linux-arm64": "0.2.396-beta",
+    "@microsoft/visualstudio-code-servicehost.linux-arm64": "0.2.396-beta",
+    "@microsoft/visualstudio-reliability-monitor.linux-arm64": "0.2.396-beta",
+    "@microsoft/visualstudio-server-samples-sayhello.linux-arm64": "0.2.396-beta",
+    "@microsoft/visualstudio-server-shared.linux-arm64": "0.2.396-beta",
+    "@microsoft/visualstudio-server.linux-arm64": "0.2.396-beta"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://devdiv.visualstudio.com/DevDiv/_git/vs-green-server",
+    "branch": "prerelease"
+  }
+}

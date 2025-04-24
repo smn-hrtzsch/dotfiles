@@ -1,0 +1,7 @@
+<Project>
+  <Import Project="$(MSBuildThisFileDirectory)MSBuild/**/*.props" />
+  <Import Project="$(XamlTools)/MSBuild/*.props" Condition="'$(XamlTools)' != ''"/>
+
+  <Import Project="$(MSBuildThisFileDirectory)MSBuild/**/*.targets" />
+  <Import Project="$(XamlTools)/MSBuild/*.targets" Condition="'$(XamlTools)' != ''"/>
+</Project>

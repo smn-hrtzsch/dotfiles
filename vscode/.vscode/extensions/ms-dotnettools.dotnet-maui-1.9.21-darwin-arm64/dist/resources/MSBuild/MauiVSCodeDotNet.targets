@@ -1,0 +1,13 @@
+<Project>
+	<Target Name="_GetDotNetSuggestedWorkloads" DependsOnTargets="GetSuggestedWorkloads">
+		<ItemGroup>
+			<LinesToWrite Include="@(SuggestedWorkload)" />
+		</ItemGroup>
+		
+		<WriteLinesToFile
+			File="$(MauiVSCodeBuildOutputFile)"
+			Lines="@(LinesToWrite)"
+			Overwrite="true" >
+		</WriteLinesToFile>
+	</Target>
+</Project>

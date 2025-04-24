@@ -1,0 +1,7 @@
+﻿{
+	"host": "dotnet",
+	"entryPoint": {
+		"assemblyPath": "Microsoft.VisualStudio.Maui.ProjectSystem.dll",
+		"fullClassName": "Microsoft.VisualStudio.Maui.ProjectSystem.PropertiesMonitorFactory"
+	}
+}
