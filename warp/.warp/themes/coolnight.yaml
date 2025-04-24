@@ -1,0 +1,43 @@
+# Theme based on TOML by Josean Martinez, Inspired by aura.toml
+# Converted for Warp Terminal
+
+# You can change the name if you like
+name: Aura Josean
+
+# Accent color, often used for the cursor, selections, etc.
+# Taken from your TOML's colors.cursor.cursor
+accent: '#47FF9C'
+
+# Determines if the theme is overall dark or light (affects UI elements)
+details: 'darker'
+
+# Primary colors
+background: '#181818'
+foreground: '#CBE0F0'
+
+# Terminal colors
+terminal_colors:
+  normal:
+    black:   '#6f8a9e'
+    red:     '#E52E2E'
+    green:   '#44FFB1'
+    yellow:  '#FFE073'
+    blue:    '#0FC5ED'
+    magenta: '#a277ff'
+    cyan:    '#24EAF7'
+    # Note: Your original white and cyan were the same
+    white:   '#24EAF7'
+  bright:
+    # Note: Several bright colors are identical to normal colors in your original TOML
+    black:   '#6f8a9e'
+    red:     '#E52E2E'
+    green:   '#44FFB1'
+    yellow:  '#FFE073'
+    blue:    '#A277FF' # This one is different from normal blue
+    magenta: '#a277ff'
+    cyan:    '#24EAF7'
+    white:   '#24EAF7'
+
+# Note: The colors.cursor.text field ('#011423') from your TOML doesn't have
+# a direct equivalent standard Warp YAML key, but foreground/background/accent
+# usually cover the visible elements.

@@ -1,0 +1,6 @@
+channels:
+  - robostack-staging
+  - conda-forge
+  - https://repo.anaconda.com/pkgs/main
+  - https://repo.anaconda.com/pkgs/r
+auto_activate_base: false
