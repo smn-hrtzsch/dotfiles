@@ -4,6 +4,10 @@
 brew "git"   # Sicherstellen, dass es aktuell ist
 brew "stow"  # Zum Verwalten der Symlinks
 brew "mas"   # Optional: Für Mac App Store Apps
+brew "powerlevel10k"
+brew "zsh-autosuggestions"
+brew "zsh-syntax-highlighting"
+brew "zoxide"
 
 # Andere nützliche CLI-Tools (Beispiele, füge deine hinzu)
 # brew "htop"
