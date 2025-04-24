@@ -46,7 +46,6 @@ fi
 echo ">>> Creating symlinks with stow..."
 
 # Liste aller deiner Konfigurationspakete für stow
-# Füge hier alle Ordner aus Schritt 2 hinzu, die du verwalten willst
 STOW_PACKAGES=(
     git
     zsh
@@ -55,8 +54,7 @@ STOW_PACKAGES=(
     vscode
     conda
     config
-    npm # Nur wenn du .npmrc hast
-    # local # Wenn du .local/bin o.ä. nutzt
+    npm
 )
 
 # Erstelle die Symlinks
@@ -81,7 +79,7 @@ fi
 
 echo ">>> Installing VS Code extensions..."
 if [ -f "./vscode/extensions.txt" ]; then
-    cat ./vscode/extensions.txt | xargs -L 1 code --install-extension
+    xargs -L 1 code --install-extension < ./vscode/extensions.txt
 else
     echo ">>> extensions.txt not found."
 fi
