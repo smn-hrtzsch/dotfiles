@@ -50,18 +50,14 @@ echo ">>> Creating symlinks with stow..."
 
 # Liste aller Konfigurationspakete für stow
 # Passe diese Liste ggf. an
-STOW_PACKAGES_HOME=( git zsh conda npm ) # Pakete, die direkt nach ~ linken
+# *** HIER WURDE 'npm' ENTFERNT ***
+STOW_PACKAGES_HOME=( git zsh conda ) # Pakete, die direkt nach ~ linken
 STOW_PACKAGES_SUBDIR=( ssh warp vscode config ) # Pakete, die in Unterverzeichnisse linken
 
 # Stow für Pakete, die direkt nach ~ linken sollen
 echo ">>> Stowing packages for ~ ..."
 for pkg in "${STOW_PACKAGES_HOME[@]}"; do
     echo "   Stowing $pkg to ~ ..."
-    # -R überschreibt alte stow-Symlinks, -t ~ Ziel ist Home
-    # Wichtig: Vorhandene *echte* Dateien werden NICHT überschrieben,
-    # daher müssen wir sicherstellen, dass der Platz frei ist (was bei zsh nicht der Fall war).
-    # Wir gehen davon aus, dass die Konflikte für git, conda, npm nicht existieren
-    # oder bereits manuell gelöst wurden. Für zsh wird der Link jetzt erstellt.
     stow -R -v -t ~ "$pkg"
 done
 
@@ -69,8 +65,6 @@ done
 echo ">>> Stowing packages for subdirectories ..."
 for pkg in "${STOW_PACKAGES_SUBDIR[@]}"; do
     echo "   Stowing $pkg (no target)..."
-    # Hier gehen wir davon aus, dass die Ziel-Unterverzeichnisse (~/.ssh, ~/.config etc.)
-    # nicht existieren oder dass Konflikte darin manuell gelöst wurden.
     stow -R -v "$pkg"
 done
 
