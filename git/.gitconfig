@@ -1,3 +1,5 @@
 [user]
 	name = smn-hrtzsch
 	email = simon@hoertzsch.de
+[push]
+	autoSetupRemote = true
