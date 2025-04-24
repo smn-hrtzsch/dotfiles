@@ -79,6 +79,12 @@ else
     echo ">>> WARNUNG: Brewfile nicht im Skriptverzeichnis gefunden."
 fi
 
+echo ">>> Installing VS Code extensions..."
+if [ -f "./vscode/extensions.txt" ]; then
+    cat ./vscode/extensions.txt | xargs -L 1 code --install-extension
+else
+    echo ">>> extensions.txt not found."
+fi
 
 # --- Finale Schritte ---
 echo ">>> Setup script finished!"
