@@ -28,6 +28,7 @@ cask "google-drive"
 cask "maccy"
 cask "rectangle"
 cask "appcleaner"
+cask "localsend"
 
 # Benötigte Fonts (inkl. Meslo Nerd Font)
 cask "font-meslo-lg-nerd-font"
