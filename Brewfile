@@ -27,6 +27,7 @@ cask "android-studio"
 cask "google-drive"
 cask "maccy"
 cask "rectangle"
+cask "appcleaner"
 
 # Benötigte Fonts (inkl. Meslo Nerd Font)
 cask "font-meslo-lg-nerd-font"
