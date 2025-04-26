@@ -22,6 +22,7 @@
     {
       # Bestehende darwinConfigurations...
       darwinConfigurations."MacBook-Air-von-Simon" = nix-darwin.lib.darwinSystem {
+        specialArgs = { inherit inputs self; };
         modules = [ 
           ./darwin-configuration.nix 
 
