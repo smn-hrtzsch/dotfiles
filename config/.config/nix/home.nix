@@ -21,7 +21,6 @@ in
 
   # Hier fügen wir Pakete hinzu, die nur für DICH installiert werden sollen.
   home.packages = [
-    pkgs.neovim  # Neovim installieren!
     # Füge hier später andere User-Tools hinzu, z.B. pkgs.htop, pkgs.ripgrep etc.
   ];
 
