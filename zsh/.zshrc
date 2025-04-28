@@ -14,8 +14,9 @@ eval "$(pyenv init -)"
 # export PATH="/opt/homebrew/opt/python@3.9/libexec/bin":$PATH
 
 # Setze den Pfad zu deinem Java SDK
-export JAVA_HOME="/opt/homebrew/opt/openjdk@17"
-export PATH="$JAVA_HOME/bin:$PATH"
+export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+export JAVA_HOME="/opt/homebrew/opt/openjdk"
+export CPPFLAGS="-I/opt/homebrew/opt/openjdk/include"
 
 # Setze den Pfad zu deinem Android SDK
 export ANDROID_HOME=$HOME/Library/Android/sdk
