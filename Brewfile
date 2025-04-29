@@ -26,9 +26,9 @@ cask "visual-studio-code"
 cask "android-studio"
 cask "google-drive"
 cask "maccy"
-cask "rectangle"
 cask "appcleaner"
 cask "localsend"
+cask "raycast"
 
 # Benötigte Fonts (inkl. Meslo Nerd Font)
 cask "font-meslo-lg-nerd-font"
