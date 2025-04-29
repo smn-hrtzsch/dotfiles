@@ -79,7 +79,7 @@ unset __conda_setup
 
 # Turtlebot setup
 export TURTLEBOT3_MODEL=burger
-export ROS_DOMAIN_ID=50 # Für Kurs-WLAN / Roboter
+export ROS_DOMAIN_ID=60 # Für Kurs-WLAN / Roboter
 
 # ROS 2 Workspace sourcen
 ROS2_SETUP_FILE="$HOME/ros2_ws/install/local_setup.zsh"
