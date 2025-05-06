@@ -79,7 +79,12 @@ unset __conda_setup
 
 # Turtlebot setup
 export TURTLEBOT3_MODEL=burger
-export ROS_DOMAIN_ID=60 # Für Kurs-WLAN / Roboter
+export ROS_DOMAIN_ID=70 # Für Kurs-WLAN / Roboter
+
+# Source ROS2 conda environment
+if [ -f "$HOME/miniconda3/envs/ros2/setup.zsh" ]; then
+    source "$HOME/miniconda3/envs/ros2/setup.zsh"
+fi
 
 # ROS 2 Workspace sourcen
 ROS2_SETUP_FILE="$HOME/ros2_ws/install/local_setup.zsh"
@@ -87,3 +92,5 @@ if [ -f "$ROS2_SETUP_FILE" ]; then
   # shellcheck disable=SC1090 # Disable warning about non-constant source path
   source "$ROS2_SETUP_FILE"
 fi
+
+export PATH="/Library/TeX/texbin:$PATH"
