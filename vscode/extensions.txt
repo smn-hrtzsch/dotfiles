@@ -6,6 +6,7 @@ github.copilot-chat
 github.remotehub
 github.vscode-github-actions
 github.vscode-pull-request-github
+james-yu.latex-workshop
 jebbs.plantuml
 mechatroner.rainbow-csv
 ms-ceintl.vscode-language-pack-de
@@ -28,6 +29,7 @@ pierre3.csharp-to-plantuml
 platformio.platformio-ide
 pycom.pymakr
 redhat.java
+tecosaur.latex-utilities
 tomoki1207.pdf
 twxs.cmake
 visualstudioexptteam.intellicode-api-usage-examples
