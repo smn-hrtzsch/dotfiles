@@ -6,6 +6,7 @@ github.copilot-chat
 github.remotehub
 github.vscode-github-actions
 github.vscode-pull-request-github
+google.geminicodeassist
 james-yu.latex-workshop
 jebbs.plantuml
 mechatroner.rainbow-csv
@@ -29,6 +30,7 @@ pierre3.csharp-to-plantuml
 platformio.platformio-ide
 pycom.pymakr
 redhat.java
+saoudrizwan.claude-dev
 tecosaur.latex-utilities
 tomoki1207.pdf
 twxs.cmake
