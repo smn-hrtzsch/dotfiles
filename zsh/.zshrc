@@ -23,7 +23,10 @@ export ANDROID_HOME=$HOME/Library/Android/sdk
 export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH
 
 # Setze den Pfad zu deinem .NET SDK
-export DOTNET_ROOT=usr/local/share/dotnet/sdk
+# DOTNET_ROOT sollte auf das Installationsverzeichnis von .NET zeigen, z.B. /usr/local/share/dotnet
+# Der ursprüngliche Wert 'usr/local/share/dotnet/sdk' schien einen Tippfehler (fehlender '/') zu haben und auf das sdk-Unterverzeichnis zu zeigen.
+# Bitte an deine tatsächliche Installation anpassen, falls /usr/local/share/dotnet nicht korrekt ist.
+export DOTNET_ROOT=/usr/local/share/dotnet
 export PATH=$PATH:$DOTNET_ROOT
 
 export PATH="$PATH:$HOME/.dotnet/tools"
@@ -81,13 +84,15 @@ unset __conda_setup
 export TURTLEBOT3_MODEL=burger
 export ROS_DOMAIN_ID=70 # Für Kurs-WLAN / Roboter
 
-# Source ROS2 conda environment
+# Source ROS2 Basis-Setup aus der Conda-Umgebung
 if [ -f "$HOME/miniconda3/envs/ros2/setup.zsh" ]; then
     source "$HOME/miniconda3/envs/ros2/setup.zsh"
 fi
 
-# ROS 2 Workspace sourcen
-ROS2_SETUP_FILE="$HOME/ros2_ws/install/local_setup.zsh"
+# ROS 2 Workspace sourcen (Overlay)
+# Es wird setup.zsh statt local_setup.zsh verwendet, um die korrekte Verkettung
+# mit der Basis-ROS-Umgebung sicherzustellen.
+ROS2_SETUP_FILE="$HOME/ros2_ws/install/setup.zsh"
 if [ -f "$ROS2_SETUP_FILE" ]; then
   # shellcheck disable=SC1090 # Disable warning about non-constant source path
   source "$ROS2_SETUP_FILE"
