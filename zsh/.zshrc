@@ -84,18 +84,6 @@ unset __conda_setup
 export TURTLEBOT3_MODEL=burger
 export ROS_DOMAIN_ID=70 # Für Kurs-WLAN / Roboter
 
-# Source ROS2 Basis-Setup aus der Conda-Umgebung
-if [ -f "$HOME/miniconda3/envs/ros2/setup.zsh" ]; then
-    source "$HOME/miniconda3/envs/ros2/setup.zsh"
-fi
-
-# ROS 2 Workspace sourcen (Overlay)
-# Es wird setup.zsh statt local_setup.zsh verwendet, um die korrekte Verkettung
-# mit der Basis-ROS-Umgebung sicherzustellen.
-ROS2_SETUP_FILE="$HOME/ros2_ws/install/setup.zsh"
-if [ -f "$ROS2_SETUP_FILE" ]; then
-  # shellcheck disable=SC1090 # Disable warning about non-constant source path
-  source "$ROS2_SETUP_FILE"
-fi
-
 export PATH="/Library/TeX/texbin:$PATH"
+
+alias startros2='. ~/./setup_waymo_ros2.sh && source $HOME/miniconda3/envs/ros2/setup.zsh && source $HOME/ros2_ws/install/setup.zsh && echo "ROS2 Environment activated."'
