@@ -1,0 +1,35 @@
+# Ghostty Configuration File
+# Pfad /Users/simon/Library/Application Support/com.mitchellh.ghostty/config
+
+# --- Theme ---
+theme = "coolnight.conf"
+
+# --- Environment ---
+term = "xterm-256color"
+
+# --- Window ---
+window-padding-x = 10
+window-padding-y = 10
+background-opacity = 0.8
+
+# --- Font ---
+font-family = "MesloLGS Nerd Font Mono"
+font-size = 16
+
+# --- Cursor ---
+cursor-style = "bar"
+cursor-style-blink = true
+
+# --- Mouse ---
+cursor-click-to-move = true
+
+# --- Colors (falls nicht alles vom Theme abgedeckt wird) ---
+# Es ist möglich, dass `background` und `foreground` hier definiert werden müssen,
+# wenn sie in der Theme-Datei nicht korrekt erkannt werden oder spezielle Namen haben.
+# background = "#181818"
+# foreground = "#CBE0F0"
+
+
+# --- Optional: Weitere Ghostty-spezifische Einstellungen ---
+# scrollback-lines = 10000
+# shell = ["/bin/zsh"]
