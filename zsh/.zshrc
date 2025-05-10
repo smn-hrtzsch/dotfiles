@@ -71,10 +71,11 @@ alias ...='cd ../..'
 alias c='clear'
 alias g='git'
 alias gits='git status'
-alias gc='git commit -m'
 alias ga='git add'
 alias ga.='git add .'
+alias gc='git commit -m'
 alias gcam='git commit -a -m'
+alias gp='git push'
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
