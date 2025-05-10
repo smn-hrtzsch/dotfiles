@@ -17,6 +17,7 @@ brew "pyenv" # Wenn du pyenv nutzt
 # Deine benötigten GUI Anwendungen (Casks)
 cask "brave-browser"
 cask "warp"
+cask "ghostty"
 cask "notion"
 cask "thunderbird"
 cask "whatsapp"
