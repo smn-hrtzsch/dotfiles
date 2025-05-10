@@ -10,7 +10,10 @@ term = "xterm-256color"
 # --- Window ---
 window-padding-x = 10
 window-padding-y = 10
-background-opacity = 0.8
+background-opacity = 1
+
+# -- Surface ---
+confirm-close-surface = false
 
 # --- Font ---
 font-family = "MesloLGS Nerd Font Mono"
@@ -23,13 +26,16 @@ cursor-style-blink = true
 # --- Mouse ---
 cursor-click-to-move = true
 
-# --- Colors (falls nicht alles vom Theme abgedeckt wird) ---
-# Es ist möglich, dass `background` und `foreground` hier definiert werden müssen,
-# wenn sie in der Theme-Datei nicht korrekt erkannt werden oder spezielle Namen haben.
-# background = "#181818"
-# foreground = "#CBE0F0"
+# --- Custom Keybindings ---
 
+# Wechseln zwischen Splits mit Command + Shift + Pfeiltaste
+keybind = super+shift+up=goto_split:up
+keybind = super+shift+down=goto_split:down
+keybind = super+shift+left=goto_split:left
+keybind = super+shift+right=goto_split:right
 
-# --- Optional: Weitere Ghostty-spezifische Einstellungen ---
-# scrollback-lines = 10000
-# shell = ["/bin/zsh"]
+# Resizen von Splits mit Command + Alt + Pfeiltaste
+keybind = super+alt+up=resize_split:up,10
+keybind = super+alt+down=resize_split:down,10
+keybind = super+alt+left=resize_split:left,10
+keybind = super+alt+right=resize_split:right,10

@@ -65,6 +65,17 @@ alias openweb='function _openweb() { local url="https://$1"; open "$url"; }; _op
 
 alias python='python3'
 alias pip='python3 -m pip'
+
+alias ..='cd ..'
+alias ...='cd ../..'
+alias c='clear'
+alias g='git'
+alias gits='git status'
+alias gc='git commit -m'
+alias ga='git add'
+alias ga.='git add .'
+alias gcam='git commit -a -m'
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/Users/simon/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"

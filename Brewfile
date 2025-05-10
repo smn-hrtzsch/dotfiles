@@ -9,6 +9,7 @@ brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 brew "zoxide"
 brew "neofetch"
+brew "fzf"
 
 # Andere nützliche CLI-Tools (Beispiele, füge deine hinzu)
 brew "tree"
