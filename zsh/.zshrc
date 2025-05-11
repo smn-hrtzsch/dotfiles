@@ -99,3 +99,18 @@ export ROS_DOMAIN_ID=70 # Für Kurs-WLAN / Roboter
 export PATH="/Library/TeX/texbin:$PATH"
 
 alias startros2='. ~/./setup_waymo_ros2.sh && source $HOME/miniconda3/envs/ros2/setup.zsh && source $HOME/ros2_ws/install/setup.zsh && echo "ROS2 Environment activated."'
+
+# Benenne die Funktion um, z.B. in fzfc
+fzfc() {
+  local -a files # Definiert 'files' als Array
+  # Füllt das Array 'files' mit den von fzf ausgewählten Dateien (jede Zeile eine Datei)
+  files=(${(f)"$(fzf -m --preview="bat --color=always {}")"})
+
+  # Prüft, ob Dateien ausgewählt wurden (fzf gibt bei Abbruch einen Fehlercode != 0)
+  # und ob das Array 'files' nicht leer ist.
+  if [[ $? -eq 0 && ${#files[@]} -gt 0 ]]; then
+    code -- "${files[@]}" # Öffnet alle ausgewählten Dateien in VS Code
+                         # "${files[@]}" sorgt dafür, dass jede Datei als separates,
+                         # korrekt gequotetes Argument übergeben wird.
+  fi
+}
