@@ -50,6 +50,12 @@ bindkey '^[[B' history-search-forward
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+# Tab accepts autosuggestion
+bindkey '^I' autosuggest-accept
+
+# Right arrow performs normal completion
+bindkey '^[[C' expand-or-complete
+
 # ---- Eza (better ls) -----
 alias ls="eza --icons=always -la"
 
@@ -106,11 +112,23 @@ alias startros2='
   echo "INFO: Conda-Umgebung 'ros2' aktiviert." && \
   echo "INFO: Source ROS2 Workspace Setup-Datei (~/ros2_ws/install/setup.zsh)..."
   source ~/ros2_ws/install/setup.zsh && \
+  source ~/ros2_ws/install/local_setup.zsh && \
   echo " -------------------------------------------------------"
   echo "| ROS2 Waymo Umgebung erfolgreich eingerichtet!         |"
   echo "| Aktuelles Verzeichnis: $(pwd) |" 
   echo "| Aktive Conda-Umgebung: $CONDA_DEFAULT_ENV                           |"
   echo "| ROS Distro (falls gesetzt): $ROS_DISTRO                    |"
+  echo " -------------------------------------------------------"
+'
+
+alias stopros2='
+  echo "INFO: Deaktiviere Conda-Umgebung 'ros2'..."
+  conda deactivate && \
+  echo "INFO: Wechsle zurück in das Home-Verzeichnis..."
+  cd ~ && \
+  echo " -------------------------------------------------------"
+  echo "| ROS2 Waymo Umgebung erfolgreich deaktiviert!          |"
+  echo "| Aktuelles Verzeichnis: $(pwd)                   |" 
   echo " -------------------------------------------------------"
 '
 
