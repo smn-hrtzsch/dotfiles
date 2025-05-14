@@ -98,7 +98,21 @@ export ROS_DOMAIN_ID=70 # Für Kurs-WLAN / Roboter
 
 export PATH="/Library/TeX/texbin:$PATH"
 
-alias startros2='. ~/./setup_waymo_ros2.sh && source $HOME/miniconda3/envs/ros2/setup.zsh && source $HOME/ros2_ws/install/setup.zsh && echo "ROS2 Environment activated."'
+alias startros2='
+  echo "INFO: Wechsle in den ROS2 Workspace (~/ros2_ws)..."
+  cd ~/ros2_ws/src/waymo && \
+  echo "INFO: Aktiviere Conda-Umgebung 'ros2'..."
+  conda activate ros2 && \
+  echo "INFO: Conda-Umgebung 'ros2' aktiviert." && \
+  echo "INFO: Source ROS2 Workspace Setup-Datei (~/ros2_ws/install/setup.zsh)..."
+  source ~/ros2_ws/install/setup.zsh && \
+  echo " -------------------------------------------------------"
+  echo "| ROS2 Waymo Umgebung erfolgreich eingerichtet!         |"
+  echo "| Aktuelles Verzeichnis: $(pwd) |" 
+  echo "| Aktive Conda-Umgebung: $CONDA_DEFAULT_ENV                           |"
+  echo "| ROS Distro (falls gesetzt): $ROS_DISTRO                    |"
+  echo " -------------------------------------------------------"
+'
 
 # Benenne die Funktion um, z.B. in fzfc
 fzfc() {
