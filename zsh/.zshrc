@@ -10,8 +10,8 @@ export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
-# Python 3.9
-# export PATH="/opt/homebrew/opt/python@3.9/libexec/bin":$PATH
+# Add Homebrew to PATH (sourced by interactive shells)
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # Setze den Pfad zu deinem Java SDK
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
