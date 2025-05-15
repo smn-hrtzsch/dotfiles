@@ -146,53 +146,48 @@ for pkg in "${STOW_PACKAGES_SUBDIR[@]}"; do
     echo "   Processing stow package $pkg..."
 
     # --- Spezifische Vorab-Logik für bestimmte Pakete ---
+    # spezifische Vorab-Logik für config
     if [[ "$pkg" == "config" ]]; then
-        # Annahme: ghostty Konfiguration ist Teil des 'config' stow Pakets
-        # Pfad zur Konfigurationsdatei *innerhalb* des 'config' Stow-Pakets im Repo:
-        # z.B. dotfiles/config/Library/Application Support/com.mitchellh.ghostty/config
-        # Zielpfad im Home-Verzeichnis des Benutzers:
-        GHOSTTY_CONFIG_DIR_IN_REPO="$SCRIPT_DIR/$pkg/Library/Application Support/com.mitchellh.ghostty" # Pfad bis zum Ordner *im Repo*
-        GHOSTTY_TARGET_PARENT_DIR="$HOME/Library/Application Support"
-        GHOSTTY_TARGET_DIR="$HOME/Library/Application Support/com.mitchellh.ghostty"
-        GHOSTTY_TARGET_CONFIG_FILE="$GHOSTTY_TARGET_DIR/config" # Die eigentliche Zieldatei
+        GHOSTTY_CONFIG_DIR_IN_REPO="$SCRIPT_DIR/$pkg/Library/Application Support/com.mitchellh.ghostty" # Quelle im Repo
+        GHOSTTY_TARGET_DIR="$HOME/Library/Application Support/com.mitchellh.ghostty" # Zielverzeichnis für die App-Konfig
+        GHOSTTY_TARGET_CONFIG_FILE="$GHOSTTY_TARGET_DIR/config" # Zieldatei (Symlink)
 
-        # Prüfen, ob die App (ghostty) installiert ist (optional, aber empfohlen)
-        # Ersetze 'ghostty' mit dem tatsächlichen Brew-Namen, falls abweichend
         if brew list ghostty &>/dev/null; then
             echo "      Performing pre-stow checks for ghostty (expected within '$pkg' package)..."
 
-            # 1. Sicherstellen, dass das übergeordnete Zielverzeichnis existiert (z.B. ~/Library/Application Support)
-            #    `stow` würde das normalerweise beim Linken der Ordnerstruktur tun, aber explizit ist sicherer.
-            if [ ! -d "$GHOSTTY_TARGET_PARENT_DIR" ]; then
-                echo "         Creating parent target directory: $GHOSTTY_TARGET_PARENT_DIR"
-                mkdir -p "$GHOSTTY_TARGET_PARENT_DIR"
+            # 1. Stelle sicher, dass das Zielverzeichnis für die Ghostty-Konfiguration existiert.
+            #    `mkdir -p` erstellt auch übergeordnete Verzeichnisse, falls nötig.
+            if [ ! -d "$GHOSTTY_TARGET_DIR" ]; then
+                echo "         Target application config directory $GHOSTTY_TARGET_DIR does not exist. Creating it."
+                mkdir -p "$GHOSTTY_TARGET_DIR"
+            else
+                echo "         Target application config directory $GHOSTTY_TARGET_DIR already exists."
             fi
             
-            # 2. Sicherstellen, dass das spezifische App-Konfigurationsverzeichnis existiert
-            #    Dies ist wichtig, falls die App es nicht selbst erstellt hat oder `stow` nur eine Datei linken soll.
-            #    Wenn deine `dotfiles/config/Library/Application Support/com.mitchellh.ghostty/` Struktur existiert,
-            #    wird `stow` diesen Ordner sowieso anlegen/linken. Diese Prüfung ist also doppelt sicher,
-            #    insbesondere wenn du eine einzelne Datei direkt in ein schon bestehendes Verzeichnis linken würdest.
-            if [ -d "$GHOSTTY_CONFIG_DIR_IN_REPO" ] && [ ! -d "$GHOSTTY_TARGET_DIR" ]; then
-                 echo "         Target directory $GHOSTTY_TARGET_DIR does not exist. Stow will attempt to create it based on package structure."
-                 # Optional: mkdir -p "$GHOSTTY_TARGET_DIR" # Wenn du sicherstellen willst, dass es existiert, bevor stow es tut.
-            fi
-
-            # 3. Vorhandene *echte* Konfigurationsdatei prüfen und ggf. Backup erstellen
-            #    Dies betrifft den Fall, wo `~/Library/Application Support/com.mitchellh.ghostty/config` eine normale Datei ist.
+            # 2. Vorhandene *echte* Konfigurationsdatei prüfen und ggf. Backup erstellen.
+            #    Diese Logik schützt eine manuelle, echte Konfigurationsdatei.
             if [ -f "$GHOSTTY_TARGET_CONFIG_FILE" ] && [ ! -L "$GHOSTTY_TARGET_CONFIG_FILE" ]; then
                 BACKUP_FILE="${GHOSTTY_TARGET_CONFIG_FILE}.backup_$(date +%Y%m%d%H%M%S)"
                 echo "         Existing real config file found at $GHOSTTY_TARGET_CONFIG_FILE. Backing up to $BACKUP_FILE"
                 mv "$GHOSTTY_TARGET_CONFIG_FILE" "$BACKUP_FILE"
             elif [ -L "$GHOSTTY_TARGET_CONFIG_FILE" ]; then
-                echo "         Config at $GHOSTTY_TARGET_CONFIG_FILE is already a symlink. Stow will manage it."
+                echo "         Config at $GHOSTTY_TARGET_CONFIG_FILE is already a symlink. Stow (-R) will manage it."
+            else
+                # Fall: Weder Datei noch Symlink existiert am Zielort (z.B. Erstausführung nach mkdir -p)
+                echo "         No config file or symlink found at $GHOSTTY_TARGET_CONFIG_FILE. Stow will create it."
             fi
-            # Hier könnten weitere spezifische Überprüfungen für andere Konfigurationen im 'config'-Paket folgen
         else
             echo "      WARN: ghostty not found via Homebrew. Stow for its config might have no effect or link to an unused path."
         fi
     fi
     # Ende der spezifischen Logik für 'config'
+
+    # spezifische Vorab-Logik für ssh
+    if [[ "$pkg" == "ssh" ]]; then
+        echo "      Ensuring $HOME/.ssh directory exists and has correct permissions..."
+        mkdir -p "$HOME/.ssh"
+        chmod 700 "$HOME/.ssh"
+    fi
 
     # Führe stow für das Paket aus
     # -R (restow) sorgt dafür, dass existierende korrekte Links nicht als Fehler gelten
