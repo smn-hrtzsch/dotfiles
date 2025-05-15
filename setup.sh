@@ -165,15 +165,20 @@ for pkg in "${STOW_PACKAGES_SUBDIR[@]}"; do
             fi
             
             # 2. Vorhandene *echte* Konfigurationsdatei prüfen und ggf. Backup erstellen.
-            #    Diese Logik schützt eine manuelle, echte Konfigurationsdatei.
             if [ -f "$GHOSTTY_TARGET_CONFIG_FILE" ] && [ ! -L "$GHOSTTY_TARGET_CONFIG_FILE" ]; then
-                BACKUP_FILE="${GHOSTTY_TARGET_CONFIG_FILE}.backup_$(date +%Y%m%d%H%M%S)"
-                echo "         Existing real config file found at $GHOSTTY_TARGET_CONFIG_FILE. Backing up to $BACKUP_FILE"
-                mv "$GHOSTTY_TARGET_CONFIG_FILE" "$BACKUP_FILE"
+                # Sicherheitsprüfung: Stelle sicher, dass wir nicht im SCRIPT_DIR (Dotfiles-Repo) arbeiten
+                TARGET_CONFIG_REAL_PATH=$(cd "$(dirname "$GHOSTTY_TARGET_CONFIG_FILE")" && pwd)/$(basename "$GHOSTTY_TARGET_CONFIG_FILE")
+                
+                if [[ "$TARGET_CONFIG_REAL_PATH" == "$SCRIPT_DIR/"* ]]; then
+                    echo "         FEHLER-SICHERUNG: Zielpfad ($TARGET_CONFIG_REAL_PATH) scheint innerhalb des Dotfiles-Repo zu sein. Breche Backup/mv ab, um Quelldateien zu schützen."
+                else
+                    BACKUP_FILE="${GHOSTTY_TARGET_CONFIG_FILE}.backup_$(date +%Y%m%d%H%M%S)"
+                    echo "         Existing real config file found at $GHOSTTY_TARGET_CONFIG_FILE. Backing up to $BACKUP_FILE"
+                    mv "$GHOSTTY_TARGET_CONFIG_FILE" "$BACKUP_FILE"
+                fi
             elif [ -L "$GHOSTTY_TARGET_CONFIG_FILE" ]; then
                 echo "         Config at $GHOSTTY_TARGET_CONFIG_FILE is already a symlink. Stow (-R) will manage it."
             else
-                # Fall: Weder Datei noch Symlink existiert am Zielort (z.B. Erstausführung nach mkdir -p)
                 echo "         No config file or symlink found at $GHOSTTY_TARGET_CONFIG_FILE. Stow will create it."
             fi
         else
@@ -187,6 +192,11 @@ for pkg in "${STOW_PACKAGES_SUBDIR[@]}"; do
         echo "      Ensuring $HOME/.ssh directory exists and has correct permissions..."
         mkdir -p "$HOME/.ssh"
         chmod 700 "$HOME/.ssh"
+        echo "      Stowing content of '$pkg' package into $HOME/.ssh ..."
+        # Linkt den Inhalt von ~/dotfiles/ssh/* (also deine ~/dotfiles/ssh/config Datei)
+        # nach $HOME/.ssh/config
+        stow -R -v -t "$HOME/.ssh" "$pkg" 
+        continue # Wichtig, damit der generische stow-Aufruf am Ende der Schleife für ssh übersprungen wird!
     fi
 
     # Führe stow für das Paket aus
