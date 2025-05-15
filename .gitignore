@@ -17,7 +17,10 @@ ssh/known_hosts
 .DS_Store
 .Trash/
 *~
+._*
 *.swp
+.Spotlight-V100
+.Trashes
 
 # Large directories / Installations
 .conda/
