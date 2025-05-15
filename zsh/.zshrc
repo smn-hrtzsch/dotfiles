@@ -74,6 +74,8 @@ alias pip='python3 -m pip'
 
 alias ..='cd ..'
 alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
 alias c='clear'
 alias g='git'
 alias gits='git status'
