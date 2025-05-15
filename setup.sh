@@ -203,6 +203,74 @@ done
 
 echo ">>> Symlinks created/updated."
 
+# --- SSH Schlüssel generieren (optional) ---
+echo ">>> SSH Schlüssel Generierung..."
+# Überprüfe, ob bereits ein Standard ed25519 Schlüssel existiert
+if [ -f "$HOME/.ssh/id_ed25519" ]; then
+    echo "   INFO: Ein SSH Schlüssel ($HOME/.ssh/id_ed25519) existiert bereits."
+    echo "   Möchtest du einen neuen Schlüssel generieren? (Ein existierender Schlüssel mit gleichem Namen wird NICHT überschrieben, ssh-keygen fragt dann nach einem anderen Dateinamen oder bricht ab)"
+    read -r -p "   Neuen SSH Schlüssel generieren? (j/N): " response
+    if [[ ! "$response" =~ ^([jJ][aA]|[jJ])$ ]]; then
+        echo "   Überspringe Generierung eines neuen SSH Schlüssels."
+        # Optional: Zeige den existierenden Public Key an
+        if [ -f "$HOME/.ssh/id_ed25519.pub" ]; then
+            echo "   Dein existierender öffentlicher Schlüssel ($HOME/.ssh/id_ed25519.pub):"
+            cat "$HOME/.ssh/id_ed25519.pub"
+            echo "   Du kannst diesen ggf. bei GitHub hinzufügen: https://github.com/settings/keys"
+        fi
+        # Hier könnte man zum nächsten Schritt springen oder das Skript normal beenden lassen
+    else
+        # Benutzer will neuen Schlüssel generieren, obwohl einer existiert (oder für den Fall, dass die obige Abfrage verneint wurde und hier trotzdem generiert werden soll)
+        NEUER_SCHLUESSEL_GENERIEREN=true
+    fi
+else
+    # Kein Schlüssel existiert, also generieren
+    NEUER_SCHLUESSEL_GENERIEREN=true
+fi
+
+if [ "$NEUER_SCHLUESSEL_GENERIEREN" = true ]; then
+    echo "   Generiere neues SSH Schlüsselpaar (ed25519)..."
+    read -r -p "   Bitte gib deine E-Mail-Adresse für den SSH Schlüssel ein (z.B. dein GitHub E-Mail): " user_email
+    
+    # Generiere den Schlüssel. -f gibt den Dateipfad an. Ohne -N "" würde nach einer Passphrase gefragt.
+    # Wenn die Datei existiert, wird ssh-keygen fragen, ob überschrieben werden soll.
+    # Um ein Überschreiben eines existierenden Schlüssels durch das Skript zu vermeiden, könnte man vorher prüfen oder einen anderen Namen wählen.
+    # Für Einfachheit belassen wir es bei der Standardabfrage von ssh-keygen.
+    ssh-keygen -t ed25519 -C "$user_email" -f "$HOME/.ssh/id_ed25519"
+    
+    if [ -f "$HOME/.ssh/id_ed25519.pub" ]; then
+        echo ""
+        echo "------------------------------------------------------------------------------------"
+        echo "   SSH Schlüssel erfolgreich generiert!"
+        echo "   Dein öffentlicher Schlüssel ist:"
+        echo ""
+        cat "$HOME/.ssh/id_ed25519.pub"
+        echo ""
+        echo "   So fügst du ihn zu GitHub hinzu:"
+        echo "   1. Kopiere den gesamten oben angezeigten öffentlichen Schlüssel"
+        echo "      (von 'ssh-ed25519' bis zu deiner E-Mail-Adresse)."
+        echo "   2. Öffne GitHub in deinem Browser: https://github.com/settings/keys"
+        echo "   3. Klicke auf 'New SSH key'."
+        echo "   4. Gib einen Titel für den Schlüssel ein (z.B. 'Mein MacBook Air M2')."
+        echo "   5. Füge den kopierten Schlüssel in das 'Key'-Feld ein."
+        echo "   6. Klicke auf 'Add SSH key'."
+        echo ""
+        echo "   Du kannst den SSH-Agent auch anweisen, deine Schlüssel-Passphrase (falls du eine festgelegt hast) im macOS Keychain zu speichern:"
+        echo "   Füge dazu folgendes in deine ~/.ssh/config Datei ein (falls noch nicht vorhanden):"
+        echo "   Host *"
+        echo "     AddKeysToAgent yes"
+        echo "     UseKeychain yes"
+        echo "     IdentityFile ~/.ssh/id_ed25519"
+        echo ""
+        echo "   Und starte den SSH-Agenten neu oder füge den Schlüssel hinzu mit: ssh-add --apple-use-keychain ~/.ssh/id_ed25519"
+        echo "------------------------------------------------------------------------------------"
+    else
+        echo "   FEHLER: SSH Schlüssel-Generierung scheint fehlgeschlagen zu sein. Datei $HOME/.ssh/id_ed25519.pub nicht gefunden."
+    fi
+fi
+
+echo ">>> ssh-Key created/updated."
+
 # --- Finale Schritte ---
 echo ">>> Setup script finished!"
 echo ">>> Bitte starte dein Terminal neu oder logge dich aus und wieder ein, damit alle Änderungen wirksam werden."
