@@ -146,47 +146,6 @@ for pkg in "${STOW_PACKAGES_SUBDIR[@]}"; do
     echo "   Processing stow package $pkg..."
 
     # --- Spezifische Vorab-Logik für bestimmte Pakete ---
-    # spezifische Vorab-Logik für config
-    if [[ "$pkg" == "config" ]]; then
-        GHOSTTY_CONFIG_DIR_IN_REPO="$SCRIPT_DIR/$pkg/Library/Application Support/com.mitchellh.ghostty" # Quelle im Repo
-        GHOSTTY_TARGET_DIR="$HOME/Library/Application Support/com.mitchellh.ghostty" # Zielverzeichnis für die App-Konfig
-        GHOSTTY_TARGET_CONFIG_FILE="$GHOSTTY_TARGET_DIR/config" # Zieldatei (Symlink)
-
-        if brew list ghostty &>/dev/null; then
-            echo "      Performing pre-stow checks for ghostty (expected within '$pkg' package)..."
-
-            # 1. Stelle sicher, dass das Zielverzeichnis für die Ghostty-Konfiguration existiert.
-            #    `mkdir -p` erstellt auch übergeordnete Verzeichnisse, falls nötig.
-            if [ ! -d "$GHOSTTY_TARGET_DIR" ]; then
-                echo "         Target application config directory $GHOSTTY_TARGET_DIR does not exist. Creating it."
-                mkdir -p "$GHOSTTY_TARGET_DIR"
-            else
-                echo "         Target application config directory $GHOSTTY_TARGET_DIR already exists."
-            fi
-            
-            # 2. Vorhandene *echte* Konfigurationsdatei prüfen und ggf. Backup erstellen.
-            if [ -f "$GHOSTTY_TARGET_CONFIG_FILE" ] && [ ! -L "$GHOSTTY_TARGET_CONFIG_FILE" ]; then
-                # Sicherheitsprüfung: Stelle sicher, dass wir nicht im SCRIPT_DIR (Dotfiles-Repo) arbeiten
-                TARGET_CONFIG_REAL_PATH=$(cd "$(dirname "$GHOSTTY_TARGET_CONFIG_FILE")" && pwd)/$(basename "$GHOSTTY_TARGET_CONFIG_FILE")
-                
-                if [[ "$TARGET_CONFIG_REAL_PATH" == "$SCRIPT_DIR/"* ]]; then
-                    echo "         FEHLER-SICHERUNG: Zielpfad ($TARGET_CONFIG_REAL_PATH) scheint innerhalb des Dotfiles-Repo zu sein. Breche Backup/mv ab, um Quelldateien zu schützen."
-                else
-                    BACKUP_FILE="${GHOSTTY_TARGET_CONFIG_FILE}.backup_$(date +%Y%m%d%H%M%S)"
-                    echo "         Existing real config file found at $GHOSTTY_TARGET_CONFIG_FILE. Backing up to $BACKUP_FILE"
-                    mv "$GHOSTTY_TARGET_CONFIG_FILE" "$BACKUP_FILE"
-                fi
-            elif [ -L "$GHOSTTY_TARGET_CONFIG_FILE" ]; then
-                echo "         Config at $GHOSTTY_TARGET_CONFIG_FILE is already a symlink. Stow (-R) will manage it."
-            else
-                echo "         No config file or symlink found at $GHOSTTY_TARGET_CONFIG_FILE. Stow will create it."
-            fi
-        else
-            echo "      WARN: ghostty not found via Homebrew. Stow for its config might have no effect or link to an unused path."
-        fi
-    fi
-    # Ende der spezifischen Logik für 'config'
-
     # spezifische Vorab-Logik für ssh
     if [[ "$pkg" == "ssh" ]]; then
         echo "      Ensuring $HOME/.ssh directory exists and has correct permissions..."
