@@ -146,67 +146,6 @@ for pkg in "${STOW_PACKAGES_SUBDIR[@]}"; do
     echo "   Processing stow package $pkg..."
 
     # --- Spezifische Vorab-Logik für bestimmte Pakete ---
-    # spezifische Vorab-Logik für config (u. a. Ghostty)
-    if [[ "$pkg" == "config" ]]; then
-        # Pfade für die Ghostty-Konfiguration definieren
-        # Quelle im Dotfiles-Repo (angenommen, $pkg ist "config")
-        GHOSTTY_SOURCE_APP_DIR="$SCRIPT_DIR/$pkg/Library/Application Support/com.mitchellh.ghostty"
-        # Zielverzeichnis im Home-Verzeichnis des Benutzers
-        GHOSTTY_TARGET_APP_DIR="$HOME/Library/Application Support/com.mitchellh.ghostty"
-
-        # Nur fortfahren, wenn die Ghostty-Konfiguration im Dotfiles-Repo tatsächlich existiert
-        if [ -d "$GHOSTTY_SOURCE_APP_DIR" ]; then 
-            echo "      Verarbeite Ghostty-Konfiguration (innerhalb des '$pkg'-Pakets)..."
-
-            # Schritt 1: Prüfen, ob das Zielverzeichnis ($GHOSTTY_TARGET_APP_DIR) ein Symlink ist
-            if [ -L "$GHOSTTY_TARGET_APP_DIR" ]; then
-                echo "         WARNUNG: $GHOSTTY_TARGET_APP_DIR ist ein Symlink (wahrscheinlich ein Ordner-Symlink)."
-                echo "         Entferne diesen Symlink, um ein echtes Verzeichnis für File-Symlinks zu erstellen."
-                
-                # Den aktuellen Zielpfad des Symlinks auslesen (optional, für Debugging/Log)
-                # local symlink_target
-                # symlink_target=$(readlink "$GHOSTTY_TARGET_APP_DIR")
-                # echo "         Symlink zeigt auf: $symlink_target"
-                
-                rm "$GHOSTTY_TARGET_APP_DIR"
-                if [ $? -eq 0 ]; then
-                    echo "         Ordner-Symlink $GHOSTTY_TARGET_APP_DIR erfolgreich entfernt."
-                else
-                    echo "         FEHLER beim Entfernen des Ordner-Symlinks $GHOSTTY_TARGET_APP_DIR. Breche Ghostty-Setup ab."
-                    # Hier könntest du entscheiden, ob du das Skript ganz abbrichst oder nur diesen Teil überspringst.
-                    # Fürs Erste fahren wir nicht fort, wenn das Löschen fehlschlägt.
-                    continue # Überspringt den Rest der aktuellen Schleifeniteration für das 'config'-Paket, wenn das Löschen fehlschlägt.
-                fi
-            fi
-
-            # Schritt 2: Sicherstellen, dass das Zielverzeichnis als echtes Verzeichnis existiert
-            # Diese Bedingung wird erfüllt, wenn es nie existierte ODER wenn es ein Symlink war und gerade entfernt wurde.
-            if [ ! -d "$GHOSTTY_TARGET_APP_DIR" ]; then
-                echo "         Zielverzeichnis $GHOSTTY_TARGET_APP_DIR existiert nicht. Erstelle es als echtes Verzeichnis."
-                mkdir -p "$GHOSTTY_TARGET_APP_DIR"
-                if [ $? -eq 0 ]; then
-                    echo "         Verzeichnis $GHOSTTY_TARGET_APP_DIR erfolgreich erstellt."
-                else
-                    echo "         FEHLER beim Erstellen des Verzeichnisses $GHOSTTY_TARGET_APP_DIR. Breche Ghostty-Setup ab."
-                    continue # Überspringt den Rest für 'config'.
-                fi
-            else
-                echo "         Zielverzeichnis $GHOSTTY_TARGET_APP_DIR existiert bereits als echtes Verzeichnis."
-            fi
-            
-            # An dieser Stelle sollte $GHOSTTY_TARGET_APP_DIR ein echtes Verzeichnis sein.
-            # Die problematische Backup-Logik (mit mv) für die einzelne config-Datei lassen wir hier weg,
-            # da `stow -R` Symlinks korrekt verwalten (überschreiben) sollte.
-            # Das Hauptziel ist, die Verzeichnisstruktur für stow vorzubereiten.
-            echo "         Vorbereitung für Ghostty abgeschlossen. 'stow' wird nun versuchen, File-Symlinks zu erstellen."
-
-        else
-            echo "      WARNUNG: Ghostty Quellverzeichnis $GHOSTTY_SOURCE_APP_DIR nicht im Dotfiles-Repo gefunden. Überspringe Ghostty-Setup."
-        fi
-        
-        # Hier könnte Logik für andere Konfigurationen im 'config'-Paket stehen
-    fi
-
     # spezifische Vorab-Logik für ssh
     if [[ "$pkg" == "ssh" ]]; then
         echo "      Ensuring $HOME/.ssh directory exists and has correct permissions..."
