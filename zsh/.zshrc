@@ -54,7 +54,7 @@ source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 bindkey '^I' autosuggest-accept
 
 # Right arrow performs normal completion
-bindkey '^[[C' expand-or-complete
+bindkey '^[[Z' expand-or-complete
 
 # ---- Eza (better ls) -----
 alias ls="eza --icons=always -la"
