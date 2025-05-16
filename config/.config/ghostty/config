@@ -23,7 +23,8 @@ font-family = "MesloLGS Nerd Font Mono"
 font-size = 16
 
 # --- Cursor ---
-cursor-style = "bar"
+shell-integration-features = no-cursor
+cursor-style = bar
 cursor-style-blink = true
 
 # --- Mouse ---
