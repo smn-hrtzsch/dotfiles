@@ -1,5 +1,5 @@
 # Ghostty Configuration File
-# Pfad /Users/simon/Library/Application Support/com.mitchellh.ghostty/config
+# Pfad /Users/simon/.config/ghostty/config
 
 # --- Theme ---
 theme = "coolnight.conf"
@@ -23,8 +23,8 @@ font-family = "MesloLGS Nerd Font Mono"
 font-size = 16
 
 # --- Cursor ---
-# cursor-style = "bar"
-# cursor-style-blink = true
+# cursor-style = "block"
+# cursor-style-blink = false
 
 # --- Mouse ---
 cursor-click-to-move = true
