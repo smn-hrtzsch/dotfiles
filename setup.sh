@@ -71,24 +71,6 @@ else
     echo "   WARN: zsh directory not found in dotfiles, skipping .zprofile update for Homebrew."
 fi
 
-# Füge zu .zshrc hinzu (falls nicht schon vorhanden)
-if [ -f "$ZSHRC_TARGET" ]; then
-    if ! grep -qF -- "$SHELLENV_CMD" "$ZSHRC_TARGET"; then
-        echo "   Adding brew shellenv to $ZSHRC_TARGET"
-        if [ -s "$ZSHRC_TARGET" ]; then echo "" >> "$ZSHRC_TARGET"; fi
-        echo "# Add Homebrew to PATH (sourced by interactive shells)" >> "$ZSHRC_TARGET"
-        echo "$SHELLENV_CMD" >> "$ZSHRC_TARGET"
-    else
-        echo "   Brew shellenv already in $ZSHRC_TARGET."
-    fi
-elif [ -d "$SCRIPT_DIR/zsh" ]; then # Nur erstellen, wenn das zsh-Verzeichnis existiert
-     echo "   Creating $ZSHRC_TARGET and adding brew shellenv"
-     echo "# Add Homebrew to PATH (sourced by interactive shells)" > "$ZSHRC_TARGET"
-     echo "$SHELLENV_CMD" >> "$ZSHRC_TARGET"
-else
-    echo "   WARN: zsh directory not found in dotfiles, skipping .zshrc update for Homebrew."
-fi
-
 # --- Anwendungen via Brewfile installieren ---
 echo ">>> Installing applications from Brewfile..."
 if [ -f "./Brewfile" ]; then
