@@ -20,9 +20,6 @@ export ANDROID_HOME=$HOME/Library/Android/sdk
 export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH
 
 # Setze den Pfad zu deinem .NET SDK
-# DOTNET_ROOT sollte auf das Installationsverzeichnis von .NET zeigen, z.B. /usr/local/share/dotnet
-# Der ursprüngliche Wert 'usr/local/share/dotnet/sdk' schien einen Tippfehler (fehlender '/') zu haben und auf das sdk-Unterverzeichnis zu zeigen.
-# Bitte an deine tatsächliche Installation anpassen, falls /usr/local/share/dotnet nicht korrekt ist.
 export DOTNET_ROOT=/usr/local/share/dotnet
 export PATH=$PATH:$DOTNET_ROOT
 
@@ -106,42 +103,140 @@ export PATH="/Library/TeX/texbin:$PATH"
 alias startros2='
   echo "INFO: Wechsle in den ROS2 Workspace (~/ros2_ws)..."
   cd ~/ros2_ws/src/waymo && \
-  echo "INFO: Aktiviere Conda-Umgebung 'ros2'..."
+  echo "INFO: Aktiviere Conda-Umgebung ros2..."
   conda activate ros2 && \
-  echo "INFO: Conda-Umgebung 'ros2' aktiviert." && \
+  echo "INFO: Conda-Umgebung ros2 aktiviert." && \
   echo "INFO: Source ROS2 Workspace Setup-Datei (~/ros2_ws/install/setup.zsh)..."
   source ~/ros2_ws/install/setup.zsh && \
   source ~/ros2_ws/install/local_setup.zsh && \
   echo " -------------------------------------------------------"
   echo "| ROS2 Waymo Umgebung erfolgreich eingerichtet!         |"
-  echo "| Aktuelles Verzeichnis: $(pwd) |" 
+  echo "| Aktuelles Verzeichnis: $(pwd) |"
   echo "| Aktive Conda-Umgebung: $CONDA_DEFAULT_ENV                           |"
   echo "| ROS Distro (falls gesetzt): $ROS_DISTRO                    |"
   echo " -------------------------------------------------------"
 '
 
-alias stopros2='
-  echo "INFO: Deaktiviere Conda-Umgebung 'ros2'..."
+alias stopros2=' 
+  echo "INFO: Deaktiviere Conda-Umgebung ros2..."
   conda deactivate && \
   echo "INFO: Wechsle zurück in das Home-Verzeichnis..."
   cd ~ && \
   echo " -------------------------------------------------------"
   echo "| ROS2 Waymo Umgebung erfolgreich deaktiviert!          |"
-  echo "| Aktuelles Verzeichnis: $(pwd)                   |" 
+  echo "| Aktuelles Verzeichnis: $(pwd)                   |"
   echo " -------------------------------------------------------"
 '
 
 # Benenne die Funktion um, z.B. in fzfc
 fzfc() {
-  local -a files # Definiert 'files' als Array
-  # Füllt das Array 'files' mit den von fzf ausgewählten Dateien (jede Zeile eine Datei)
-  files=(${(f)"$(fzf -m --preview="bat --color=always {}")"})
+  local -a files # Definiert files als Array
+  # Füllt das Array files mit den von fzf ausgewählten Dateien (jede Zeile eine Datei)
+  files=(${(f)"$(fzf -m --preview=\"bat --color=always {}\")"})
 
   # Prüft, ob Dateien ausgewählt wurden (fzf gibt bei Abbruch einen Fehlercode != 0)
-  # und ob das Array 'files' nicht leer ist.
+  # und ob das Array files nicht leer ist.
   if [[ $? -eq 0 && ${#files[@]} -gt 0 ]]; then
     code -- "${files[@]}" # Öffnet alle ausgewählten Dateien in VS Code
                          # "${files[@]}" sorgt dafür, dass jede Datei als separates,
                          # korrekt gequotetes Argument übergeben wird.
   fi
 }
+
+alias startemulator=' 
+  echo "1. Starte ADB-Server..."
+  adb start-server
+
+  # Geben Sie dem ADB-Server eine Sekunde Zeit zum Initialisieren
+  sleep 1
+
+  echo "2. Starte Pixel_9_Pro_XL Emulator (mit Quick Boot Snapshot)..."
+  emulator -avd Pixel_9_Pro_XL &
+
+  echo "3. Prüfe ADB-Gerätestatus..."
+  # Dieser Befehl wartet, bis das Gerät ONLINE ist (Timeout nach 60s)
+  adb wait-for-device
+
+  echo "Emulator ist verbunden und bereit."
+'
+
+alias run_capy_card_on_ios=' 
+  cd /Users/simon/CapyCode/CapyCard && \
+  dotnet build CapyCard/CapyCard.iOS/CapyCard.iOS.csproj -f net9.0-ios && \
+  (xcrun simctl boot 93967CA2-E319-4C19-8212-E675A99A65BA 2>/dev/null || true) && \
+  open -a Simulator && \
+  xcrun simctl install 93967CA2-E319-4C19-8212-E675A99A65BA CapyCard/CapyCard.iOS/bin/Debug/net9.0-ios/iossimulator-arm64/CapyCard.iOS.app && \
+  xcrun simctl launch 93967CA2-E319-4C19-8212-E675A99A65BA com.CapyCode.CapyCard
+'
+
+run_capy_card_on_android() {
+  # --- SETUP ---
+  cd /Users/simon/CapyCode/CapyCard || return
+  export JAVA_HOME="/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home"
+  
+  local PROJECT_PATH="CapyCard/CapyCard.Android/CapyCard.Android.csproj"
+  local PACKAGE_NAME="com.CapyCode.CapyCard"
+  
+  # Emulator Config
+  local EMU_AVD_NAME="Pixel_9_Pro_XL"
+  local EMU_SERIAL="emulator-5554"
+
+  # --- 1. ZIELGERÄT ERMITTELN ---
+  local TARGET_SERIAL=""
+  local PHYSICAL_DEVICE=$(adb devices | grep "\tdevice" | grep -v "emulator" | head -n 1 | cut -f1)
+
+  if [ -n "$PHYSICAL_DEVICE" ]; then
+      echo "📱 Physisches Gerät gefunden: $PHYSICAL_DEVICE"
+      TARGET_SERIAL="$PHYSICAL_DEVICE"
+  else
+      echo "⚠️  Kein physisches Gerät gefunden. Prüfe Emulator..."
+      if ! adb devices | grep -q "$EMU_SERIAL"; then
+          echo "⏳ Starte Emulator ($EMU_AVD_NAME)..."
+          emulator -avd "$EMU_AVD_NAME" > /dev/null 2>&1 &
+          adb -s "$EMU_SERIAL" wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
+          echo "✅ Emulator bereit."
+      else
+          echo "✅ Emulator läuft bereits."
+      fi
+      TARGET_SERIAL="$EMU_SERIAL"
+  fi
+
+  echo "🎯 Ziel: $TARGET_SERIAL"
+  echo "--------------------------------"
+
+  # --- 2. UPDATE & INSTALLATION ---
+  echo "💾 Installiere App (Daten bleiben erhalten)..."
+  dotnet build "$PROJECT_PATH" -t:Install \
+      -f net9.0-android \
+      -r android-arm64 \
+      -p:AndroidSerial="$TARGET_SERIAL"
+
+  if [ $? -ne 0 ]; then
+      echo "❌ Installation fehlgeschlagen."
+      return 1
+  fi
+
+  # --- 3. START & LOGGING ---
+  echo "🚀 Starte App..."
+  
+  # Alten Log-Puffer leeren (damit wir nur neue Fehler sehen)
+  adb -s "$TARGET_SERIAL" logcat -c
+
+  # App neu starten
+  adb -s "$TARGET_SERIAL" shell am force-stop "$PACKAGE_NAME" > /dev/null 2>&1
+  adb -s "$TARGET_SERIAL" shell monkey -p "$PACKAGE_NAME" -c android.intent.category.LAUNCHER 1 > /dev/null 2>&1
+  
+  echo "📝 App gestartet. Streame gefilterte Logs..."
+  echo "   (Filter: [App], DotNet, Avalonia, AndroidRuntime)"
+  echo "   Drücke Ctrl+C um das Loggen zu beenden."
+  echo "---------------------------------------------------"
+
+  # Hier ist der Filter-Magic:
+  # -v color: Bunte Ausgabe
+  # grep -E: Sucht nach MEHREREN Begriffen gleichzeitig
+  # Wir suchen nach unserem "[App]" Prefix und kritischen System-Tags
+  adb -s "$TARGET_SERIAL" logcat -v color | grep -E "\[WysiwygEditor\]|\[ClipboardAndroid\]|CapyCard"
+}
+
+export PATH=~/.npm-global/bin:$PATH
+alias bouncai-env="source \"/Users/simon/Documents/TUBAF/WiSe-25_26/KI/.bouncai-env/bin/activate\""
