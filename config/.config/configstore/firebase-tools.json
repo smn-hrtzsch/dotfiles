@@ -1,0 +1,53 @@
+{
+	"motd": {
+		"cloudBuildErrorAfter": 1594252800000,
+		"cloudBuildWarnAfter": 1590019200000,
+		"defaultNode10After": 1594252800000,
+		"minVersion": "3.0.5",
+		"node8DeploysDisabledAfter": 1613390400000,
+		"node8RuntimeDisabledAfter": 1615809600000,
+		"node8WarnAfter": 1600128000000,
+		"fetched": 1764629874346
+	},
+	"gemini": true,
+	"usage": true,
+	"analytics-uuid": "ae3a8f52-6865-4cd1-a286-ed7a9a634fc1",
+	"user": {
+		"iss": "accounts.google.com",
+		"azp": "563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com",
+		"aud": "563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com",
+		"sub": "103394502271808341264",
+		"email": "simon.hoertzsch@gmail.com",
+		"email_verified": true,
+		"at_hash": "AU0jkEdxY0Qr0s2t04hXRA",
+		"iat": 1764629901,
+		"exp": 1764633501
+	},
+	"tokens": {
+		"expires_at": 1764636264247,
+		"refresh_token": "1//0907BTe-p21b3CgYIARAAGAkSNwF-L9IrfrPm-s9bR3x--XL81dogxzZ7Z3DrluUNm7xbzfNcrSkGnuDFTJPrmDRjKC3uNwVCM14",
+		"scopes": [],
+		"access_token": "ya29.a0ATi6K2uwqp3IsYEeOSvEcoUFu2xPCdrH5sVfyOJwDhiALWNSVaC4GGjrK3Xp2S4I3MZSK1cyrwxXWtuWHEFW-OgbTsUcoyO4V6bWSrIK3iZmf_oaVPaqkJ2xhlw7fFVwhGCNYvsk955UhxggiwdoxirmIBNJTkVlXU45366RxBR0Kk4U19cnvRxJqYezNm0aDFGgbutwPVvraCgYKAbESARASFQHGX2MilHETF5fxZ3BjcVwN5JGQtA0211",
+		"expires_in": 3599,
+		"scope": "openid https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/firebase https://www.googleapis.com/auth/cloudplatformprojects.readonly",
+		"token_type": "Bearer",
+		"id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjkzYTkzNThjY2Y5OWYxYmIwNDBiYzYyMjFkNTQ5M2UxZmZkOGFkYTEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiNTYzNTg0MzM1ODY5LWZncmhnbWQ0N2JxbmVraWo1aThiNXByMDNobzg0OWU2LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiNTYzNTg0MzM1ODY5LWZncmhnbWQ0N2JxbmVraWo1aThiNXByMDNobzg0OWU2LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTAzMzk0NTAyMjcxODA4MzQxMjY0IiwiZW1haWwiOiJzaW1vbi5ob2VydHpzY2hAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJLQk5maXlrRDE0N0hRQVVUZnIxTHV3IiwiaWF0IjoxNzY0NjMyNjY1LCJleHAiOjE3NjQ2MzYyNjV9.EMvAlZWoHyuuR31AsTQfKVDqzJRu-p409ezLQpBbpFL3x3fewVxHUsHb0wXRmAXLVcEu-iWOgYq_JyhA9o98ydhdJnZ70d7JoPXy6VDhpi4STNsoua-hB1xDBSBc-yBwgo0y1B4hQOcFGq7bdZYwLQ5w0B3uUUUidM53ueqAZSOPdmHHmJ2PV6wb0SBlGFSFW-tKjXdp29sepqrI8ghZH6x_ZaU9KTAVCx2s-33lNdlKWJ4WA1M0vVsuILmgUbhcEL_c-_jZzet8YeYuDU17SXoxpuhbvW5rY578Ql9XRo6Nc9hg3pzwfe8CjZWJZ63_BeiAS7MrYUgO9VR7LiOEDA"
+	},
+	"apiEnablementCache": {
+		"shopping-list-app-sho2303": {
+			"cloudresourcemanager.googleapis.com": true,
+			"runtimeconfig.googleapis.com": true,
+			"cloudfunctions.googleapis.com": true,
+			"artifactregistry.googleapis.com": true,
+			"cloudbuild.googleapis.com": true,
+			"firebaseextensions.googleapis.com": true
+		},
+		"444207703472": {
+			"cloudscheduler.googleapis.com": true,
+			"pubsub.googleapis.com": true,
+			"storage.googleapis.com": true,
+			"eventarc.googleapis.com": true,
+			"run.googleapis.com": true
+		}
+	}
+}
