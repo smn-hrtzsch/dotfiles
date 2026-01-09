@@ -1,6 +1,7 @@
 # ---- Exports & Paths ----
 
 export LANG=en_US.UTF-8
+export COLORTERM=truecolor
 
 # Ensure system paths are always present (Fixes 'command not found' for coreutils)
 export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
