@@ -46,6 +46,7 @@ SetCapsLockState "AlwaysOff"
 #HotIf not WinActive("ahk_exe wezterm-gui.exe")
 !c::Send "^c"
 !v::Send "^v"
+!a::Send "^a"
 #HotIf
 
 
@@ -78,18 +79,35 @@ SetCapsLockState "AlwaysOff"
 
 ; 5. Backslash mit Alt + Shift + 7
 !+7:: Send "{Text}\"
-
+#HotIf
 
 ; ==============================================================================
-; APP SPECIFIC HOTKEYS
+; NAVIGATION & DELETION (Mac-Style)
 ; ==============================================================================
 
-; Shift+Enter Fix für CLI (Terminal, CMD, PowerShell)
-#HotIf WinActive("ahk_exe WindowsTerminal.exe") or WinActive("ahk_class ConsoleWindowClass")
+; Nur für Terminals (WezTerm, Windows Terminal, CMD/PowerShell)
+#HotIf WinActive("ahk_exe wezterm-gui.exe") or WinActive("ahk_exe WindowsTerminal.exe") or WinActive("ahk_class ConsoleWindowClass")
 
-+Enter::
-{
-    Send "^j"
-}
+; 1. Wortweise springen mit WIN + PFEIL (statt Option+Pfeil auf Mac)
+; Überschreibt Windows Snap (Win+Left/Right)!
+*#Left::Send "^{Left}"
+*#Right::Send "^{Right}"
+
+; 2. Wort löschen mit WIN + BACKSPACE
+; Sendet Ctrl+W (Standard in Unix Shells)
+#Backspace::Send "^w"
+
+; 3. Zeilenanfang/Ende mit ALT + PFEIL
+!Left::Send "{Home}"
+!Right::Send "{End}"
+
+; 4. Zeile löschen mit ALT + BACKSPACE
+; Sendet Ctrl+U (Unix Shell: Delete to beginning of line)
+!Backspace::Send "^u"
+
+; 5. Shift+Enter -> Neue Zeile ohne Ausführen (Ctrl+J)
++Enter::Send "^j"
 
 #HotIf
+
+

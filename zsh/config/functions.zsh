@@ -88,8 +88,7 @@ update-system() {
     if git pull; then
       echo "✅ Git pull successful."
     else
-      echo "❌ Git pull failed. Please check for conflicts."
-      return 1
+      echo "⚠️  Git pull failed (likely due to local changes). Proceeding with current local state..."
     fi
     
     echo "⚙️  Rebuilding System..."

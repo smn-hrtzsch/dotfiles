@@ -28,6 +28,12 @@ bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
 bindkey '^I' autosuggest-accept
 bindkey '^[[Z' expand-or-complete
+# Word Navigation (Ctrl+Left/Right)
+bindkey '^[[1;5D' backward-word
+bindkey '^[[1;5C' forward-word
+# Line Navigation (Home/End)
+bindkey '^[[H' beginning-of-line
+bindkey '^[[F' end-of-line
 
 # ---- Load Modular Config ----
 # Loads all .zsh files from ~/dotfiles/zsh/config/

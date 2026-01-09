@@ -137,6 +137,7 @@ in
         -- Clipboard
         { key = 'c', mods = 'CTRL|SHIFT', action = wezterm.action.CopyTo 'Clipboard' },
         { key = 'v', mods = 'CTRL|SHIFT', action = wezterm.action.PasteFrom 'Clipboard' },
+        { key = 'v', mods = 'CTRL', action = wezterm.action.PasteFrom 'Clipboard' },
       }
 
       -- Tab Switching (Alt + 1..9)
