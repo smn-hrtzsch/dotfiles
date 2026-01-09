@@ -10,7 +10,7 @@ export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 
 # NPM Global
-export PATH=~/.npm-global/bin:$PATH
+[[ -d ~/.npm-global/bin ]] && export PATH="$HOME/.npm-global/bin:$PATH"
 
 # Turtlebot / ROS
 export TURTLEBOT3_MODEL=burger

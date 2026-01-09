@@ -100,9 +100,13 @@ update-system() {
        nix run home-manager/master -- switch --flake ./nix#wsl
     fi
     
-    # Update WezTerm Link (WSL only)
-    if [[ "$(uname)" != "Darwin" && -f "$DOTFILES/scripts/link_wezterm.sh" ]]; then
-       "$DOTFILES/scripts/link_wezterm.sh"
+    # Update WezTerm Link & Windows Apps (WSL only)
+    if [[ "$(uname)" != "Darwin" ]]; then
+       if [ -f "$DOTFILES/scripts/link_wezterm.sh" ]; then
+          "$DOTFILES/scripts/link_wezterm.sh"
+       fi
+       # Automatically backup Windows Apps
+       backup-windows
     fi
 
     echo "✅ Update Complete! Reloading shell..."
