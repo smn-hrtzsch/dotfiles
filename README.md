@@ -1,74 +1,70 @@
-# Mein macOS Dotfiles Setup
+# Mein macOS Dotfiles Setup (Nix Edition)
 
-Dieses Repository enthält meine persönlichen Konfigurationen (Dotfiles) und ein Setup-Skript, um einen neuen Mac (oder ein frisches macOS) schnell und einfach einzurichten.
+Dieses Repository enthält meine persönlichen Konfigurationen (Dotfiles) und ein vollständig reproduzierbares System-Setup basierend auf **Nix** und **nix-darwin**.
 
 ## Vision
 
-Ziel ist es, alle wichtigen Einstellungen, Aliase, Funktionen und installierten Programme über dieses Repository zu verwalten und die Einrichtung eines neuen Systems zu automatisieren.
+Ziel ist es, das komplette System – von Systemeinstellungen über installierte Programme bis hin zu Dotfiles – deklarativ und reproduzierbar zu verwalten. Ein einziger Befehl soll genügen, um eine neue Maschine exakt wie die aktuelle einzurichten.
 
 ## Voraussetzungen
 
 * Ein frisch installiertes macOS.
 * Internetverbindung.
-* Xcode Command Line Tools (enthalten Git).
+* **Nix Package Manager**:
+
+  Installation (Determinate Systems Installer empfohlen):
+  ```bash
+  curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh
+  ```
 
 ## Installationsanleitung
 
-1. **Xcode Command Line Tools installieren:**
-    Öffne das Terminal (`Programme` > `Dienstprogramme` > `Terminal`) und führe folgenden Befehl aus. Folge den Anweisungen im erscheinenden Fenster:
-
-    ```bash
-    xcode-select --install
-    ```
-
-2. **Dieses Repository klonen:**
+1. **Dieses Repository klonen:**
     Klone das Repository in dein Home-Verzeichnis:
 
     ```bash
     git clone https://github.com/smn-hrtzsch/dotfiles.git ~/dotfiles
     ```
 
-3. **Setup-Skript ausführen:**
-    Wechsle in das geklonte Verzeichnis und starte das Setup-Skript. Es kümmert sich um die Installation von Homebrew, die Einrichtung der Symlinks mittels `stow` und die Installation aller im `Brewfile` definierten Programme und Fonts.
+2. **Setup anwenden:**
+    Wechsle in das `dotfiles` Verzeichnis und starte den Build-Prozess mit `nix`. Dies installiert alle Pakete (inkl. Homebrew Casks), setzt Systemeinstellungen und verlinkt Dotfiles.
 
     ```bash
     cd ~/dotfiles
-    ./setup.sh
+    nix run nix-darwin -- switch --flake ./nix#MacBook-Air-von-Simon
     ```
 
-    *Hinweis:* Das Skript benötigt möglicherweise dein Benutzerpasswort für die Installation von Homebrew oder anderen Komponenten. Die Installation der Programme via Homebrew kann je nach Internetverbindung einige Zeit dauern.
+    *Hinweis:* Beim ersten Ausführen wird `nix-darwin` installiert und `darwin-rebuild` verfügbar gemacht. Zukünftige Updates können einfach mit `darwin-rebuild switch --flake ./nix` durchgeführt werden.
 
-4. **Neustart / Neuanmeldung:**
-    Nachdem das Skript erfolgreich durchgelaufen ist, starte dein Terminal neu oder logge dich aus und wieder ein, damit alle Shell-Einstellungen und Pfade korrekt geladen werden.
+3. **Neustart:**
+    Ein Neustart oder Neuanmelden ist empfohlen, damit alle Änderungen (z.B. Zsh als Standard-Shell, Umgebungsvariablen) wirksam werden.
 
 ## Verwaltung
 
-* **Dotfiles:** Konfigurationsdateien werden mit `stow` verwaltet.
-    * `zsh/`: Enthält die `.zshrc` und den Ordner `config/` mit modularen Einstellungen (`aliases.zsh`, `exports.zsh`, `functions.zsh`).
-    * `macos/`: Enthält Skripte für macOS-Systemeinstellungen (z.B. Dock, Finder).
-    * `npm/`: Enthält `.npmrc` und `npm-globals.txt`.
-    * `gemini/`: Enthält das Gedächtnis (`GEMINI.md`) für den Gemini CLI Agenten.
-    * Andere Ordner (`git/`, `config/`) enthalten spezifische Configs.
-* **Programme:** Verwaltet über Homebrew (`Brewfile`) und NPM (`npm/npm-globals.txt`).
-    * Neue Programme hinzufügen: `Brewfile` bearbeiten und `./setup.sh` (oder `brew bundle`) ausführen.
-* **macOS Einstellungen:** Das Skript `macos/settings.sh` setzt sinnvolle Defaults (schnelles Keyboard, aufgeräumtes Dock). Es kann via `./setup.sh` oder direkt ausgeführt werden.
+Das System wird nun deklarativ über Nix Flakes gesteuert.
 
-## Enthaltene Programme (Auszug aus Brewfile)
+* **Hauptkonfiguration:** `nix/flake.nix` – Der Einstiegspunkt.
+* **System (macOS):** `nix/darwin-configuration.nix`
+    * Verwaltet macOS Defaults (Dock, Finder, Keyboard...).
+    * Installiert System-Pakete und Homebrew Casks (Apps).
+* **User (Home Manager):** `nix/home.nix`
+    * Verwaltet User-Tools (CLI-Tools wie `fzf`, `bat`, `eza`).
+    * Konfiguriert Programme (`git`, `zsh`).
+    * Symlinkt Dotfiles aus dem Repo an die richtigen Stellen (via `home.file`).
 
-* Brave Browser
-* Warp Terminal
-* Notion
-* Thunderbird
-* WhatsApp
-* Spotify
-* VS Code
-* Android Studio
-* Google Drive
-* Maccy
-* Rectangle
-* MesloLGS Nerd Font
-* ... (und Kommandozeilen-Tools wie `git`, `stow`, `pyenv`)
-* **NPM Globals:** `firebase-tools`, `@google/gemini-cli`, `@github/copilot`
+### Änderungen vornehmen
+
+1. Bearbeite die entsprechenden `.nix` Dateien in `~/dotfiles/nix/`.
+2. Wende die Änderungen an:
+    ```bash
+    darwin-rebuild switch --flake ~/dotfiles/nix
+    ```
+
+## Ordnerstruktur
+
+* `nix/`: Enthält die gesamte Nix-Logik (`flake.nix`, `darwin-configuration.nix`, `home.nix`).
+* `zsh/`, `config/`: Die eigentlichen Konfigurationsdateien, auf die von Nix verlinkt wird.
+* `scripts/`: Hilfsskripte (falls noch nötig).
 
 ---
-Viel Spaß beim Einrichten!
+Viel Spaß mit deinem reproduzierbaren Mac!
