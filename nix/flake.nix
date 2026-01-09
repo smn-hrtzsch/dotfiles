@@ -1,5 +1,5 @@
 {
-  description = "Simon's nix-darwin system flake";
+  description = "Simon's system flake";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -14,13 +14,14 @@
 
   outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager }:
     let
-      # Dein Benutzername (wird später gebraucht)
-      username = "simon"; # Passe dies an, falls dein macOS-Benutzername anders ist
-      # Dein Home-Verzeichnis (wird später gebraucht)
-      homeDirectory = "/Users/${username}"; # Passe dies an
+      # Shared variables
+      username = "simon";
+      # Define home directories for different platforms
+      darwinHome = "/Users/${username}";
+      linuxHome = "/home/${username}"; 
     in
     {
-      # Bestehende darwinConfigurations...
+      # macOS Configuration (Apple Silicon)
       darwinConfigurations."MacBook-Air-von-Simon" = nix-darwin.lib.darwinSystem {
         specialArgs = { inherit inputs self; };
         modules = [ 
@@ -28,17 +29,31 @@
 
           home-manager.darwinModules.home-manager
           {
-            # Konfiguration für Home Manager selbst
-            home-manager.useGlobalPkgs = true; # Erlaube HM, Pakete aus nixpkgs zu nutzen
-            home-manager.useUserPackages = true; # Erlaube HM, benutzerspezifische Pakete zu verwalten
-
-            # Konfiguration für deinen Benutzer
-            home-manager.users.${username} = import ./home.nix; # Wir erstellen diese Datei gleich
-
-            # Zusätzliche Argumente an home.nix übergeben (optional, aber gute Praxis)
-            home-manager.extraSpecialArgs = { inherit inputs; };
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.${username} = import ./home.nix;
+            
+            # Pass arguments to home.nix
+            home-manager.extraSpecialArgs = { 
+              inherit inputs;
+              username = username;
+              homeDirectory = darwinHome;
+            };
           }
         ];
+      };
+
+      # WSL / Linux Configuration (Standalone Home Manager)
+      homeConfigurations."wsl" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux; # WSL runs on x86_64 usually
+        modules = [ 
+          ./home.nix 
+        ];
+        extraSpecialArgs = {
+          inherit inputs;
+          username = username;
+          homeDirectory = linuxHome;
+        };
       };
     };
 }

@@ -1,10 +1,7 @@
 # nix/home.nix
-{ pkgs, config, ... }:
+{ pkgs, config, username, homeDirectory, ... }:
 
 let
-  username = "simon";
-  homeDirectory = "/Users/${username}";
-  # Define the path to your dotfiles repo. 
   dotfilesDir = "${homeDirectory}/dotfiles";
 in
 {
@@ -32,13 +29,14 @@ in
     cloc
     shellcheck
     direnv
-    dockutil
     tree
-    # pyenv # Installed via brew/system, but can be here too.
+    # dockutil # Only useful on macOS, technically works on linux but useless. Nix filters valid pkgs usually.
     
     # Fun/Misc
     # ...
-  ];
+  ] ++ (if pkgs.stdenv.isDarwin then [
+    pkgs.dockutil # Install dockutil only on macOS
+  ] else []);
 
   # Programs Configuration
   programs.home-manager.enable = true;
@@ -90,22 +88,22 @@ in
   };
 
   # Symlink Dotfiles
-  # Using mkOutOfStoreSymlink allows you to edit files in ~/dotfiles and see changes immediately
   home.file = {
     ".config/ghostty".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/ghostty";
     ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/nvim";
-    ".config/sketchybar".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/sketchybar";
+    # sketchybar is macOS only
     ".config/raycast".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/raycast";
     ".config/gh".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/gh";
     ".config/neofetch".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/neofetch";
-  };
+  } // (if pkgs.stdenv.isDarwin then {
+    ".config/sketchybar".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/sketchybar";
+  } else {});
 
   # Neovim
   programs.neovim = {
     enable = true;
     defaultEditor = true;
     vimAlias = true;
-    # We are using the config linked above
   };
 
 }
