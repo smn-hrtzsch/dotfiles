@@ -95,10 +95,10 @@ update-system() {
     echo "⚙️  Rebuilding System..."
     if [[ "$(uname)" == "Darwin" ]]; then
        # macOS
-       nix run nix-darwin -- switch --flake .#macbook
+       nix run nix-darwin -- switch --flake ./nix#macbook
     else
        # Linux / WSL
-       nix run home-manager/master -- switch --flake .#wsl
+       nix run home-manager/master -- switch --flake ./nix#wsl
     fi
     
     echo "✅ Update Complete!"
