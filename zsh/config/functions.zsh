@@ -114,3 +114,12 @@ update-system() {
     echo "❌ Dotfiles directory not found at $DOTFILES"
   fi
 }
+
+# Windows App Backup
+backup-windows() {
+  local DOTFILES="$HOME/dotfiles"
+  echo "📦 Exporting Windows Apps (winget)..."
+  mkdir -p "$DOTFILES/windows"
+  powershell.exe -Command "winget export -o 'windows\packages.json' --source winget --accept-source-agreements"
+  echo "✅ Done! Update saved to $DOTFILES/windows/packages.json"
+}
