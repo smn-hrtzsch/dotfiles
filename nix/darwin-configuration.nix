@@ -203,4 +203,7 @@
 
   # Allow unfree packages (VS Code, etc.)
   nixpkgs.config.allowUnfree = true;
+
+  # Security / PAM
+  security.pam.enableSudoTouchIdAuth = true;
 }
