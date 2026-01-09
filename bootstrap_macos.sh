@@ -126,13 +126,20 @@ fi
 
 
 # --- 6. Nix Build anwenden ---
-echo -e "${BLUE}>>> 6. Wende System-Konfiguration an (nix-darwin)...${NC}"
-echo -e "${YELLOW}   Hinweis: sudo Passwort wird ggf. abgefragt.${NC}"
+echo -e "${BLUE}>>> 6. Bereite System-Konfiguration vor (nix-darwin build)...${NC}"
 
-# Workaround für "initExtra is deprecated" Warning ignorieren wir erstmal
-# Der Befehl wird mit sudo ausgeführt, um Berechtigungsprobleme zu vermeiden
-# Wir entfernen --extra-experimental-features, da der Determinate Installer Flakes bereits aktiviert
-nix run nix-darwin -- switch --flake ./nix#MacBook-Air-von-Simon
+# Wir bauen das System zuerst als normaler Nutzer. 
+# Das erstellt einen Symlink './result' im aktuellen Verzeichnis.
+nix build "./nix#darwinConfigurations.MacBook-Air-von-Simon.system" --extra-experimental-features "nix-command flakes"
+
+echo -e "${BLUE}>>> 7. Aktiviere System-Konfiguration (nix-darwin switch)...${NC}"
+echo -e "${YELLOW}   Hinweis: sudo Passwort wird für die System-Aktivierung benötigt.${NC}"
+
+# Jetzt führen wir die Aktivierung mit sudo aus, nutzen aber das gerade gebaute Paket.
+sudo ./result/sw/bin/darwin-rebuild switch --flake ./nix#MacBook-Air-von-Simon
+
+# Aufräumen: Symlink entfernen
+rm ./result
 
 echo -e "${GREEN}>>> Bootstrap erfolgreich abgeschlossen! 🚀${NC}"
 echo -e "${GREEN}>>> Bitte starte dein Terminal neu oder logge dich aus und wieder ein.${NC}"
