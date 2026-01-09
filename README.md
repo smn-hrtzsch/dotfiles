@@ -44,55 +44,37 @@ Da dieses Repository privat ist, richte zuerst einen SSH-Key ein, um das Reposit
 
 ## 🪟 Windows (WSL 2) Setup
 
-### 1. Windows Apps & Fonts (Host)
-Installiere GUI-Apps (VS Code, Spotify, Fonts) via Winget. Öffne **PowerShell als Administrator**:
+### 1. Automatische Installation (Empfohlen)
 
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/smn-hrtzsch/dotfiles/main/scripts/install_windows_apps.ps1'))
-```
-(Oder klone das Repo manuell und führe das Skript aus `scripts/install_windows_apps.ps1` aus).
+Ich habe ein PowerShell-Skript erstellt, das eine neue WSL-Distro (`Ubuntu-Nix`) herunterlädt, importiert und vorbereitet.
 
-### 2. WSL Umgebung (Nix)
-Führe folgende Schritte **in deiner WSL-Distro (Ubuntu)** aus.
+1.  **PowerShell als Administrator** öffnen.
+2.  Skript ausführen (lädt Ubuntu 24.04 Image und richtet User ein):
 
-1.  **SSH Key für GitHub einrichten:**
-    Damit du das Repo klonen und pushen kannst.
+    ```powershell
+    # Falls das Repo schon auf Windows liegt:
+    cd \Pfad\Zu\dotfiles\scripts
+    .\setup_wsl.ps1 -DistroName "Ubuntu-Nix"
 
-    ```bash
-    ssh-keygen -t ed25519 -C "deine-email@beispiel.de"
-    cat ~/.ssh/id_ed25519.pub
-    ```
-    *   Füge den Key auf [GitHub](https://github.com/settings/ssh/new) hinzu.
-
-2.  **Nix installieren:**
-
-    ```bash
-    curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
-    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+    # ODER direkt aus dem Web (One-Liner):
+    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/smn-hrtzsch/dotfiles/main/scripts/setup_wsl.ps1'))
     ```
 
-3.  **Repo klonen:**
+3.  **Setup abschließen:**
+    Wechsle in die neue Distro und starte die Nix-Installation:
 
-    ```bash
-    git clone git@github.com:smn-hrtzsch/dotfiles.git ~/dotfiles
-    cd ~/dotfiles
+    ```powershell
+    wsl -d Ubuntu-Nix
+    ./finish_setup.sh
     ```
+    *Das Skript generiert einen SSH-Key, pausiert damit du ihn bei GitHub hinzufügen kannst, und installiert dann alles via Nix.*
 
-4.  **Setup anwenden:**
-
-    ```bash
-    nix run home-manager/master -- switch --flake ./nix#wsl
-    ```
-
-5.  **Abschluss:**
-    Setze Zsh als Standardshell:
-    ```bash
-    # Zsh zur Liste erlaubter Shells hinzufügen
-    command -v zsh | sudo tee -a /etc/shells
-    # Zsh als Standard setzen
-    chsh -s $(command -v zsh)
-    ```
-    Starten nun dein Terminal neu.
+### 2. Manuelle Installation
+Falls du es manuell machen möchtest:
+1.  Ubuntu via `wsl --install` oder Import installieren.
+2.  Nix installieren (Determinate Systems Installer).
+3.  Repo klonen und `nix run home-manager/master -- switch --flake ./nix#wsl` ausführen.
+4.  Zsh via `chsh -s $(which zsh)` aktivieren.
 
 ## 🎨 Theme & Fonts (Windows)
 
