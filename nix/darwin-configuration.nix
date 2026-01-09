@@ -205,5 +205,5 @@
   nixpkgs.config.allowUnfree = true;
 
   # Security / PAM
-  security.pam.enableSudoTouchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
 }
