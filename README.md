@@ -43,6 +43,7 @@ Ziel ist es, das komplette System – von Systemeinstellungen über installierte
     ```
 
 5.  **Repository klonen (SSH):**
+
     ```bash
     git clone git@github.com:smn-hrtzsch/dotfiles.git ~/dotfiles
     cd ~/dotfiles
@@ -51,10 +52,10 @@ Ziel ist es, das komplette System – von Systemeinstellungen über installierte
 
 6.  **Setup anwenden:**
     Starte den Build-Prozess mit `nix-darwin`. Dies installiert Apps, setzt Systemeinstellungen, verlinkt Dotfiles und konfiguriert Git automatisch.
+
     ```bash
     nix run nix-darwin -- switch --flake ./nix#MacBook-Air-von-Simon
     ```
-
 
 ## 🪟 Windows (WSL 2) Setup
 
