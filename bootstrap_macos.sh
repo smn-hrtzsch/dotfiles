@@ -26,6 +26,18 @@ fi
 
 # --- 2. Homebrew Installation (Voraussetzung für nix-darwin Homebrew Modul) ---
 echo -e "${BLUE}>>> 2. Überprüfe Homebrew...${NC}"
+
+# Suche Homebrew an Standard-Pfaden, falls 'brew' nicht im PATH ist
+if ! command -v brew &> /dev/null; then
+    if [[ -f "/opt/homebrew/bin/brew" ]]; then
+        echo -e "${GREEN}   ✓ Homebrew unter /opt/homebrew gefunden. Aktiviere...${NC}"
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    elif [[ -f "/usr/local/bin/brew" ]]; then
+        echo -e "${GREEN}   ✓ Homebrew unter /usr/local gefunden. Aktiviere...${NC}"
+        eval "$(/usr/local/bin/brew shellenv)"
+    fi
+fi
+
 if ! command -v brew &> /dev/null; then
     echo -e "${YELLOW}   Homebrew nicht gefunden. Installiere Homebrew...${NC}"
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -37,7 +49,7 @@ if ! command -v brew &> /dev/null; then
         eval "$(/usr/local/bin/brew shellenv)"
     fi
 else
-    echo -e "${GREEN}   ✓ Homebrew bereits installiert.${NC}"
+    echo -e "${GREEN}   ✓ Homebrew bereits installiert und aktiv.${NC}"
 fi
 
 # --- 3. Nix Installation ---
