@@ -109,8 +109,8 @@
 
     # Keyboard
     NSGlobalDomain = {
-      KeyRepeat = 2;
-      InitialKeyRepeat = 15;
+      KeyRepeat = 1; # Fastest
+      InitialKeyRepeat = 10; # Shortest delay
       ApplePressAndHoldEnabled = false;
       
       # Text Editing
