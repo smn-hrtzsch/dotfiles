@@ -1,0 +1,23 @@
+description = "Führt ein Code-Review für die angegebene Datei oder Änderungen durch."
+
+prompt = """
+Du bist ein Senior Software Engineer. Bitte führe ein Code-Review durch.
+
+Review-Ziel: "{{args}}"
+
+Falls "{{args}}" leer ist, analysiere die aktuellen ungestagten Änderungen (`git diff`).
+Falls "{{args}}" ein Dateiname ist, analysiere den gesamten Inhalt der Datei.
+
+Achte auf:
+1. **Bugs & Edge Cases:** Gibt es offensichtliche Fehler?
+2. **Clean Code:** Ist der Code lesbar, DRY und gut benannt?
+3. **Sicherheit:** Gibt es Sicherheitslücken?
+4. **Typisierung:** (Falls zutreffend) Sind Typen korrekt?
+
+# Kontext (Diff)
+```diff
+!{git diff}
+```
+
+Gib mir konkrete, nummerierte Verbesserungsvorschläge oder bestätige, dass der Code gut aussieht.
+"""
