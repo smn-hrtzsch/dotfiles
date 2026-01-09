@@ -6,7 +6,7 @@ WIN_CONFIG_DIR="${WIN_USER}\.config\wezterm"
 WIN_CONFIG_FILE="${WIN_CONFIG_DIR}\wezterm.lua"
 
 # Aktueller WSL Distro Name
-DISTRO_NAME="${WSL_DISTRO_NAME:-Ubuntu-Test}"
+DISTRO_NAME="${WSL_DISTRO_NAME:-WSL-Nix}"
 
 # 1. Resolve the actual path (follow symlinks to Nix store)
 # Windows often fails to follow Linux symlinks via \\wsl.localhost if they are absolute paths.

@@ -59,7 +59,7 @@ in
       local config = wezterm.config_builder()
       
       -- Start in WSL by default
-      config.default_domain = 'WSL:Ubuntu-Test'
+      config.default_domain = 'WSL:WSL-Nix'
 
       -- Font
       config.font = wezterm.font 'MesloLGS NF'
