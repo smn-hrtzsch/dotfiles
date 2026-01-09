@@ -129,6 +129,15 @@ in
         { key = 't', mods = 'ALT', action = wezterm.action.SpawnTab 'CurrentPaneDomain' },
         { key = 'w', mods = 'ALT', action = wezterm.action.CloseCurrentPane { confirm = false } },
       }
+
+      -- Tab Switching (Alt + 1..9)
+      for i = 1, 9 do
+        table.insert(config.keys, {
+          key = tostring(i),
+          mods = 'ALT',
+          action = wezterm.action.ActivateTab(i - 1),
+        })
+      end
       
       return config
     '';
