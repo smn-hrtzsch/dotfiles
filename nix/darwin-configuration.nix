@@ -112,6 +112,46 @@
     };
   };
 
+  # Post-Activation Script: Configure Dock
+  system.activationScripts.postUserActivation.text = ''
+    echo "Configuring Dock..."
+    # Check if dockutil is available
+    if command -v ${pkgs.dockutil}/bin/dockutil >/dev/null; then
+      dockutil=${pkgs.dockutil}/bin/dockutil
+      
+      # Apps to add to the dock
+      apps=(
+        "/Applications/Brave Browser.app"
+        "/Applications/Ghostty.app"
+        "/Applications/Notion.app"
+        "/Applications/Thunderbird.app"
+        "/Applications/WhatsApp.app"
+        "/Applications/Spotify.app"
+        "/Applications/Visual Studio Code.app"
+        "/Applications/Android Studio.app"
+        "/System/Applications/System Settings.app"
+        "/Applications/AppCleaner.app"
+      )
+
+      # Clear existing dock
+      $dockutil --no-restart --remove all
+
+      # Add apps
+      for app in "''${apps[@]}"; do
+        if [ -e "$app" ]; then
+          $dockutil --no-restart --add "$app"
+        else
+          echo "App not found: $app"
+        fi
+      done
+
+      # Restart Dock to apply changes
+      killall Dock
+    else
+      echo "dockutil not found, skipping Dock configuration."
+    fi
+  '';
+
   # Necessary for using flakes on this system.
   nix.settings.experimental-features = "nix-command flakes";
 
