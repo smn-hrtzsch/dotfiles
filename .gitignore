@@ -34,6 +34,11 @@ vscode/.vscode/extensions/
 # Ggf. sensible Anwendungsdaten innerhalb von .config ausschließen
 config/.config/configstore/
 config/.config/github-copilot/
+config/.config/raycast/extensions/
+
+# Logs
+*.log
+firebase-debug.log
 
 # Lokale Setup-Datei oder Geheimnisse
 setup-local.sh
