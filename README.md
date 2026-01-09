@@ -1,70 +1,90 @@
-# Mein macOS Dotfiles Setup (Nix Edition)
+# Mein System Setup (Nix Edition)
 
-Dieses Repository enthält meine persönlichen Konfigurationen (Dotfiles) und ein vollständig reproduzierbares System-Setup basierend auf **Nix** und **nix-darwin**.
+Dieses Repository enthält meine persönlichen Konfigurationen (Dotfiles) und ein vollständig reproduzierbares System-Setup basierend auf **Nix**. Es unterstützt sowohl **macOS** (Apple Silicon) als auch **Windows (WSL 2)**.
 
 ## Vision
 
 Ziel ist es, das komplette System – von Systemeinstellungen über installierte Programme bis hin zu Dotfiles – deklarativ und reproduzierbar zu verwalten. Ein einziger Befehl soll genügen, um eine neue Maschine exakt wie die aktuelle einzurichten.
 
-## Voraussetzungen
+## 🍎 macOS Setup
 
-* Ein frisch installiertes macOS.
-* Internetverbindung.
-* **Nix Package Manager**:
+### Voraussetzungen
+*   Frisches macOS.
+*   Internetverbindung.
 
-  Installation (Determinate Systems Installer empfohlen):
-  ```bash
-  curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh
-  ```
+### Installation
 
-## Installationsanleitung
+1.  **Xcode Command Line Tools installieren:**
+    ```bash
+    xcode-select --install
+    ```
 
-1. **Dieses Repository klonen:**
-    Klone das Repository in dein Home-Verzeichnis:
+2.  **Nix installieren (Determinate Systems Installer):**
+    ```bash
+    curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+    ```
 
+3.  **Nix in aktueller Shell aktivieren** (oder Terminal neu starten):
+    ```bash
+    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+    ```
+
+4.  **Repository klonen:**
     ```bash
     git clone https://github.com/smn-hrtzsch/dotfiles.git ~/dotfiles
+    cd ~/dotfiles
     ```
 
-2. **Setup anwenden:**
-    Wechsle in das `dotfiles` Verzeichnis und starte den Build-Prozess mit `nix`. Dies installiert alle Pakete (inkl. Homebrew Casks), setzt Systemeinstellungen und verlinkt Dotfiles.
-
+5.  **Setup anwenden:**
+    Starte den Build-Prozess mit `nix-darwin`. Dies installiert Apps (via Homebrew), setzt Systemeinstellungen (Dock, Finder) und verlinkt Dotfiles.
     ```bash
-    cd ~/dotfiles
     nix run nix-darwin -- switch --flake ./nix#MacBook-Air-von-Simon
     ```
+    *(Falls Fehler auftreten, dass Dateien wie `.zshrc` bereits existieren: Verschiebe diese kurz mit `mv ~/.zshrc ~/.zshrc.backup` und starte erneut).*
 
-    *Hinweis:* Beim ersten Ausführen wird `nix-darwin` installiert und `darwin-rebuild` verfügbar gemacht. Zukünftige Updates können einfach mit `darwin-rebuild switch --flake ./nix` durchgeführt werden.
+## 🪟 Windows (WSL 2) Setup
 
-3. **Neustart:**
-    Ein Neustart oder Neuanmelden ist empfohlen, damit alle Änderungen (z.B. Zsh als Standard-Shell, Umgebungsvariablen) wirksam werden.
+### 1. Windows Apps & Fonts (Host)
+Installiere GUI-Apps (VS Code, Spotify, Fonts) via Winget. Öffne **PowerShell als Administrator**:
+```powershell
+cd ~\dotfiles\scripts
+.\install_windows_apps.ps1
+```
+
+### 2. WSL Umgebung (Nix)
+Installiere Nix innerhalb deiner WSL-Distro (z.B. Ubuntu) für die CLI-Tools (zsh, git, neovim).
+
+1.  **Nix installieren:**
+    ```bash
+    curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+    ```
+
+2.  **Repo klonen:**
+    ```bash
+    git clone https://github.com/smn-hrtzsch/dotfiles.git ~/dotfiles
+    cd ~/dotfiles
+    ```
+
+3.  **Setup anwenden:**
+    ```bash
+    nix run home-manager/master -- switch --flake ./nix#wsl
+    ```
 
 ## Verwaltung
 
-Das System wird nun deklarativ über Nix Flakes gesteuert.
+Das System wird deklarativ über Nix Flakes in `~/dotfiles/nix/` gesteuert.
 
-* **Hauptkonfiguration:** `nix/flake.nix` – Der Einstiegspunkt.
-* **System (macOS):** `nix/darwin-configuration.nix`
-    * Verwaltet macOS Defaults (Dock, Finder, Keyboard...).
-    * Installiert System-Pakete und Homebrew Casks (Apps).
-* **User (Home Manager):** `nix/home.nix`
-    * Verwaltet User-Tools (CLI-Tools wie `fzf`, `bat`, `eza`).
-    * Konfiguriert Programme (`git`, `zsh`).
-    * Symlinkt Dotfiles aus dem Repo an die richtigen Stellen (via `home.file`).
+*   **`flake.nix`**: Der Einstiegspunkt für alle Systeme.
+*   **`darwin-configuration.nix`**: macOS-spezifische Einstellungen (System, Homebrew).
+*   **`home.nix`**: Geteilte Konfiguration (Shell, CLI-Tools, Dotfiles) für macOS und Linux.
 
 ### Änderungen vornehmen
 
-1. Bearbeite die entsprechenden `.nix` Dateien in `~/dotfiles/nix/`.
-2. Wende die Änderungen an:
-    ```bash
-    darwin-rebuild switch --flake ~/dotfiles/nix
-    ```
-
-## Ordnerstruktur
-
-* `nix/`: Enthält die gesamte Nix-Logik (`flake.nix`, `darwin-configuration.nix`, `home.nix`).
-* `zsh/`, `config/`: Die eigentlichen Konfigurationsdateien, auf die von Nix verlinkt wird.
-* `scripts/`: Hilfsskripte (falls noch nötig).
+1.  Bearbeite die `.nix` Dateien.
+2.  Wende die Änderungen an:
+    *   **macOS:** `darwin-rebuild switch --flake ~/dotfiles/nix`
+    *   **WSL:** `home-manager switch --flake ~/dotfiles/nix#wsl`
 
 ---
-Viel Spaß mit deinem reproduzierbaren Mac!
+Viel Spaß mit deinem reproduzierbaren Setup!
