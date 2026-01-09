@@ -2,6 +2,9 @@ name: Nix Configuration Check
 
 on:
   workflow_dispatch: # Manuell via GitHub UI oder CLI triggerbar
+  push:
+    branches:
+      - chore/nix-migration
 
 jobs:
   build-and-check:
