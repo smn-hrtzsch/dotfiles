@@ -29,6 +29,14 @@ bindkey '^[[B' history-search-forward
 bindkey '^I' autosuggest-accept
 bindkey '^[[Z' expand-or-complete
 
+# ---- Load Modular Config ----
+# Loads all .zsh files from ~/dotfiles/zsh/config/
+if [ -d "$HOME/dotfiles/zsh/config" ]; then
+    for config_file in "$HOME/dotfiles/zsh/config/"*.zsh; do
+        source "$config_file"
+    done
+fi
+
 # ---- Tools Init ----
 eval "$(pyenv init -)"
 eval "$(zoxide init zsh)"
@@ -43,14 +51,6 @@ fi
 
 # Add NPM global binaries to PATH
 export PATH="$HOME/.npm-global/bin:$PATH"
-
-# ---- Load Modular Config ----
-# Loads all .zsh files from ~/dotfiles/zsh/config/
-if [ -d "$HOME/dotfiles/zsh/config" ]; then
-    for config_file in "$HOME/dotfiles/zsh/config/"*.zsh; do
-        source "$config_file"
-    done
-fi
 
 # ---- Conda Initialize ----
 # !! Contents within this block are managed by 'conda init' !!
