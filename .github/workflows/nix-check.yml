@@ -30,6 +30,6 @@ jobs:
       # Wir verweisen auf das Flake im Unterordner 'nix'
       run: nix build ./nix#darwinConfigurations.MacBook-Air-von-Simon.system
 
-    - name: Build WSL Home Configuration (Dry Run)
-      # Prüft die Linux/WSL Konfiguration
-      run: nix build ./nix#homeConfigurations.wsl.activationPackage
+    - name: Check WSL Home Configuration (Eval only)
+      # Prüft die Linux/WSL Konfiguration nur auf Syntax/Logik, da wir auf macOS keine Linux-Binaries bauen können.
+      run: nix eval ./nix#homeConfigurations.wsl.activationPackage.outPath
