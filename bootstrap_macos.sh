@@ -119,8 +119,8 @@ echo -e "${YELLOW}   Hinweis: sudo Passwort wird ggf. abgefragt.${NC}"
 
 # Workaround für "initExtra is deprecated" Warning ignorieren wir erstmal
 # Der Befehl wird mit sudo ausgeführt, um Berechtigungsprobleme zu vermeiden
-# Wir nutzen --extra-experimental-features, falls noch nicht in der Config aktiv
-nix run nix-darwin -- switch --flake ./nix#MacBook-Air-von-Simon --extra-experimental-features "nix-command flakes"
+# Wir entfernen --extra-experimental-features, da der Determinate Installer Flakes bereits aktiviert
+nix run nix-darwin -- switch --flake ./nix#MacBook-Air-von-Simon
 
 echo -e "${GREEN}>>> Bootstrap erfolgreich abgeschlossen! 🚀${NC}"
 echo -e "${GREEN}>>> Bitte starte dein Terminal neu oder logge dich aus und wieder ein.${NC}"
