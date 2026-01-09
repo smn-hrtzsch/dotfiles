@@ -98,13 +98,31 @@ elif [ ! -f "$VSCODE_EXTENSIONS_FILE" ]; then
      echo ">>> Skipping VS Code extensions: $VSCODE_EXTENSIONS_FILE not found."
 fi
 
+# --- NPM Globale Pakete installieren ---
+NPM_GLOBALS_FILE="./npm/npm-globals.txt"
+if command -v npm &> /dev/null && [ -f "$NPM_GLOBALS_FILE" ]; then
+    echo ">>> Installing global NPM packages from $NPM_GLOBALS_FILE..."
+    # Stelle sicher, dass der npm prefix Ordner existiert
+    mkdir -p "$HOME/.npm-global"
+    
+    while IFS= read -r package || [[ -n "$package" ]]; do
+        if [[ -n "$package" && ! "$package" =~ ^\s*# ]]; then
+            echo "   Installing $package..."
+            npm install -g "$package"
+        fi
+    done < "$NPM_GLOBALS_FILE"
+    echo ">>> NPM global packages installation attempted."
+elif ! command -v npm &> /dev/null; then
+    echo ">>> Skipping NPM packages: 'npm' command not found."
+fi
+
 # --- Symlinks mit Stow erstellen ---
 echo ">>> Creating symlinks with stow..."
 
 # Liste aller Konfigurationspakete für stow
 # Passe diese Liste ggf. an
-STOW_PACKAGES_HOME=( git zsh conda ) # Pakete, die direkt nach ~ linken
-STOW_PACKAGES_SUBDIR=( ssh warp vscode config ) # Pakete, die in Unterverzeichnisse linken (Zielstruktur im Paket definiert)
+STOW_PACKAGES_HOME=( git zsh conda npm gemini ) # Pakete, die direkt nach ~ linken
+STOW_PACKAGES_SUBDIR=( ssh vscode config ) # Pakete, die in Unterverzeichnisse linken (Zielstruktur im Paket definiert)
 
 # Stow für Pakete, die direkt nach ~ linken sollen
 echo ">>> Stowing packages for ~ ..."

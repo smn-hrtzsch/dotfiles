@@ -46,8 +46,10 @@ Ziel ist es, alle wichtigen Einstellungen, Aliase, Funktionen und installierten 
 * **Dotfiles:** Konfigurationsdateien werden mit `stow` verwaltet.
     * `zsh/`: Enthält die `.zshrc` und den Ordner `config/` mit modularen Einstellungen (`aliases.zsh`, `exports.zsh`, `functions.zsh`).
     * `macos/`: Enthält Skripte für macOS-Systemeinstellungen (z.B. Dock, Finder).
+    * `npm/`: Enthält `.npmrc` und `npm-globals.txt`.
+    * `gemini/`: Enthält das Gedächtnis (`GEMINI.md`) für den Gemini CLI Agenten.
     * Andere Ordner (`git/`, `config/`) enthalten spezifische Configs.
-* **Programme:** Verwaltet über Homebrew und `Brewfile`.
+* **Programme:** Verwaltet über Homebrew (`Brewfile`) und NPM (`npm/npm-globals.txt`).
     * Neue Programme hinzufügen: `Brewfile` bearbeiten und `./setup.sh` (oder `brew bundle`) ausführen.
 * **macOS Einstellungen:** Das Skript `macos/settings.sh` setzt sinnvolle Defaults (schnelles Keyboard, aufgeräumtes Dock). Es kann via `./setup.sh` oder direkt ausgeführt werden.
 
@@ -66,6 +68,7 @@ Ziel ist es, alle wichtigen Einstellungen, Aliase, Funktionen und installierten 
 * Rectangle
 * MesloLGS Nerd Font
 * ... (und Kommandozeilen-Tools wie `git`, `stow`, `pyenv`)
+* **NPM Globals:** `firebase-tools`, `@google/gemini-cli`, `@github/copilot`
 
 ---
 Viel Spaß beim Einrichten!
