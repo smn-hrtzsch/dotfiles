@@ -196,6 +196,21 @@
     # Hide Spotlight Icon
     defaults write com.apple.Spotlight MenuItemHidden -int 1
     
+    echo "Configuring Terminal.app..."
+    # Import and set Coolnight theme
+    TERMINAL_PROFILE="/Users/simon/dotfiles/macos-terminal/Coolnight.terminal"
+    if [ -f "$TERMINAL_PROFILE" ]; then
+      # Check if profile is already imported
+      if ! defaults read com.apple.Terminal "Window Settings" | grep -q "Coolnight"; then
+        echo "Importing Coolnight terminal theme..."
+        open "$TERMINAL_PROFILE"
+        sleep 2 # Wait for Terminal to open and import
+      fi
+      # Set as default
+      defaults write com.apple.Terminal "Default Window Settings" -string "Coolnight"
+      defaults write com.apple.Terminal "Startup Window Settings" -string "Coolnight"
+    fi
+
     # Restart SystemUIServer to apply
     killall SystemUIServer || true
   '';
