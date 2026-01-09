@@ -38,6 +38,10 @@ in
     # Node.js & Tools
     nodejs_22
     
+    # Rust
+    cargo
+    rustc
+    
     # Fun/Misc
     # ...
   ] ++ (if pkgs.stdenv.isDarwin then [
@@ -128,6 +132,10 @@ in
         -- Tabs & Panes
         { key = 't', mods = 'ALT', action = wezterm.action.SpawnTab 'CurrentPaneDomain' },
         { key = 'w', mods = 'ALT', action = wezterm.action.CloseCurrentPane { confirm = false } },
+        
+        -- Clipboard
+        { key = 'c', mods = 'CTRL|SHIFT', action = wezterm.action.CopyTo 'Clipboard' },
+        { key = 'v', mods = 'CTRL|SHIFT', action = wezterm.action.PasteFrom 'Clipboard' },
       }
 
       -- Tab Switching (Alt + 1..9)
