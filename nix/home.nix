@@ -60,6 +60,9 @@ in
     syntaxHighlighting.enable = true;
     
     initContent = ''
+      # Nix: Load Powerlevel10k directly from Nix store
+      source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
+
       # Source existing zshrc from dotfiles
       if [ -f ${dotfilesDir}/zsh/.zshrc ]; then
         source ${dotfilesDir}/zsh/.zshrc
