@@ -30,6 +30,7 @@ in
     shellcheck
     direnv
     tree
+    pyenv
     # dockutil # Only useful on macOS, technically works on linux but useless. Nix filters valid pkgs usually.
     
     # Fun/Misc

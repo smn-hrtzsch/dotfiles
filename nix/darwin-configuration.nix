@@ -19,7 +19,7 @@
     onActivation.upgrade = true;
 
     taps = [
-      "homebrew/services"
+      # "homebrew/services" # Deprecated
     ];
 
     brews = [
@@ -36,7 +36,7 @@
       "ghostty"
       "dotnet-sdk"
       "sf-symbols"
-      "pyenv" # Sometimes better as brew for strict version management, or use nix pkgs.pyenv
+      # "pyenv" # Moved to Nix packages or brews
 
       # Communication
       "thunderbird"
