@@ -240,3 +240,9 @@ run_capy_card_on_android() {
 
 export PATH=~/.npm-global/bin:$PATH
 alias bouncai-env="source \"/Users/simon/Documents/TUBAF/WiSe-25_26/KI/.bouncai-env/bin/activate\""
+
+# Load secrets if they exist
+if [ -f "$HOME/.zshrc_secrets" ]; then
+    source "$HOME/.zshrc_secrets"
+fi
+

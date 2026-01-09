@@ -1,3 +1,4 @@
+bbenoist.nix
 davidanson.vscode-markdownlint
 donjayamanne.githistory
 esbenp.prettier-vscode
@@ -9,6 +10,8 @@ github.vscode-pull-request-github
 google.geminicodeassist
 james-yu.latex-workshop
 jebbs.plantuml
+liascript.liascript-preview
+liascript.liascript-preview-web
 mechatroner.rainbow-csv
 ms-ceintl.vscode-language-pack-de
 ms-dotnettools.csdevkit
@@ -19,6 +22,7 @@ ms-dotnettools.vscodeintellicode-csharp
 ms-python.debugpy
 ms-python.python
 ms-python.vscode-pylance
+ms-python.vscode-python-envs
 ms-vscode-remote.remote-wsl
 ms-vscode.azure-repos
 ms-vscode.cmake-tools
@@ -27,13 +31,16 @@ ms-vscode.cpptools-extension-pack
 ms-vscode.cpptools-themes
 ms-vscode.remote-repositories
 pierre3.csharp-to-plantuml
+pkief.material-icon-theme
 platformio.platformio-ide
 pycom.pymakr
 redhat.java
+ritwickdey.liveserver
 saoudrizwan.claude-dev
 tecosaur.latex-utilities
 tomoki1207.pdf
 twxs.cmake
+uctakeoff.vscode-counter
 visualstudioexptteam.intellicode-api-usage-examples
 visualstudioexptteam.vscodeintellicode
 vscjava.vscode-gradle
@@ -42,3 +49,4 @@ vscjava.vscode-java-dependency
 vscjava.vscode-java-pack
 vscjava.vscode-java-test
 vscjava.vscode-maven
+vscode-icons-team.vscode-icons
