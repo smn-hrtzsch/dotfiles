@@ -143,8 +143,10 @@ done
 echo -e "${BLUE}>>> 8. Aktiviere System-Konfiguration (nix-darwin switch)...${NC}"
 echo -e "${YELLOW}   Hinweis: sudo Passwort wird für die System-Aktivierung benötigt.${NC}"
 
-# Jetzt führen wir die Aktivierung mit sudo aus, nutzen aber das gerade gebaute Paket.
-sudo ./result/sw/bin/darwin-rebuild switch --flake ./nix#MacBook-Air-von-Simon
+# Jetzt führen wir die Aktivierung aus.
+# WICHTIG: Wir rufen dies als normaler User auf! darwin-rebuild kümmert sich selbst um sudo,
+# wenn es nötig ist. Das verhindert, dass Homebrew fälschlicherweise als Root ausgeführt wird.
+./result/sw/bin/darwin-rebuild switch --flake ./nix#MacBook-Air-von-Simon
 
 # Aufräumen: Symlink entfernen
 rm ./result
