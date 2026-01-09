@@ -86,3 +86,26 @@ alias run_capy_card_on_ios='
   xcrun simctl install 93967CA2-E319-4C19-8212-E675A99A65BA CapyCard/CapyCard.iOS/bin/Debug/net9.0-ios/iossimulator-arm64/CapyCard.iOS.app && \
   xcrun simctl launch 93967CA2-E319-4C19-8212-E675A99A65BA com.CapyCode.CapyCard
 '
+
+# --- OS Specific Aliases ---
+if [[ "$(uname)" != "Darwin" ]]; then
+    # WSL / Linux Clipboard Integration
+    # Check for WSL specifically if needed, but clip.exe usually indicates WSL
+    if command -v clip.exe &> /dev/null; then
+        alias pbcopy='clip.exe'
+        alias pbpaste='powershell.exe -noprofile -command Get-Clipboard'
+    elif command -v xclip &> /dev/null; then
+        # Fallback for pure Linux with X11
+        alias pbcopy='xclip -selection clipboard -in'
+        alias pbpaste='xclip -selection clipboard -out'
+    fi
+    
+    # Open (macOS style)
+    if command -v wslview &> /dev/null; then
+        alias open='wslview'
+    elif command -v xdg-open &> /dev/null; then
+        alias open='xdg-open'
+    else
+        alias open='explorer.exe'
+    fi
+fi
