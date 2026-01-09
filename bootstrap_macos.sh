@@ -132,7 +132,15 @@ echo -e "${BLUE}>>> 6. Bereite System-Konfiguration vor (nix-darwin build)...${N
 # Das erstellt einen Symlink './result' im aktuellen Verzeichnis.
 nix build "./nix#darwinConfigurations.MacBook-Air-von-Simon.system" --extra-experimental-features "nix-command flakes"
 
-echo -e "${BLUE}>>> 7. Aktiviere System-Konfiguration (nix-darwin switch)...${NC}"
+echo -e "${BLUE}>>> 7. Bereinige /etc Konflikte (Backup)...${NC}"
+for file in /etc/zshrc /etc/zshenv /etc/zprofile /etc/bashrc; do
+    if [ -f "$file" ] && ! grep -q "Nix-Darwin" "$file"; then
+        echo -e "${YELLOW}   Backing up $file to $file.before-nix-darwin${NC}"
+        sudo mv "$file" "$file.before-nix-darwin"
+    fi
+done
+
+echo -e "${BLUE}>>> 8. Aktiviere System-Konfiguration (nix-darwin switch)...${NC}"
 echo -e "${YELLOW}   Hinweis: sudo Passwort wird für die System-Aktivierung benötigt.${NC}"
 
 # Jetzt führen wir die Aktivierung mit sudo aus, nutzen aber das gerade gebaute Paket.
