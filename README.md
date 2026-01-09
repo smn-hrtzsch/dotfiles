@@ -48,44 +48,60 @@ Da dieses Repository privat ist, richte zuerst einen SSH-Key ein, um das Reposit
 Installiere GUI-Apps (VS Code, Spotify, Fonts) via Winget. Öffne **PowerShell als Administrator**:
 
 ```powershell
-cd ~\dotfiles\scripts
-.\install_windows_apps.ps1
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/smn-hrtzsch/dotfiles/main/scripts/install_windows_apps.ps1'))
 ```
+(Oder klone das Repo manuell und führe das Skript aus `scripts/install_windows_apps.ps1` aus).
 
 ### 2. WSL Umgebung (Nix)
-Installiere Nix innerhalb deiner WSL-Distro (z.B. Ubuntu) für die CLI-Tools (zsh, git).
+Führe folgende Schritte **in deiner WSL-Distro (Ubuntu)** aus.
 
-1.  **Nix installieren:**
+1.  **SSH Key für GitHub einrichten:**
+    Damit du das Repo klonen und pushen kannst.
+
+    ```bash
+    ssh-keygen -t ed25519 -C "deine-email@beispiel.de"
+    cat ~/.ssh/id_ed25519.pub
+    ```
+    *   Füge den Key auf [GitHub](https://github.com/settings/ssh/new) hinzu.
+
+2.  **Nix installieren:**
 
     ```bash
     curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
     . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
     ```
 
-2.  **Repo klonen:**
+3.  **Repo klonen:**
 
     ```bash
-    git clone https://github.com/smn-hrtzsch/dotfiles.git ~/dotfiles
+    git clone git@github.com:smn-hrtzsch/dotfiles.git ~/dotfiles
     cd ~/dotfiles
     ```
 
-3.  **Setup anwenden:**
+4.  **Setup anwenden:**
 
     ```bash
     nix run home-manager/master -- switch --flake ./nix#wsl
     ```
 
-## 💡 Tipps & Tricks (WSL)
+5.  **Abschluss:**
+    Setze Zsh als Standardshell:
+    ```bash
+    # Zsh zur Liste erlaubter Shells hinzufügen
+    command -v zsh | sudo tee -a /etc/shells
+    # Zsh als Standard setzen
+    chsh -s $(command -v zsh)
+    ```
+    Starten nun dein Terminal neu.
 
-### 1. Fonts unter Windows
-Damit Icons und P10k in WSL korrekt angezeigt werden, muss der Font auf dem **Windows-Host** installiert sein:
-1.  Lade [MesloLGS NF](https://github.com/romkatv/powerlevel10k#manual-font-installation) herunter.
-2.  Installiere die `.ttf` Dateien unter Windows (Rechtsklick -> Installieren).
-3.  Wähle in deinem Terminal (Ghostty, Windows Terminal) den Font "MesloLGS NF" aus.
+## 🎨 Theme & Fonts (Windows)
 
-### 2. Ghostty Config teilen
-Du kannst die Ghostty-Konfiguration, die Nix in WSL verwaltet, auch für Ghostty auf Windows nutzen:
-*   Erstelle unter Windows einen Symlink von `%USERPROFILE%\.config\ghostty` zu deinem Dotfiles-Ordner in WSL (oder kopiere die Datei).
+Nix konfiguriert deine Shell (Inhalt), aber **Windows** verwaltet das Fenster (Farben, Fonts).
+
+1.  **Font:** Stelle sicher, dass "MesloLGS NF" in deinem Windows-Terminal (Einstellungen -> Profile -> Ubuntu -> Darstellung -> Schriftart) ausgewählt ist.
+2.  **Theme (Coolnight):**
+    *   **Windows Terminal:** Du musst das Farbschema manuell in den Einstellungen hinzufügen (JSON).
+    *   **Ghostty (Windows):** Kopiere die Config aus `~/dotfiles/config/.config/ghostty/config` nach `%APPDATA%/ghostty/config`.
 
 ## Verwaltung
 

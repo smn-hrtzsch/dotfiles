@@ -32,6 +32,9 @@ in
     tree
     pyenv
     
+    # GUI Tools (available via Nix, works on Linux/WSL if GUI support is active)
+    wezterm
+    
     # Node.js & Tools
     nodejs_22
     
@@ -43,6 +46,86 @@ in
 
   # Programs Configuration
   programs.home-manager.enable = true;
+  
+  programs.wezterm = {
+    enable = true;
+    extraConfig = ''
+      local wezterm = require 'wezterm'
+      local config = wezterm.config_builder()
+
+      -- Font
+      config.font = wezterm.font 'MesloLGS Nerd Font Mono'
+      config.font_size = 12.0 -- 16.0 might be too large on Windows/Linux by default
+
+      -- Window
+      config.window_padding = {
+        left = 10,
+        right = 10,
+        top = 10,
+        bottom = 10,
+      }
+      config.window_background_opacity = 1.0
+      config.hide_tab_bar_if_only_one_tab = true
+      
+      -- Cursor
+      config.default_cursor_style = 'BlinkingBar'
+      
+      -- Colors (Coolnight Theme)
+      config.colors = {
+        foreground = '#CBE0F0',
+        background = '#181818',
+        cursor_bg = '#47FF9C',
+        cursor_fg = '#011423',
+        cursor_border = '#47FF9C',
+        selection_fg = '#CBE0F0',
+        selection_bg = '#585b70',
+        
+        ansi = {
+          '#6f8a9e', -- Black
+          '#E52E2E', -- Red
+          '#44FFB1', -- Green
+          '#FFE073', -- Yellow
+          '#0FC5ED', -- Blue
+          '#a277ff', -- Magenta
+          '#24EAF7', -- Cyan
+          '#24EAF7', -- White (duplicate in source)
+        },
+        brights = {
+          '#6f8a9e', -- Black
+          '#E52E2E', -- Red
+          '#44FFB1', -- Green
+          '#FFE073', -- Yellow
+          '#A277FF', -- Blue (mapped from palette 12)
+          '#a277ff', -- Magenta
+          '#24EAF7', -- Cyan
+          '#24EAF7', -- White
+        },
+      }
+
+      -- Keybindings (Mapped from Ghostty)
+      -- Ghostty: Super+Shift+Arrow (Nav) -> WezTerm: Alt+Shift+Arrow
+      -- Ghostty: Super+Alt+Arrow (Resize) -> WezTerm: Alt+Ctrl+Arrow
+      config.keys = {
+        -- Split Navigation
+        { key = 'UpArrow', mods = 'ALT|SHIFT', action = wezterm.action.ActivatePaneDirection 'Up' },
+        { key = 'DownArrow', mods = 'ALT|SHIFT', action = wezterm.action.ActivatePaneDirection 'Down' },
+        { key = 'LeftArrow', mods = 'ALT|SHIFT', action = wezterm.action.ActivatePaneDirection 'Left' },
+        { key = 'RightArrow', mods = 'ALT|SHIFT', action = wezterm.action.ActivatePaneDirection 'Right' },
+        
+        -- Split Resize
+        { key = 'UpArrow', mods = 'ALT|CTRL', action = wezterm.action.AdjustPaneSize { 'Up', 5 } },
+        { key = 'DownArrow', mods = 'ALT|CTRL', action = wezterm.action.AdjustPaneSize { 'Down', 5 } },
+        { key = 'LeftArrow', mods = 'ALT|CTRL', action = wezterm.action.AdjustPaneSize { 'Left', 5 } },
+        { key = 'RightArrow', mods = 'ALT|CTRL', action = wezterm.action.AdjustPaneSize { 'Right', 5 } },
+        
+        -- Create Split
+        { key = 'd', mods = 'ALT|SHIFT', action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' } },
+        { key = 'd', mods = 'ALT', action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' } },
+      }
+      
+      return config
+    '';
+  };
   
   # Install global NPM packages from file
   home.activation.installNpmGlobals = config.lib.dag.entryAfter ["writeBoundary"] ''
