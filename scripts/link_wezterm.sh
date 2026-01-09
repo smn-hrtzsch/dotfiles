@@ -8,7 +8,7 @@ WIN_CONFIG_FILE="$WIN_CONFIG_DIR\wezterm.lua"
 
 # Aktueller WSL Distro Name
 DISTRO_NAME="${WSL_DISTRO_NAME:-Ubuntu-Test}"
-WSL_CONFIG_PATH="\\wsl.localhost\$DISTRO_NAME\home\$(whoami)\.config\wezterm\wezterm.lua"
+WSL_CONFIG_PATH="\\\\wsl.localhost\\${DISTRO_NAME}\\home\\$(whoami)\\.config\\wezterm\\wezterm.lua"
 
 echo "🔗 Linking WezTerm Config..."
 echo "   Windows Path: $WIN_CONFIG_FILE"
