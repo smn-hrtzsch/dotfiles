@@ -31,3 +31,17 @@
 
 ### Tools
 - Use `gh` (GitHub CLI) for PRs and issues.
+
+## Commit Conventions
+I follow the **Conventional Commits** specification:
+- **Format:** `<type>(<scope>): <description>`
+- **Types:**
+  - `feat`: New feature
+  - `fix`: Bug fix
+  - `docs`: Documentation
+  - `style`: Formatting
+  - `refactor`: Restructuring
+  - `perf`: Performance
+  - `test`: Tests
+  - `chore`: Maintenance
+- **Rules:** English, imperative mood, no trailing period.
