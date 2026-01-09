@@ -82,34 +82,19 @@ if [ ! -f "$SSH_KEY_PATH" ]; then
     echo -e "${YELLOW}   Drücke [ENTER], sobald du den Key auf GitHub hinzugefügt hast...${NC}"
     read -r
 else
-    echo -e "${GREEN}   ✓ SSH Key existiert bereits.${NC}"
-    # Optional: Fragen ob er schon auf GitHub ist?
-    echo -e "${YELLOW}   Falls noch nicht geschehen, stelle sicher, dass dieser Key auf GitHub hinterlegt ist:${NC}"
-    cat "$SSH_KEY_PATH.pub"
-    echo -e "${YELLOW}   (Drücke [ENTER] zum Fortfahren)${NC}"
-    read -r
+    echo -e "${GREEN}   ✓ SSH Key bereits vorhanden. Überspringe Generierung.${NC}"
 fi
 
 # --- 5. Repository Klonen ---
 REPO_DIR="$HOME/dotfiles"
 echo -e "${BLUE}>>> 5. Dotfiles Setup...${NC}"
 
-if [ -d "$REPO_DIR" ]; then
-    echo -e "${YELLOW}   Ordner ~/dotfiles existiert bereits.${NC}"
-    read -p "   Soll er gelöscht und neu geklont werden? (y/N) " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        rm -rf "$REPO_DIR"
-        echo -e "${GREEN}   Gelöscht.${NC}"
-    fi
-fi
-
 if [ ! -d "$REPO_DIR" ]; then
     echo -e "${YELLOW}   Klone Repository via SSH...${NC}"
     # StrictHostKeyChecking=no verhindert die "Are you sure..." Frage beim ersten Connect
     git clone git@github.com:smn-hrtzsch/dotfiles.git "$REPO_DIR"
 else
-    echo -e "${GREEN}   ✓ Repository bereits vorhanden.${NC}"
+    echo -e "${GREEN}   ✓ Repository bereits vorhanden. Überspringe Klonen.${NC}"
 fi
 
 cd "$REPO_DIR"
