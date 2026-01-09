@@ -197,6 +197,11 @@ in
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     
+    # Ensure system paths are present early (fixes mkdir/dirname not found issues in HM generated config)
+    envExtra = ''
+      export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+    '';
+    
     initContent = ''
       # Nix: Load Powerlevel10k directly from Nix store
       source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
