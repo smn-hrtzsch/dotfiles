@@ -18,6 +18,7 @@ brew "git-lfs"      # Git Large File Storage
 brew "cmake"        # Build Tool
 brew "cloc"         # Count Lines of Code
 brew "shellcheck"   # Shell Script Analysis
+brew "direnv"       # Environment management
 
 # Andere nützliche CLI-Tools (Beispiele, füge deine hinzu)
 brew "tree"
@@ -48,3 +49,4 @@ cask "font-fira-code"
 cask "font-jetbrains-mono"
 cask "font-hack-nerd-font"
 cask "font-sf-pro"
+cask "font-symbols-only-nerd-font"
