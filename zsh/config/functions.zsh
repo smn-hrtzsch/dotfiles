@@ -106,10 +106,9 @@ update-system() {
        "$DOTFILES/scripts/link_wezterm.sh"
     fi
 
-    echo "✅ Update Complete!"
-    # Reload shell config
-    source ~/.zshrc
-    echo "🔄 Shell config reloaded."
+    echo "✅ Update Complete! Reloading shell..."
+    # Replace current shell with a new one to fully load new env/config
+    exec zsh
   else
     echo "❌ Dotfiles directory not found at $DOTFILES"
   fi
