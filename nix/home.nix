@@ -125,7 +125,6 @@ in
   # Symlink Dotfiles
   home.file = {
     ".config/ghostty".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/ghostty";
-    ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/nvim";
     # Link p10k config directly to home
     ".p10k.zsh".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/zsh/.p10k.zsh";
     
@@ -139,12 +138,5 @@ in
   } // (if pkgs.stdenv.isDarwin then {
     ".config/sketchybar".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/sketchybar";
   } else {});
-
-  # Neovim
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    vimAlias = true;
-  };
 
 }

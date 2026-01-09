@@ -53,7 +53,7 @@ cd ~\dotfiles\scripts
 ```
 
 ### 2. WSL Umgebung (Nix)
-Installiere Nix innerhalb deiner WSL-Distro (z.B. Ubuntu) für die CLI-Tools (zsh, git, neovim).
+Installiere Nix innerhalb deiner WSL-Distro (z.B. Ubuntu) für die CLI-Tools (zsh, git).
 
 1.  **Nix installieren:**
 
