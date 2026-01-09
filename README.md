@@ -43,8 +43,13 @@ Ziel ist es, alle wichtigen Einstellungen, Aliase, Funktionen und installierten 
 
 ## Verwaltung
 
-* **Dotfiles:** Konfigurationsdateien werden mit `stow` verwaltet. Die eigentlichen Dateien liegen in den Unterordnern dieses Repositories (z.B. `zsh/`, `git/`, `config/`). Änderungen sollten direkt in diesen Dateien vorgenommen werden. `stow` erstellt Symlinks im Home-Verzeichnis (`~`), die auf diese Dateien zeigen.
-* **Programme:** Programme und Kommandozeilen-Tools werden über Homebrew und die `Brewfile` in diesem Repository verwaltet. Um neue Programme hinzuzufügen, bearbeite die `Brewfile` und führe `brew bundle install` im `~/dotfiles`-Verzeichnis aus (oder lasse das `setup.sh`-Skript erneut laufen, es sollte nur die neuen Dinge installieren).
+* **Dotfiles:** Konfigurationsdateien werden mit `stow` verwaltet.
+    * `zsh/`: Enthält die `.zshrc` und den Ordner `config/` mit modularen Einstellungen (`aliases.zsh`, `exports.zsh`, `functions.zsh`).
+    * `macos/`: Enthält Skripte für macOS-Systemeinstellungen (z.B. Dock, Finder).
+    * Andere Ordner (`git/`, `config/`) enthalten spezifische Configs.
+* **Programme:** Verwaltet über Homebrew und `Brewfile`.
+    * Neue Programme hinzufügen: `Brewfile` bearbeiten und `./setup.sh` (oder `brew bundle`) ausführen.
+* **macOS Einstellungen:** Das Skript `macos/settings.sh` setzt sinnvolle Defaults (schnelles Keyboard, aufgeräumtes Dock). Es kann via `./setup.sh` oder direkt ausgeführt werden.
 
 ## Enthaltene Programme (Auszug aus Brewfile)
 

@@ -217,6 +217,18 @@ fi
 
 echo ">>> ssh-Key created/updated."
 
+# --- macOS Einstellungen (optional) ---
+if [ -f "$SCRIPT_DIR/macos/settings.sh" ]; then
+    echo ">>> macOS Systemeinstellungen..."
+    read -r -p "   Möchtest du Standard macOS-Einstellungen (Finder, Dock, Keyboard) anwenden? (j/N): " response
+    if [[ "$response" =~ ^([jJ][aA]|[jJ])$ ]]; then
+        echo "   Wende macOS Einstellungen an..."
+        "$SCRIPT_DIR/macos/settings.sh"
+    else
+        echo "   Überspringe macOS Einstellungen."
+    fi
+fi
+
 # --- Finale Schritte ---
 echo ">>> Setup script finished!"
 echo ">>> Bitte starte dein Terminal neu oder logge dich aus und wieder ein, damit alle Änderungen wirksam werden."
