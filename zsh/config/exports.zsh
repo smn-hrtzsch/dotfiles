@@ -2,6 +2,9 @@
 
 export LANG=en_US.UTF-8
 
+# Ensure system paths are always present (Fixes 'command not found' for coreutils)
+export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+
 # Pyenv
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
