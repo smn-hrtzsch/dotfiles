@@ -10,14 +10,16 @@ jobs:
   build-and-check:
     runs-on: macos-latest # Nutzt macOS 14 (Apple Silicon M1), passend für deine aarch64 config
     
+    permissions:
+      id-token: "write"
+      contents: "read"
+    
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
 
     - name: Install Nix
-      uses: cachix/install-nix-action@v27
-      with:
-        nix_path: nixpkgs=channel:nixpkgs-unstable
+      uses: DeterminateSystems/nix-installer-action@v9
 
     - name: Check Flake Syntax
       run: nix flake check
