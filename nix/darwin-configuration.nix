@@ -184,6 +184,16 @@
     else
       echo "dockutil not found, skipping Dock configuration."
     fi
+    
+    echo "Configuring Menu Bar..."
+    # Enable Bluetooth in Menu Bar
+    defaults write com.apple.controlcenter "NSStatusItem Visible Bluetooth" -bool true
+    # Enable Sound in Menu Bar
+    defaults write com.apple.controlcenter "NSStatusItem Visible Sound" -bool true
+    # Enable Battery in Menu Bar
+    defaults write com.apple.controlcenter "NSStatusItem Visible Battery" -bool true
+    # Restart SystemUIServer to apply
+    killall SystemUIServer || true
   '';
 
   # Necessary for using flakes on this system.
