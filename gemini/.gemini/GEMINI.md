@@ -33,15 +33,19 @@
 - Use `gh` (GitHub CLI) for PRs and issues.
 
 ## Commit Conventions
-I follow the **Conventional Commits** specification:
-- **Format:** `<type>(<scope>): <description>`
+I follow the **Conventional Commits 1.0.0** specification:
+
+- **Structure:**
+  ```
+  <type>[optional scope]: <description>
+  [optional body]
+  [optional footer(s)]
+  ```
 - **Types:**
-  - `feat`: New feature
-  - `fix`: Bug fix
-  - `docs`: Documentation
-  - `style`: Formatting
-  - `refactor`: Restructuring
-  - `perf`: Performance
-  - `test`: Tests
-  - `chore`: Maintenance
-- **Rules:** English, imperative mood, no trailing period.
+  - `feat`: New feature (triggers MINOR release)
+  - `fix`: Bug fix (triggers PATCH release)
+  - `docs`, `style`, `refactor`, `perf`, `test`, `chore`: No semantic version bump.
+- **Breaking Changes:**
+  - Indicate a MAJOR release by adding `!` after type/scope (e.g., `feat!: drop support for Node 12`) OR
+  - Add `BREAKING CHANGE: <description>` in the footer.
+- **Rules:** English, imperative description ("add" not "added"), no trailing period in header.
