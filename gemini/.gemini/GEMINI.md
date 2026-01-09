@@ -31,4 +31,3 @@
 
 ### Tools
 - Use `gh` (GitHub CLI) for PRs and issues.
-- Use `dotnet`, `npm`, `python` etc. based on the project context.

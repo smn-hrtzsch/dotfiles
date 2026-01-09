@@ -18,7 +18,7 @@ Du bist ein autonomer Entwickler-Agent. Dein Ziel ist es, den Bug "{{args}}" zu 
     - Wenn der Fix bereit ist, **frage mich nach Feedback**.
     - **Erst nach meinem "OK":**
       - Aktualisiere die `TO-DO.md`.
-      - Commite die Änderungen (Conventional Commits).
+      - **Commit:** Generiere eine Conventional Commit Message und führe `git commit` direkt aus.
       - Pushe den Branch.
       - Erstelle eine PR mit `gh pr create --fill`.
       - Merge die PR und lösche den Branch (nach Rückfrage).

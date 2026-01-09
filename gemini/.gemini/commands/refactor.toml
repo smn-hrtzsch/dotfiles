@@ -19,7 +19,7 @@ Du bist ein Clean Code Experte. Dein Ziel ist es, den Code im Bereich "{{args}}"
    - Warte auf mein Go.
 
 4. **Release:**
-   - Commit (Conventional Commit: `refactor: ...`).
+   - **Commit:** Führe `git commit` mit einer Conventional Message (`refactor: ...`) aus.
    - Push & PR.
 
 # Kontext

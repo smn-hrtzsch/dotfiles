@@ -7,6 +7,7 @@ Review-Ziel: "{{args}}"
 
 Falls "{{args}}" leer ist, analysiere die aktuellen ungestagten Änderungen (`git diff`).
 Falls "{{args}}" ein Dateiname ist, analysiere den gesamten Inhalt der Datei.
+Falls "{{args}}" eine generelle Anfrage ist, anaylsiere im Hinblick auf den Kontext, den ich dir gebe.
 
 Achte auf:
 1. **Bugs & Edge Cases:** Gibt es offensichtliche Fehler?
@@ -14,9 +15,13 @@ Achte auf:
 3. **Sicherheit:** Gibt es Sicherheitslücken?
 4. **Typisierung:** (Falls zutreffend) Sind Typen korrekt?
 
-# Kontext (Diff)
+# Kontext (Diff und Log)
 ```diff
 !{git diff}
+```
+
+```log
+!{git log -5}
 ```
 
 Gib mir konkrete, nummerierte Verbesserungsvorschläge oder bestätige, dass der Code gut aussieht.

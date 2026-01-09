@@ -1,19 +1,17 @@
-description = "Generiert eine Conventional Commit Message basierend auf staged changes."
+description = "Generiert eine Conventional Commit Message und führt den Commit aus."
 
 prompt = """
-Analysiere die folgenden gestagten Änderungen (`git diff --staged`) und generiere eine **einzige, perfekte Commit-Message** nach der [Conventional Commits](https://www.conventionalcommits.org/) Spezifikation.
+Analysiere die folgenden gestagten Änderungen (`git diff --staged`) und führe den Commit durch.
 
-Regeln:
-1. Format: `<type>(<scope>): <description>`
-2. Types: feat, fix, docs, style, refactor, test, chore.
-3. Halte die erste Zeile unter 50 Zeichen.
-4. Füge eine detailliertere Beschreibung hinzu, wenn die Änderungen komplex sind.
+**Deine Aufgabe:**
+1. Generiere eine **perfekte Commit-Message** nach [Conventional Commits](https://www.conventionalcommits.org/).
+   - Format: `<type>(<scope>): <description>`
+   - Types: feat, fix, docs, style, refactor, test, chore.
+   - Kurz, prägnant, englisch.
+2. Führe den Befehl `git commit -m "..."` mit deiner generierten Message direkt aus (nutze das `run_shell_command` Tool).
 
 Hier sind die Änderungen:
 ```diff
 !{git diff --staged}
 ```
-
-Gib mir NUR den Commit-Befehl aus, z.B.:
-`git commit -m "feat(auth): add google login support"`
 """
