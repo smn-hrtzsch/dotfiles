@@ -17,6 +17,7 @@ in
     zsh-powerlevel10k
     zsh-autosuggestions
     zsh-syntax-highlighting
+    wslu # WSL Utilities (wslview for 'open' command)
     eza
     zoxide
     neofetch
