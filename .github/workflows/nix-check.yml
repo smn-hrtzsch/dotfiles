@@ -5,6 +5,12 @@ on:
   push:
     branches:
       - chore/nix-migration
+    paths:
+      - 'nix/**'
+      - '.github/workflows/nix-check.yml'
+      - 'zsh/**'
+      - 'config/**'
+      - 'flake.lock'
 
 permissions:
   id-token: "write"
