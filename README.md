@@ -17,10 +17,7 @@ Ziel ist es, das komplette System – von Systemeinstellungen über installierte
 1.  **SSH Key einrichten (Empfohlen für GitHub Zugriff):**
     Damit du das Repository klonen und später pushen kannst, richte einen SSH Key ein.
     ```bash
-    # 1. Key generieren (E-Mail anpassen!)
     ssh-keygen -t ed25519 -C "deine@email.com"
-    
-    # 2. Key anzeigen und kopieren
     cat ~/.ssh/id_ed25519.pub
     ```
     *   Füge den kopierten Key auf GitHub hinzu: [Settings -> SSH Keys -> New SSH Key](https://github.com/settings/ssh/new).
@@ -35,23 +32,21 @@ Ziel ist es, das komplette System – von Systemeinstellungen über installierte
     curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
     ```
 
-3.  **Nix in aktueller Shell aktivieren** (oder Terminal neu starten):
+4.  **Nix in aktueller Shell aktivieren:**
     ```bash
     . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
     ```
 
-4.  **Repository klonen:**
+5.  **Repository klonen:**
     ```bash
     git clone https://github.com/smn-hrtzsch/dotfiles.git ~/dotfiles
     cd ~/dotfiles
     ```
 
-5.  **Setup anwenden:**
-    Starte den Build-Prozess mit `nix-darwin`. Dies installiert Apps (via Homebrew), setzt Systemeinstellungen (Dock, Finder) und verlinkt Dotfiles.
+6.  **Setup anwenden:**
     ```bash
     nix run nix-darwin -- switch --flake ./nix#MacBook-Air-von-Simon
     ```
-    *(Falls Fehler auftreten, dass Dateien wie `.zshrc` bereits existieren: Verschiebe diese kurz mit `mv ~/.zshrc ~/.zshrc.backup` und starte erneut).*
 
 ## 🪟 Windows (WSL 2) Setup
 
