@@ -83,19 +83,20 @@
 
     # Dock
     dock = {
-      orientation = "right"; # Dock on the right
+      orientation = "right";
       tilesize = 39;
       autohide = true;
       autohide-delay = 0.0;
+      autohide-time-modifier = 0.0; # Instant animation
       minimize-to-application = true;
       show-recents = false;
-      static-only = false; # Show running apps too
+      static-only = false;
     };
 
     # Trackpad
     trackpad = {
-      Clicking = true; # Tap to click
-      TrackpadThreeFingerDrag = true; # Three finger drag (optional, but awesome)
+      Clicking = true;
+      TrackpadThreeFingerDrag = true;
     };
 
     # Keyboard
@@ -112,7 +113,7 @@
       AppleInterfaceStyle = "Dark";
       
       # Trackpad / Mouse
-      "com.apple.swipescrolldirection" = true; # Natural scrolling
+      "com.apple.swipescrolldirection" = true;
     };
     
     # Screenshots
@@ -122,10 +123,21 @@
     };
   };
 
-  # Post-Activation Script: Configure Dock
+  # Post-Activation Script: Configure Dock, Wallpaper & Theme
   system.activationScripts.postUserActivation.text = ''
-    echo "Configuring Dock..."
-    # Check if dockutil is available
+    echo "Configuring Desktop & Dock..."
+    
+    # Force Dark Mode
+    osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to true' > /dev/null 2>&1
+
+    # Set Wallpaper
+    WALLPAPER_PATH="/Users/simon/dotfiles/macos/wallpaper.jpg"
+    if [ -f "$WALLPAPER_PATH" ]; then
+      echo "Setting wallpaper..."
+      osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"$WALLPAPER_PATH\"" > /dev/null 2>&1
+    fi
+
+    # Configure Dock Icons
     if command -v ${pkgs.dockutil}/bin/dockutil >/dev/null; then
       dockutil=${pkgs.dockutil}/bin/dockutil
       
