@@ -44,7 +44,7 @@ in
   programs.git = {
     enable = true;
     userName = "Simon Herzsch"; 
-    userEmail = "simon.herzsch@student.tu-freiberg.de";
+    userEmail = "simon@hoertzsch.de";
     lfs.enable = true;
     extraConfig = {
       init.defaultBranch = "main";

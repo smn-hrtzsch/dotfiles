@@ -18,13 +18,16 @@ Da dieses Repository privat ist, richte zuerst einen SSH-Key ein, um das Reposit
 
 1.  **SSH Key für GitHub einrichten:**
     Generiere einen Key und füge ihn zu deinem GitHub Account hinzu.
+
     ```bash
-    ssh-keygen -t ed25519 -C "deine@email.com"
+    ssh-keygen -t ed25519 -C "simon@hoertzsch.de"
     cat ~/.ssh/id_ed25519.pub
     ```
+
     *   Kopiere den Output und füge ihn hier hinzu: [GitHub SSH Keys](https://github.com/settings/ssh/new).
 
 2.  **Repository klonen:**
+
     ```bash
     git clone git@github.com:smn-hrtzsch/dotfiles.git ~/dotfiles
     cd ~/dotfiles
@@ -33,6 +36,7 @@ Da dieses Repository privat ist, richte zuerst einen SSH-Key ein, um das Reposit
 
 3.  **Bootstrap-Skript starten:**
     Dieses Skript installiert automatisch Xcode Tools, Homebrew, Nix und wendet die Konfiguration an.
+
     ```bash
     chmod +x bootstrap_macos.sh
     ./bootstrap_macos.sh
