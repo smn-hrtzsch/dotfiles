@@ -22,9 +22,10 @@ jobs:
       uses: DeterminateSystems/nix-installer-action@v9
 
     - name: Check Flake Syntax
-      run: nix flake check
+      run: nix flake check ./nix
 
     - name: Build Darwin System (Dry Run)
       # Baut die Konfiguration, ohne sie anzuwenden.
       # Prüft, ob alle Pakete laden und die Syntax stimmt.
-      run: nix build .#darwinConfigurations.MacBook-Air-von-Simon.system
+      # Wir verweisen auf das Flake im Unterordner 'nix'
+      run: nix build ./nix#darwinConfigurations.MacBook-Air-von-Simon.system
