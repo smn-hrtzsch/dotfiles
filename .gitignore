@@ -46,3 +46,9 @@ secrets.*
 .zshrc_secrets
 
 /debug
+
+# Gemini local & sensitive files
+gemini/.gemini/google_accounts.json
+gemini/.gemini/oauth_creds.json
+gemini/.gemini/history/
+gemini/.gemini/tmp/
