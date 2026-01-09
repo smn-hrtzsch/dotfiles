@@ -31,7 +31,9 @@ in
     direnv
     tree
     pyenv
-    # dockutil # Only useful on macOS, technically works on linux but useless. Nix filters valid pkgs usually.
+    
+    # Node.js & Tools
+    nodejs_22
     
     # Fun/Misc
     # ...
@@ -41,6 +43,27 @@ in
 
   # Programs Configuration
   programs.home-manager.enable = true;
+  
+  # Install global NPM packages from file
+  home.activation.installNpmGlobals = config.lib.dag.entryAfter ["writeBoundary"] ''
+    if [ -f "${dotfilesDir}/npm/npm-globals.txt" ]; then
+      echo "Installing global NPM packages..."
+      # Configure npm prefix if not set to avoid permission issues
+      if [[ "$(npm config get prefix)" == "/nix/store"* ]]; then
+        npm config set prefix "$HOME/.npm-global"
+        export PATH="$HOME/.npm-global/bin:$PATH"
+      fi
+      
+      while IFS= read -r package || [[ -n "$package" ]]; do
+        if [[ -n "$package" && ! "$package" =~ ^# ]]; then
+          if ! npm list -g "$package" >/dev/null 2>&1; then
+             echo "Installing $package..."
+             npm install -g "$package"
+          fi
+        fi
+      done < "${dotfilesDir}/npm/npm-globals.txt"
+    fi
+  '';
 
   programs.git = {
     enable = true;

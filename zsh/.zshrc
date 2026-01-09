@@ -36,7 +36,11 @@ eval "$(zoxide init zsh)"
 # Direnv hook (if installed)
 if command -v direnv &> /dev/null; then
   eval "$(direnv hook zsh)"
-fi
+# ---- Tools Init (Managed by Nix) ----
+# Nix automatically sources necessary init scripts for zoxide, direnv, etc.
+
+# Add NPM global binaries to PATH
+export PATH="$HOME/.npm-global/bin:$PATH"
 
 # ---- Load Modular Config ----
 # Loads all .zsh files from ~/dotfiles/zsh/config/

@@ -124,6 +124,10 @@
       "com.apple.swipescrolldirection" = true;
     };
     
+    # Menu Bar
+    menuExtraClock.Show24Hour = true;
+    menuExtraClock.ShowDate = 1; # Always show date
+    
     # Screenshots
     screencapture = {
       location = "/Users/simon/Pictures/Screenshots";
