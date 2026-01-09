@@ -19,6 +19,7 @@ brew "cmake"        # Build Tool
 brew "cloc"         # Count Lines of Code
 brew "shellcheck"   # Shell Script Analysis
 brew "direnv"       # Environment management
+brew "dockutil"     # Manage macOS Dock items
 
 # Andere nützliche CLI-Tools (Beispiele, füge deine hinzu)
 brew "tree"
