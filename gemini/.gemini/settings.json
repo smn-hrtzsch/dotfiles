@@ -1,0 +1,45 @@
+{
+  "general": {
+    "preferredEditor": "vscode",
+    "enablePromptCompletion": false,
+    "previewFeatures": true,
+    "checkpointing": {
+      "enabled": true
+    }
+  },
+  "security": {
+    "auth": {
+      "selectedType": "oauth-personal"
+    }
+  },
+  "ui": {
+    "theme": "GitHub",
+    "footer": {
+      "hideContextPercentage": false
+    },
+    "showMemoryUsage": true,
+    "showLineNumbers": true,
+    "showCitations": true,
+    "useFullWidth": true,
+    "showStatusInTitle": true,
+    "showModelInfoInChat": true
+  },
+  "tools": {
+    "shell": {
+      "showColor": true
+    }
+  },
+  "output": {
+    "format": "text"
+  },
+  "context": {
+    "fileFiltering": {
+      "respectGitIgnore": false
+    }
+  },
+  "experimental": {
+    "codebaseInvestigatorSettings": {
+      "maxNumTurns": 20
+    }
+  }
+}
