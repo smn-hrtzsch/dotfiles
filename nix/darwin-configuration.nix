@@ -78,17 +78,24 @@
       ShowStatusBar = true;
       _FXSortFoldersFirst = false;
       FXPreferredViewStyle = "Nlsv"; # List view
+      AppleShowAllFiles = true; # Hidden files
     };
 
     # Dock
     dock = {
+      orientation = "right"; # Dock on the right
       tilesize = 39;
       autohide = true;
       autohide-delay = 0.0;
       minimize-to-application = true;
       show-recents = false;
-      # Dock icons are harder to manage declaratively with pure defaults, 
-      # usually requires a script or `dockutil` run once.
+      static-only = false; # Show running apps too
+    };
+
+    # Trackpad
+    trackpad = {
+      Clicking = true; # Tap to click
+      TrackpadThreeFingerDrag = true; # Three finger drag (optional, but awesome)
     };
 
     # Keyboard
@@ -103,6 +110,9 @@
 
       # Appearance
       AppleInterfaceStyle = "Dark";
+      
+      # Trackpad / Mouse
+      "com.apple.swipescrolldirection" = true; # Natural scrolling
     };
     
     # Screenshots
