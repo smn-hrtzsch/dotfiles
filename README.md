@@ -14,12 +14,23 @@ Ziel ist es, das komplette System – von Systemeinstellungen über installierte
 
 ### Installation
 
-1.  **Xcode Command Line Tools installieren:**
+1.  **SSH Key einrichten (Empfohlen für GitHub Zugriff):**
+    Damit du das Repository klonen und später pushen kannst, richte einen SSH Key ein.
+    ```bash
+    # 1. Key generieren (E-Mail anpassen!)
+    ssh-keygen -t ed25519 -C "deine@email.com"
+    
+    # 2. Key anzeigen und kopieren
+    cat ~/.ssh/id_ed25519.pub
+    ```
+    *   Füge den kopierten Key auf GitHub hinzu: [Settings -> SSH Keys -> New SSH Key](https://github.com/settings/ssh/new).
+
+2.  **Xcode Command Line Tools installieren:**
     ```bash
     xcode-select --install
     ```
 
-2.  **Nix installieren (Determinate Systems Installer):**
+3.  **Nix installieren (Determinate Systems Installer):**
     ```bash
     curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
     ```
