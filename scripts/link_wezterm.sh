@@ -7,17 +7,30 @@ WIN_CONFIG_FILE="${WIN_CONFIG_DIR}\wezterm.lua"
 
 # Aktueller WSL Distro Name
 DISTRO_NAME="${WSL_DISTRO_NAME:-Ubuntu-Test}"
-# WSL Config Path (UNC Path für Windows)
-# Use forward slashes for Lua compatibility
-WSL_CONFIG_PATH="//wsl.localhost/${DISTRO_NAME}/home/$(whoami)/.config/wezterm/wezterm.lua"
+
+# 1. Resolve the actual path (follow symlinks to Nix store)
+# Windows often fails to follow Linux symlinks via \\wsl.localhost if they are absolute paths.
+RAW_CONFIG_PATH="/home/$(whoami)/.config/wezterm/wezterm.lua"
+
+if [ ! -f "$RAW_CONFIG_PATH" ]; then
+  echo "❌ Config file not found at $RAW_CONFIG_PATH"
+  exit 1
+fi
+
+REAL_CONFIG_PATH=$(readlink -f "$RAW_CONFIG_PATH")
+
+# 2. Convert to Windows UNC Path
+# Replace forward slashes with backslashes
+WSL_PATH_CONVERTED=$(echo "$REAL_CONFIG_PATH" | sed 's|/|\\|g')
+# Construct UNC path: \\wsl.localhost\Distro\Path
+WSL_CONFIG_PATH="\\\\wsl.localhost\\${DISTRO_NAME}${WSL_PATH_CONVERTED}"
 
 echo "🔗 Linking WezTerm Config via Proxy..."
 echo "   Windows Path: $WIN_CONFIG_FILE"
-echo "   Target (WSL): $WSL_CONFIG_PATH"
+echo "   Target (WSL): $WSL_CONFIG_PATH (Resolved)"
 
 # PowerShell Command: Erstellt den Ordner und die Proxy-Datei
-# dofile() lädt und führt die WSL-Datei aus. Da die Home-Manager Config 'return config' nutzt,
-# gibt dofile() dieses Objekt zurück.
+# dofile() lädt und führt die WSL-Datei aus.
 PS_COMMAND="
 \$ErrorActionPreference = 'Stop'
 try {
