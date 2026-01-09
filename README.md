@@ -12,26 +12,31 @@ Ziel ist es, das komplette System – von Systemeinstellungen über installierte
 *   Frisches macOS.
 *   Internetverbindung.
 
-### Installation (Automatisch)
+### Installation
 
-Der einfachste Weg ist die Nutzung des Bootstrap-Skripts. Es installiert Xcode Tools, Homebrew, Nix, hilft bei der SSH-Einrichtung und wendet die Konfiguration an.
+Da dieses Repository privat ist, richte zuerst einen SSH-Key ein, um das Repository klonen zu können. Das integrierte Bootstrap-Skript übernimmt danach die restliche Einrichtung.
 
-Führe folgenden Befehl im Terminal aus:
+1.  **SSH Key für GitHub einrichten:**
+    Generiere einen Key und füge ihn zu deinem GitHub Account hinzu.
+    ```bash
+    ssh-keygen -t ed25519 -C "deine@email.com"
+    cat ~/.ssh/id_ed25519.pub
+    ```
+    *   Kopiere den Output und füge ihn hier hinzu: [GitHub SSH Keys](https://github.com/settings/ssh/new).
 
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/smn-hrtzsch/dotfiles/chore/nix-migration/bootstrap_macos.sh)"
-```
+2.  **Repository klonen:**
+    ```bash
+    git clone git@github.com:smn-hrtzsch/dotfiles.git ~/dotfiles
+    cd ~/dotfiles
+    git checkout chore/nix-migration
+    ```
 
-*(Hinweis: Der Link zeigt aktuell auf den `chore/nix-migration` Branch. Nach dem Merge sollte er auf `main` zeigen).*
-
-### Manuelle Schritte (Falls das Skript nicht funktioniert)
-
-1.  **Xcode Command Line Tools:** `xcode-select --install`
-2.  **Homebrew:** Siehe [brew.sh](https://brew.sh)
-3.  **Nix:** `curl ... | sh` (Determinate Systems)
-4.  **SSH Key:** `ssh-keygen ...`
-5.  **Klonen:** `git clone ...`
-6.  **Setup:** `nix run nix-darwin ...`
+3.  **Bootstrap-Skript starten:**
+    Dieses Skript installiert automatisch Xcode Tools, Homebrew, Nix und wendet die Konfiguration an.
+    ```bash
+    chmod +x bootstrap_macos.sh
+    ./bootstrap_macos.sh
+    ```
 
 ## 🪟 Windows (WSL 2) Setup
 
