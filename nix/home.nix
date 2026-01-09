@@ -52,6 +52,9 @@ in
     extraConfig = ''
       local wezterm = require 'wezterm'
       local config = wezterm.config_builder()
+      
+      -- Start in WSL by default
+      config.default_domain = 'WSL:Ubuntu-Test'
 
       -- Font
       config.font = wezterm.font 'MesloLGS NF'

@@ -116,6 +116,36 @@ chmod +x /home/simon/finish_setup.sh
 # Inject script via stdin to avoid path issues
 $SetupScript | wsl -d $DistroName -u root --exec bash
 
+# 5. Configure WezTerm (Windows Side)
+Write-Host "Linking WezTerm Config..." -ForegroundColor Cyan
+$WezTermConfigDir = "$env:USERPROFILE\.config\wezterm"
+$WezTermConfigFile = "$WezTermConfigDir\wezterm.lua"
+$WSLConfigPath = "\\wsl.localhost\$DistroName\home\simon\.config\wezterm\wezterm.lua"
+
+if (-not (Test-Path $WezTermConfigDir)) {
+    New-Item -ItemType Directory -Force -Path $WezTermConfigDir | Out-Null
+}
+
+if (Test-Path $WezTermConfigFile) {
+    if ((Get-Item $WezTermConfigFile).LinkType -ne "SymbolicLink") {
+        Write-Warning "Existing WezTerm config found. Backing up to wezterm.lua.bak"
+        Rename-Item -Path $WezTermConfigFile -NewName "wezterm.lua.bak" -Force
+    } else {
+        # Remove existing link to ensure we point to the new distro
+        Remove-Item -Path $WezTermConfigFile -Force
+    }
+}
+
+# Create Symlink
+try {
+    # Note: Target needs to be a global path accessible by Windows
+    New-Item -ItemType SymbolicLink -Path $WezTermConfigFile -Target $WSLConfigPath | Out-Null
+    Write-Host "✅ WezTerm linked to WSL config!" -ForegroundColor Green
+} catch {
+    Write-Warning "Could not create WezTerm symlink. You might need Developer Mode enabled or Run as Admin."
+    Write-Warning "Manual Command: New-Item -ItemType SymbolicLink -Path $WezTermConfigFile -Target $WSLConfigPath"
+}
+
 Write-Host "----------------------------------------------------------------" -ForegroundColor Green
 Write-Host "✅ Base Setup Complete!" -ForegroundColor Green
 Write-Host "----------------------------------------------------------------"
