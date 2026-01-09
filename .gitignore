@@ -44,3 +44,5 @@ firebase-debug.log
 setup-local.sh
 secrets.*
 .zshrc_secrets
+
+/debug
