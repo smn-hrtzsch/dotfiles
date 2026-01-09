@@ -85,12 +85,20 @@
     dock = {
       orientation = "right";
       tilesize = 39;
+      largesize = 60;
+      magnification = true;
       autohide = true;
       autohide-delay = 0.0;
       autohide-time-modifier = 0.0; # Instant animation
       minimize-to-application = true;
       show-recents = false;
       static-only = false;
+      
+      # Hot Corners
+      wvous-tl-corner = 13; # Lock Screen (Example based on your value 13)
+      wvous-tr-corner = 4;  # Desktop
+      wvous-bl-corner = 5;  # Start Screensaver
+      wvous-br-corner = 14; # Quick Note
     };
 
     # Trackpad
