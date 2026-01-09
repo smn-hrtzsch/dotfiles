@@ -74,3 +74,38 @@ run_capy_card_on_android() {
 
   adb -s "$TARGET_SERIAL" logcat -v color | grep -E "\[WysiwygEditor\]| \[ClipboardAndroid\]|CapyCard"
 }
+
+# System Update (Nix)
+update-system() {
+  local DOTFILES="$HOME/dotfiles"
+  echo "🚀 Updating Dotfiles & System..."
+  
+  if [ -d "$DOTFILES" ]; then
+    echo "📂 Switching to $DOTFILES"
+    cd "$DOTFILES" || return
+    
+    echo "⬇️  Pulling latest changes..."
+    if git pull; then
+      echo "✅ Git pull successful."
+    else
+      echo "❌ Git pull failed. Please check for conflicts."
+      return 1
+    fi
+    
+    echo "⚙️  Rebuilding System..."
+    if [[ "$(uname)" == "Darwin" ]]; then
+       # macOS
+       nix run nix-darwin -- switch --flake .#macbook
+    else
+       # Linux / WSL
+       nix run home-manager/master -- switch --flake .#wsl
+    fi
+    
+    echo "✅ Update Complete!"
+    # Reload shell config
+    source ~/.zshrc
+    echo "🔄 Shell config reloaded."
+  else
+    echo "❌ Dotfiles directory not found at $DOTFILES"
+  fi
+}
