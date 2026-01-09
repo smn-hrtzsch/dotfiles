@@ -1,0 +1,25 @@
+name: Nix Configuration Check
+
+on:
+  workflow_dispatch: # Manuell via GitHub UI oder CLI triggerbar
+
+jobs:
+  build-and-check:
+    runs-on: macos-latest # Nutzt macOS 14 (Apple Silicon M1), passend für deine aarch64 config
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install Nix
+      uses: cachix/install-nix-action@v27
+      with:
+        nix_path: nixpkgs=channel:nixpkgs-unstable
+
+    - name: Check Flake Syntax
+      run: nix flake check
+
+    - name: Build Darwin System (Dry Run)
+      # Baut die Konfiguration, ohne sie anzuwenden.
+      # Prüft, ob alle Pakete laden und die Syntax stimmt.
+      run: nix build .#darwinConfigurations.MacBook-Air-von-Simon.system
