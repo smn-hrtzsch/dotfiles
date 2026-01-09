@@ -75,6 +75,18 @@ Installiere Nix innerhalb deiner WSL-Distro (z.B. Ubuntu) für die CLI-Tools (zs
     nix run home-manager/master -- switch --flake ./nix#wsl
     ```
 
+## 💡 Tipps & Tricks (WSL)
+
+### 1. Fonts unter Windows
+Damit Icons und P10k in WSL korrekt angezeigt werden, muss der Font auf dem **Windows-Host** installiert sein:
+1.  Lade [MesloLGS NF](https://github.com/romkatv/powerlevel10k#manual-font-installation) herunter.
+2.  Installiere die `.ttf` Dateien unter Windows (Rechtsklick -> Installieren).
+3.  Wähle in deinem Terminal (Ghostty, Windows Terminal) den Font "MesloLGS NF" aus.
+
+### 2. Ghostty Config teilen
+Du kannst die Ghostty-Konfiguration, die Nix in WSL verwaltet, auch für Ghostty auf Windows nutzen:
+*   Erstelle unter Windows einen Symlink von `%USERPROFILE%\.config\ghostty` zu deinem Dotfiles-Ordner in WSL (oder kopiere die Datei).
+
 ## Verwaltung
 
 Das System wird deklarativ über Nix Flakes in `~/dotfiles/nix/` gesteuert.
