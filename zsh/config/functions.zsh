@@ -101,6 +101,11 @@ update-system() {
        nix run home-manager/master -- switch --flake ./nix#wsl
     fi
     
+    # Update WezTerm Link (WSL only)
+    if [[ "$(uname)" != "Darwin" && -f "$DOTFILES/scripts/link_wezterm.sh" ]]; then
+       "$DOTFILES/scripts/link_wezterm.sh"
+    fi
+
     echo "✅ Update Complete!"
     # Reload shell config
     source ~/.zshrc
