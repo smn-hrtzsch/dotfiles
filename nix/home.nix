@@ -51,6 +51,10 @@ in
       
       # Use explicit npm path from the installed package
       npm="${pkgs.nodejs_22}/bin/npm"
+      node_path="${pkgs.nodejs_22}/bin"
+      
+      # Add node to PATH for build scripts
+      export PATH="$node_path:$PATH"
       
       # Configure npm prefix if not set to avoid permission issues
       if [[ "$($npm config get prefix)" == "/nix/store"* ]]; then
