@@ -59,7 +59,7 @@ in
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     
-    initExtra = ''
+    initContent = ''
       # Source existing zshrc from dotfiles
       if [ -f ${dotfilesDir}/zsh/.zshrc ]; then
         source ${dotfilesDir}/zsh/.zshrc
