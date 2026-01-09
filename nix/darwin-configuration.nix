@@ -125,6 +125,12 @@
   # Platform
   nixpkgs.hostPlatform = "aarch64-darwin";
 
+  # User Configuration
+  users.users.simon = {
+    name = "simon";
+    home = "/Users/simon";
+  };
+
   # Allow unfree packages (VS Code, etc.)
   nixpkgs.config.allowUnfree = true;
 }
