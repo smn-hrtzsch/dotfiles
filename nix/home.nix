@@ -54,7 +54,7 @@ in
       local config = wezterm.config_builder()
 
       -- Font
-      config.font = wezterm.font 'MesloLGS Nerd Font Mono'
+      config.font = wezterm.font 'MesloLGS NF'
       config.font_size = 12.0 -- 16.0 might be too large on Windows/Linux by default
 
       -- Window
