@@ -36,11 +36,13 @@
 I follow the **Conventional Commits 1.0.0** specification:
 
 - **Structure:**
-  ```
+
+  ```text
   <type>[optional scope]: <description>
   [optional body]
   [optional footer(s)]
   ```
+
 - **Types:**
   - `feat`: New feature (triggers MINOR release)
   - `fix`: Bug fix (triggers PATCH release)
