@@ -69,23 +69,23 @@ in
   
   programs.fzf = {
     enable = true;
-    enableZshIntegration = true;
+    enableZshIntegration = false; # We manage this in .zshrc
   };
 
   programs.eza = {
     enable = true;
-    enableZshIntegration = true;
+    enableZshIntegration = false; # We manage aliases in .zshrc
   };
   
   programs.zoxide = {
     enable = true;
-    enableZshIntegration = true;
+    enableZshIntegration = false; # We manage this in .zshrc
   };
   
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
-    enableZshIntegration = true;
+    enableZshIntegration = true; # Keep this, it's complex to setup manually
   };
 
   # Symlink Dotfiles
