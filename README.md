@@ -12,50 +12,26 @@ Ziel ist es, das komplette System – von Systemeinstellungen über installierte
 *   Frisches macOS.
 *   Internetverbindung.
 
-### Installation
+### Installation (Automatisch)
 
-1.  **SSH Key einrichten (Empfohlen für GitHub Zugriff):**
-    Damit du das Repository klonen und später pushen kannst, richte einen SSH Key ein.
+Der einfachste Weg ist die Nutzung des Bootstrap-Skripts. Es installiert Xcode Tools, Homebrew, Nix, hilft bei der SSH-Einrichtung und wendet die Konfiguration an.
 
-    ```bash
-    ssh-keygen -t ed25519 -C "simon@hoertzsch.de"
-    cat ~/.ssh/id_ed25519.pub
-    ```
+Führe folgenden Befehl im Terminal aus:
 
-    *   Füge den kopierten Key auf GitHub hinzu: [Settings -> SSH Keys -> New SSH Key](https://github.com/settings/ssh/new).
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/smn-hrtzsch/dotfiles/chore/nix-migration/bootstrap_macos.sh)"
+```
 
-2.  **Xcode Command Line Tools installieren:**
+*(Hinweis: Der Link zeigt aktuell auf den `chore/nix-migration` Branch. Nach dem Merge sollte er auf `main` zeigen).*
 
-    ```bash
-    xcode-select --install
-    ```
+### Manuelle Schritte (Falls das Skript nicht funktioniert)
 
-3.  **Nix installieren (Determinate Systems Installer):**
-
-    ```bash
-    curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
-    ```
-
-4.  **Nix in aktueller Shell aktivieren:**
-
-    ```bash
-    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-    ```
-
-5.  **Repository klonen (SSH):**
-
-    ```bash
-    git clone git@github.com:smn-hrtzsch/dotfiles.git ~/dotfiles
-    cd ~/dotfiles
-    git checkout chore/nix-migration
-    ```
-
-6.  **Setup anwenden:**
-    Starte den Build-Prozess mit `nix-darwin`. Dies installiert Apps, setzt Systemeinstellungen, verlinkt Dotfiles und konfiguriert Git automatisch.
-
-    ```bash
-    nix run nix-darwin -- switch --flake ./nix#MacBook-Air-von-Simon
-    ```
+1.  **Xcode Command Line Tools:** `xcode-select --install`
+2.  **Homebrew:** Siehe [brew.sh](https://brew.sh)
+3.  **Nix:** `curl ... | sh` (Determinate Systems)
+4.  **SSH Key:** `ssh-keygen ...`
+5.  **Klonen:** `git clone ...`
+6.  **Setup:** `nix run nix-darwin ...`
 
 ## 🪟 Windows (WSL 2) Setup
 
