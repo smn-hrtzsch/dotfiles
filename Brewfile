@@ -1,8 +1,6 @@
 # ~/dotfiles/Brewfile
 
 # Wichtige Tools für unser Setup
-tap "felixkratz/formulae" # Für sketchybar
-
 brew "git"
 brew "stow"
 brew "mas"  
@@ -15,7 +13,6 @@ brew "neofetch"
 brew "fzf"
 brew "bat"
 brew "gh"           # GitHub CLI
-brew "sketchybar"   # Status Bar
 brew "jq"           # JSON Processor
 brew "git-lfs"      # Git Large File Storage
 brew "cmake"        # Build Tool
@@ -28,7 +25,6 @@ brew "pyenv" # Wenn du pyenv nutzt
 
 # Deine benötigten GUI Anwendungen (Casks)
 cask "brave-browser"
-cask "warp"
 cask "ghostty"
 cask "notion"
 cask "thunderbird"
