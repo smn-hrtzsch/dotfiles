@@ -192,6 +192,10 @@
     defaults write com.apple.controlcenter "NSStatusItem Visible Sound" -bool true
     # Enable Battery in Menu Bar
     defaults write com.apple.controlcenter "NSStatusItem Visible Battery" -bool true
+    
+    # Hide Spotlight Icon
+    defaults write com.apple.Spotlight MenuItemHidden -int 1
+    
     # Restart SystemUIServer to apply
     killall SystemUIServer || true
   '';
