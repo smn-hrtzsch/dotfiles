@@ -52,6 +52,11 @@ in
   # Programs Configuration
   programs.home-manager.enable = true;
   
+  programs.java = {
+    enable = true;
+    package = pkgs.openjdk21;
+  };
+
   programs.wezterm = {
     enable = true;
     extraConfig = ''

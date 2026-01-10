@@ -42,9 +42,14 @@ fi
 
 # --- Linux / WSL Specific Configs ---
 if [[ "$(uname)" == "Linux" ]]; then
-    # Java (Nix handles JAVA_HOME via programs.java, but we can ensure it's set)
-    # Fallback to standard location if Nix is not used
-    [ -z "$JAVA_HOME" ] && [ -d "/usr/lib/jvm/java-21-openjdk-amd64" ] && export JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64"
+    # Java: Set JAVA_HOME if not already set (preferring Nix)
+    if [ -z "$JAVA_HOME" ]; then
+        if [ -d "$HOME/.nix-profile/lib/openjdk" ]; then
+            export JAVA_HOME="$HOME/.nix-profile/lib/openjdk"
+        elif [ -d "/usr/lib/jvm/java-21-openjdk-amd64" ]; then
+            export JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64"
+        fi
+    fi
     
     # Android SDK (WSL)
     # Often located in the Windows User profile or a custom Linux path
