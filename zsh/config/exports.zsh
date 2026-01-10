@@ -52,9 +52,8 @@ if [[ "$(uname)" == "Linux" ]]; then
     fi
     
     # Android SDK (WSL)
-    # Often located in the Windows User profile or a custom Linux path
-    if [ -d "/home/simon/Android/Sdk" ]; then
-        export ANDROID_HOME="/home/simon/Android/Sdk"
-        export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools:$PATH"
-    fi
+    # Use internal Linux path to avoid "corrupted" build-tools issue with Windows SDK
+    export ANDROID_HOME="$HOME/Android/Sdk"
+    export ANDROID_SDK_ROOT="$ANDROID_HOME"
+    export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/cmdline-tools/tools/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/35.0.0:$PATH"
 fi

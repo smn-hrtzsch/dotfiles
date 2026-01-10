@@ -14,6 +14,7 @@ in
   home.packages = with pkgs; [
     # Shell & Tools
     stow
+    unzip
     zsh-powerlevel10k
     zsh-autosuggestions
     zsh-syntax-highlighting
@@ -43,6 +44,12 @@ in
     cargo
     rustc
     
+    # Java
+    openjdk21
+
+    # Android
+    android-tools
+
     # Fun/Misc
     # ...
   ] ++ (if pkgs.stdenv.isDarwin then [
