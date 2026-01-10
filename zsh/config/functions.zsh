@@ -120,8 +120,25 @@ update-system() {
 # Windows App Backup
 backup-windows() {
   local DOTFILES="$HOME/dotfiles"
+  local TARGET="$DOTFILES/windows/packages.json"
+  local TEMP_FILE="/tmp/packages_new.json"
+  
   echo "📦 Exporting Windows Apps (winget)..."
   mkdir -p "$DOTFILES/windows"
-  powershell.exe -Command "winget export -o 'windows\packages.json' --source winget --accept-source-agreements"
-  echo "✅ Done! Update saved to $DOTFILES/windows/packages.json"
+  
+  # Export to temp file, suppress warnings inside PowerShell and shell
+  powershell.exe -Command "winget export -o '$TEMP_FILE' --source winget --accept-source-agreements > \$null 2>&1" >/dev/null 2>&1
+  
+  if [ -f "$TEMP_FILE" ]; then
+    # Compare files while ignoring the line with "CreationDate"
+    if [ ! -f "$TARGET" ] || ! diff -I '"CreationDate"' "$TARGET" "$TEMP_FILE" >/dev/null; then
+      mv "$TEMP_FILE" "$TARGET"
+      echo "✅ Done! Update saved to $TARGET"
+    else
+      rm "$TEMP_FILE"
+      echo "✨ No package changes detected. Keeping existing $TARGET"
+    fi
+  else
+    echo "❌ Failed to export Windows Apps."
+  fi
 }
