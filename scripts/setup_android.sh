@@ -21,33 +21,49 @@ CMDLINE_TOOLS_URL="https://dl.google.com/android/repository/commandlinetools-lin
 mkdir -p "$ANDROID_HOME/cmdline-tools"
 
 # 4. Download and Install Command Line Tools if missing
+
 if [ ! -d "$ANDROID_HOME/cmdline-tools/latest" ]; then
+
     echo "Downloading Android Command Line Tools..."
+
     TEMP_DIR=$(mktemp -d)
-    curl -L -o "$TEMP_DIR/cmdline-tools.zip" "$CMDLINE_TOOLS_URL"
+
+    curl -L -s -o "$TEMP_DIR/cmdline-tools.zip" "$CMDLINE_TOOLS_URL"
+
     
+
     echo "Extracting tools..."
+
     unzip -q "$TEMP_DIR/cmdline-tools.zip" -d "$TEMP_DIR"
+
     
-mkdir -p "$ANDROID_HOME/cmdline-tools/latest"
+
+    mkdir -p "$ANDROID_HOME/cmdline-tools/latest"
+
     cp -r "$TEMP_DIR/cmdline-tools/"* "$ANDROID_HOME/cmdline-tools/latest/"
+
     
+
     rm -rf "$TEMP_DIR"
+
     echo "Command Line Tools installed."
-else
-    echo "Command Line Tools already present."
+
+    
+
+    echo ""
+
+    echo "==========================================================" 
+
+    echo "ACTION REQUIRED: Please accept the Android SDK licenses:"
+
+    echo "Run: source ~/.zshrc && yes | sdkmanager --licenses"
+
+    echo ""
+
+    echo "After that, install required build-tools:"
+
+    echo "Run: sdkmanager \"platform-tools\" \"platforms;android-35\" \"build-tools;35.0.0\""
+
+    echo "=========================================================="
+
 fi
-
-# 5. Instructions for Licenses
-echo ""
-echo "========================================================== "
-
-echo "ACTION REQUIRED: Please accept the Android SDK licenses:"
-echo "Run: source ~/.zshrc && yes | sdkmanager --licenses"
-
-
-echo ""
-
-echo "After that, install required build-tools:"
-echo "Run: sdkmanager \"platform-tools\" \"platforms;android-36\" \"build-tools;36.0.0\""
-echo "========================================================== "

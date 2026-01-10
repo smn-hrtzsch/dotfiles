@@ -194,6 +194,17 @@ in
     fi
   '';
 
+  # Automatically run Android SDK setup on Linux
+  home.activation.setupAndroid = config.lib.dag.entryAfter ["writeBoundary"] ''
+    if [[ "$(uname)" == "Linux" ]]; then
+      echo "Checking Android SDK setup..."
+      # Use the script from the dotfiles directory
+      if [ -f "${dotfilesDir}/scripts/setup_android.sh" ]; then
+        bash "${dotfilesDir}/scripts/setup_android.sh"
+      fi
+    fi
+  '';
+
   programs.git = {
     enable = true;
     userName = "Simon Hörtzsch"; 
