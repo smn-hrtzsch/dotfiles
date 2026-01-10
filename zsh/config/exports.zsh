@@ -39,3 +39,17 @@ if [[ "$(uname)" == "Darwin" ]]; then
     # LaTeX
     export PATH="/Library/TeX/texbin:$PATH"
 fi
+
+# --- Linux / WSL Specific Configs ---
+if [[ "$(uname)" == "Linux" ]]; then
+    # Java (Nix handles JAVA_HOME via programs.java, but we can ensure it's set)
+    # Fallback to standard location if Nix is not used
+    [ -z "$JAVA_HOME" ] && [ -d "/usr/lib/jvm/java-21-openjdk-amd64" ] && export JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64"
+    
+    # Android SDK (WSL)
+    # Often located in the Windows User profile or a custom Linux path
+    if [ -d "/home/simon/Android/Sdk" ]; then
+        export ANDROID_HOME="/home/simon/Android/Sdk"
+        export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools:$PATH"
+    fi
+fi
