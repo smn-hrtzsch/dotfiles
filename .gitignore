@@ -52,3 +52,4 @@ gemini/.gemini/google_accounts.json
 gemini/.gemini/oauth_creds.json
 gemini/.gemini/history/
 gemini/.gemini/tmp/
+config/.config/gh/hosts.yml
