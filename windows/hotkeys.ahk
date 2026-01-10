@@ -88,6 +88,8 @@ SetCapsLockState "AlwaysOff"
 ; 1. Zeilenanfang/Ende mit ALT + PFEIL (Global)
 !Left::Send "{Home}"
 !Right::Send "{End}"
+!+Left::Send "+{Home}"
+!+Right::Send "+{End}"
 
 ; Nur für Terminals (WezTerm, Windows Terminal, CMD/PowerShell)
 #HotIf WinActive("ahk_exe wezterm-gui.exe") or WinActive("ahk_exe WindowsTerminal.exe") or WinActive("ahk_class ConsoleWindowClass")
