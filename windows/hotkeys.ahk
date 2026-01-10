@@ -85,6 +85,10 @@ SetCapsLockState "AlwaysOff"
 ; NAVIGATION & DELETION (Mac-Style)
 ; ==============================================================================
 
+; 1. Zeilenanfang/Ende mit ALT + PFEIL (Global)
+!Left::Send "{Home}"
+!Right::Send "{End}"
+
 ; Nur für Terminals (WezTerm, Windows Terminal, CMD/PowerShell)
 #HotIf WinActive("ahk_exe wezterm-gui.exe") or WinActive("ahk_exe WindowsTerminal.exe") or WinActive("ahk_class ConsoleWindowClass")
 
@@ -97,15 +101,11 @@ SetCapsLockState "AlwaysOff"
 ; Sendet Ctrl+W (Standard in Unix Shells)
 #Backspace::Send "^w"
 
-; 3. Zeilenanfang/Ende mit ALT + PFEIL
-!Left::Send "{Home}"
-!Right::Send "{End}"
-
-; 4. Zeile löschen mit ALT + BACKSPACE
+; 3. Zeile löschen mit ALT + BACKSPACE
 ; Sendet Ctrl+U (Unix Shell: Delete to beginning of line)
 !Backspace::Send "^u"
 
-; 5. Shift+Enter -> Neue Zeile ohne Ausführen (Ctrl+J)
+; 4. Shift+Enter -> Neue Zeile ohne Ausführen (Ctrl+J)
 +Enter::Send "^j"
 
 #HotIf
