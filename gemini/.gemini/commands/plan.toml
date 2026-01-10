@@ -1,0 +1,25 @@
+description = "Erstellt einen detaillierten Implementierungsplan für ein Feature oder Refactoring in /plans/<name>.md."
+
+prompt = """
+Du bist ein Software-Architekt. Dein Ziel ist es, einen präzisen und umsetzbaren Plan für die folgende Anfrage zu erstellen: "{{args}}"
+
+# Workflow
+
+1. **Exploration:**
+   - Verschaffe dir einen Überblick über die Codebase im Hinblick auf "{{args}}".
+   - Identifiziere die relevanten Dateien, Komponenten und Abhängigkeiten (nutze `glob` und `search_file_content`).
+
+2. **Planung:**
+   - Erstelle einen detaillierten Plan in einer neuen Datei unter `plans/`.
+   - Der Dateiname sollte dem Schema `<datum>-<kurze-beschreibung>.md` folgen.
+   - Falls das Verzeichnis `plans/` nicht existiert, erstelle es.
+
+3. **Inhalt des Plans:**
+   - **Ziel:** Was soll erreicht werden?
+   - **Betroffene Dateien:** Welche Dateien müssen geändert oder erstellt werden?
+   - **Schritte:** Eine klare, iterative Liste von Aufgaben (Checkliste).
+   - **Risiken/Edge-Cases:** Worauf muss geachtet werden?
+
+# Dokumentation
+Schreibe den fertigen Plan mit `write_file` in das entsprechende Dokument. Präsentiere mir danach den Link zur Datei oder eine kurze Zusammenfassung der wichtigsten Punkte.
+"""

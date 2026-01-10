@@ -43,6 +43,7 @@ firebase-debug.log
 # Lokale Setup-Datei oder Geheimnisse
 setup-local.sh
 secrets.*
+!gemini/.gemini/commands/secrets.toml
 .zshrc_secrets
 
 /debug
