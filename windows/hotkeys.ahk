@@ -39,6 +39,7 @@ SetCapsLockState "AlwaysOff"
 #HotIf WinActive("ahk_exe wezterm-gui.exe")
 !c::Send "^+c"
 !v::Send "^+v"
+!x::Send "^+x"
 #HotIf
 
 ; Global (außer Terminals): Alt+C -> Ctrl+C, Alt+V -> Ctrl+V, etc.
@@ -46,6 +47,7 @@ SetCapsLockState "AlwaysOff"
 #HotIf not (WinActive("ahk_exe wezterm-gui.exe") or WinActive("ahk_exe WindowsTerminal.exe") or WinActive("ahk_class ConsoleWindowClass"))
 !c::Send "^c"
 !v::Send "^v"
+!x::Send "^x"
 !a::Send "^a"
 !z::Send "^z"
 !y::Send "^y"
