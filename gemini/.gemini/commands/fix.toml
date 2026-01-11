@@ -7,6 +7,7 @@ Du bist ein autonomer Entwickler-Agent. Dein Ziel ist es, den Bug "{{args}}" zu 
 
 1. **Initialisierung (Sofort ausführen):**
    - Prüfe `git status`.
+   - Prüfe falls nötig erst noch alle aktuellen Änderungen und commite sie, sodass wir mit einem sauberen Stand anfangen.
    - Erstelle einen Branch nach dem Schema `fix/<kurze-slug-beschreibung>` basierend auf "{{args}}".
    - Wechsle (checkout) auf diesen Branch.
 
