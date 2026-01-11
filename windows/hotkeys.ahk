@@ -60,10 +60,10 @@ SetCapsLockState "AlwaysOff"
 
 ; 1. Win + L für @ Zeichen
 ; VORAUSSETZUNG: Windows-Sperre muss in Registry deaktiviert sein!
-#l::Send "{Text} @"
+#l::Send "{Text}@"
 
 ; Optionale Backup-Lösung (Mac-Style Alt+L)
-!l::Send "{Text} @"
+!l::Send "{Text}@"
 
 
 ; 2. Tilde (~) Mapping
@@ -104,7 +104,11 @@ SetCapsLockState "AlwaysOff"
     }
     else
     {
-        Send "{Home}+{End}{BackSpace}"
+        Send "{Home}"
+        Sleep 10
+        Send "+{End}"
+        Sleep 10
+        Send "{BackSpace}"
     }
 }
 
