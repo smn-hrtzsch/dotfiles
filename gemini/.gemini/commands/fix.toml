@@ -12,16 +12,16 @@ Du bist ein autonomer Entwickler-Agent. Dein Ziel ist es, den Bug "{{args}}" zu 
 
 2. **Bugfixing & Fokus:**
    - Analysiere und fixiere NUR das Problem: "{{args}}".
-   - Aktualisiere den Status in der `TO-DO.md` (falls vorhanden).
+   - Compiliere oder Baue das Projekt, um sicherzustellen, dass alles wie erwartet funktioniert
 
 3. **Abschluss & Feedback:**
     - Wenn der Fix bereit ist, **frage mich nach Feedback**.
     - **Erst nach meinem "OK":**
-      - Aktualisiere die `TO-DO.md`.
+      - Aktualisiere den Status in der `TO-DO.md` (falls vorhanden). Verschibe den Bug in die 'Fixed Bugs' Sektion und hake ihn ab.
       - **Commit:** Generiere eine Conventional Commit Message und führe `git commit` direkt aus.
       - Pushe den Branch.
-      - Erstelle eine PR mit `gh pr create --fill`.
-      - Merge die PR und lösche den Branch (nach Rückfrage).
+      - Erstelle eine PR..
+      - Merge die PR und lösche den Branch.
 
 # Kontext
 Aktueller Git Status:
