@@ -41,12 +41,14 @@ SetCapsLockState "AlwaysOff"
 !v::Send "^+v"
 #HotIf
 
-; Global (außer WezTerm): Alt+C -> Ctrl+C, Alt+V -> Ctrl+V
+; Global (außer Terminals): Alt+C -> Ctrl+C, Alt+V -> Ctrl+V, etc.
 ; Dies emuliert das Mac-Verhalten in allen anderen Windows-Apps
-#HotIf not WinActive("ahk_exe wezterm-gui.exe")
+#HotIf not (WinActive("ahk_exe wezterm-gui.exe") or WinActive("ahk_exe WindowsTerminal.exe") or WinActive("ahk_class ConsoleWindowClass"))
 !c::Send "^c"
 !v::Send "^v"
 !a::Send "^a"
+!z::Send "^z"
+!y::Send "^y"
 #HotIf
 
 
@@ -91,6 +93,19 @@ SetCapsLockState "AlwaysOff"
 !+Left::Send "+{Home}"
 !+Right::Send "+{End}"
 
+; 2. Zeile löschen mit ALT + BACKSPACE (Global)
+!Backspace::
+{
+    if WinActive("ahk_exe wezterm-gui.exe") or WinActive("ahk_exe WindowsTerminal.exe") or WinActive("ahk_class ConsoleWindowClass")
+    {
+        Send "^u"
+    }
+    else
+    {
+        Send "{Home}+{End}{BackSpace}"
+    }
+}
+
 ; Nur für Terminals (WezTerm, Windows Terminal, CMD/PowerShell)
 #HotIf WinActive("ahk_exe wezterm-gui.exe") or WinActive("ahk_exe WindowsTerminal.exe") or WinActive("ahk_class ConsoleWindowClass")
 
@@ -103,11 +118,7 @@ SetCapsLockState "AlwaysOff"
 ; Sendet Ctrl+W (Standard in Unix Shells)
 #Backspace::Send "^w"
 
-; 3. Zeile löschen mit ALT + BACKSPACE
-; Sendet Ctrl+U (Unix Shell: Delete to beginning of line)
-!Backspace::Send "^u"
-
-; 4. Shift+Enter -> Neue Zeile ohne Ausführen (Ctrl+J)
+; 3. Shift+Enter -> Neue Zeile ohne Ausführen (Ctrl+J)
 +Enter::Send "^j"
 
 #HotIf
