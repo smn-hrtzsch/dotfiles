@@ -146,24 +146,7 @@ read -r
 # Jetzt führen wir die Aktivierung aus.
 # WICHTIG: Wir rufen dies als normaler User auf! darwin-rebuild kümmert sich selbst um sudo,
 # wenn es nötig ist. Das verhindert, dass Homebrew fälschlicherweise als Root ausgeführt wird.
-
-# Wir deaktivieren temporär 'set -e', um Fehler abzufangen (z.B. App Store Fail)
-set +e
 ./result/sw/bin/darwin-rebuild switch --flake ./nix#MacBook-Air-von-Simon
-EXIT_CODE=$?
-set -e
-
-if [ $EXIT_CODE -ne 0 ]; then
-    echo -e "\n${RED}❌ Ein Fehler ist aufgetreten (oft Homebrew oder App Store).${NC}"
-    echo -e "${YELLOW}Möchtest du das Skript trotzdem beenden (Symlinks aufräumen & Abschluss)? (y/n)${NC}"
-    read -r response
-    if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-        echo -e "${YELLOW}Ignoriere Fehler und fahre fort...${NC}"
-    else
-        echo -e "${RED}Abbruch durch Benutzer.${NC}"
-        exit $EXIT_CODE
-    fi
-fi
 
 # Aufräumen: Symlink entfernen
 rm ./result

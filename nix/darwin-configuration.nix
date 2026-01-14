@@ -144,13 +144,13 @@
     echo "Setting Default Browser to Brave..."
     if command -v /opt/homebrew/bin/duti >/dev/null; then
       # Set Brave as default for http, https, and .html
-      /opt/homebrew/bin/duti -s com.brave.Browser http
-      /opt/homebrew/bin/duti -s com.brave.Browser https
-      /opt/homebrew/bin/duti -s com.brave.Browser .html
-      /opt/homebrew/bin/duti -s com.brave.Browser .pdf
+      /opt/homebrew/bin/duti -s com.brave.Browser http || true
+      /opt/homebrew/bin/duti -s com.brave.Browser https || true
+      /opt/homebrew/bin/duti -s com.brave.Browser .html || true
+      /opt/homebrew/bin/duti -s com.brave.Browser .pdf || true
       
       # Set VS Code as default for .svg
-      /opt/homebrew/bin/duti -s com.microsoft.VSCode .svg
+      /opt/homebrew/bin/duti -s com.microsoft.VSCode .svg || true
     else
       echo "duti not found, skipping default browser configuration."
     fi
