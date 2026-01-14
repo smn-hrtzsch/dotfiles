@@ -21,7 +21,7 @@ Da dieses Repository privat ist, richte zuerst einen SSH-Key ein, um das Reposit
 
     ```bash
     ssh-keygen -t ed25519 -C "simon@hoertzsch.de"
-    cat ~/.ssh/id_ed25519.pub
+    cat ~/.ssh/id_ed25519.pub | pbcopy
     ```
 
     *   Kopiere den Output und füge ihn hier hinzu: [GitHub SSH Keys](https://github.com/settings/ssh/new).
