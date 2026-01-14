@@ -26,7 +26,15 @@ Da dieses Repository privat ist, richte zuerst einen SSH-Key ein, um das Reposit
 
     *   Kopiere den Output und füge ihn hier hinzu: [GitHub SSH Keys](https://github.com/settings/ssh/new).
 
-2.  **Repository klonen:**
+2.  **Xcode Command Line Tools installieren:**
+    Bevor du `git` nutzen kannst, musst du die Basis-Tools von Apple installieren:
+
+    ```bash
+    xcode-select --install
+    ```
+    *Folge dem Dialog am Bildschirm und warte, bis die Installation abgeschlossen ist.*
+
+3.  **Repository klonen:**
 
     ```bash
     git clone git@github.com:smn-hrtzsch/dotfiles.git ~/dotfiles
@@ -34,7 +42,7 @@ Da dieses Repository privat ist, richte zuerst einen SSH-Key ein, um das Reposit
     git checkout chore/nix-migration
     ```
 
-3.  **Bootstrap-Skript starten:**
+4.  **Bootstrap-Skript starten:**
     Dieses Skript installiert automatisch Xcode Tools, Homebrew, Nix und wendet die Konfiguration an.
 
     ```bash
