@@ -54,6 +54,12 @@ fi
 
 # --- 3. Nix Installation ---
 echo -e "${BLUE}>>> 3. Überprüfe Nix Installation...${NC}"
+
+# Versuche Nix Umgebung zu laden, falls vorhanden (fix für Re-Run)
+if [ -e "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh" ]; then
+    . "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh"
+fi
+
 if ! command -v nix &> /dev/null; then
     echo -e "${YELLOW}   Nix nicht gefunden. Installiere Nix (Determinate Systems)...${NC}"
     curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
