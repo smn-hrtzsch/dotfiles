@@ -93,21 +93,19 @@ if [ ! -d "$REPO_DIR" ]; then
     echo -e "${YELLOW}   Klone Repository via SSH...${NC}"
     # StrictHostKeyChecking=no verhindert die "Are you sure..." Frage beim ersten Connect
     git clone git@github.com:smn-hrtzsch/dotfiles.git "$REPO_DIR"
+    cd "$REPO_DIR"
+    echo -e "${YELLOW}   Wechsle auf Branch chore/nix-migration (Standard für Setup)...${NC}"
+    git checkout chore/nix-migration
 else
     echo -e "${GREEN}   ✓ Repository bereits vorhanden. Überspringe Klonen.${NC}"
+    cd "$REPO_DIR"
+    echo -e "${BLUE}   Info: Bleibe auf aktuellem Branch: $(git branch --show-current)${NC}"
 fi
 
-cd "$REPO_DIR"
+# Branch wechseln (NUR FÜR DIE MIGRATIONSPHASE WICHTIG - VERALTET)
+# Wir entfernen den erzwungenen Checkout, damit man auch Test-Branches nutzen kann.
+# Falls man manuell testen will, muss man den Branch vorher wechseln.
 
-# Branch wechseln (NUR FÜR DIE MIGRATIONSPHASE WICHTIG)
-CURRENT_BRANCH=$(git branch --show-current)
-TARGET_BRANCH="chore/nix-migration"
-
-if [ "$CURRENT_BRANCH" != "$TARGET_BRANCH" ]; then
-    echo -e "${YELLOW}   Wechsle auf Branch $TARGET_BRANCH...${NC}"
-    git fetch origin
-    git checkout "$TARGET_BRANCH"
-fi
 
 
 # --- 6. Nix Build anwenden ---
