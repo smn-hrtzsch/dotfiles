@@ -128,10 +128,38 @@ done
 echo -e "${BLUE}>>> 8. Aktiviere System-Konfiguration (nix-darwin switch)...${NC}"
 echo -e "${YELLOW}   Hinweis: sudo Passwort wird für die System-Aktivierung benötigt.${NC}"
 
+# --- App Store Login Reminder ---
+echo -e "\n${YELLOW}⚠️  WICHTIGER HINWEIS ZUM MAC APP STORE ⚠️${NC}"
+echo -e "Das Skript wird gleich versuchen, Apps aus dem App Store zu installieren."
+echo -e "Das Tool 'mas' kann sich NICHT selbst einloggen."
+echo -e "${BLUE}Bitte tue jetzt Folgendes:${NC}"
+echo -e "1. Öffne den Mac App Store."
+echo -e "2. Melde dich mit deiner Apple ID an."
+echo -e "3. Stelle sicher, dass du die Nutzungsbedingungen akzeptiert hast (z.B. indem du testweise eine kostenlose App lädst)."
+echo -e "\n${YELLOW}Drücke [ENTER], sobald du eingeloggt bist (oder wenn du es riskieren willst)...${NC}"
+read -r
+
 # Jetzt führen wir die Aktivierung aus.
 # WICHTIG: Wir rufen dies als normaler User auf! darwin-rebuild kümmert sich selbst um sudo,
 # wenn es nötig ist. Das verhindert, dass Homebrew fälschlicherweise als Root ausgeführt wird.
+
+# Wir deaktivieren temporär 'set -e', um Fehler abzufangen (z.B. App Store Fail)
+set +e
 ./result/sw/bin/darwin-rebuild switch --flake ./nix#MacBook-Air-von-Simon
+EXIT_CODE=$?
+set -e
+
+if [ $EXIT_CODE -ne 0 ]; then
+    echo -e "\n${RED}❌ Ein Fehler ist aufgetreten (oft Homebrew oder App Store).${NC}"
+    echo -e "${YELLOW}Möchtest du das Skript trotzdem beenden (Symlinks aufräumen & Abschluss)? (y/n)${NC}"
+    read -r response
+    if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+        echo -e "${YELLOW}Ignoriere Fehler und fahre fort...${NC}"
+    else
+        echo -e "${RED}Abbruch durch Benutzer.${NC}"
+        exit $EXIT_CODE
+    fi
+fi
 
 # Aufräumen: Symlink entfernen
 rm ./result
