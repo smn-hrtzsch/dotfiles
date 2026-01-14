@@ -18,7 +18,6 @@ in
     zsh-powerlevel10k
     zsh-autosuggestions
     zsh-syntax-highlighting
-    wslu # WSL Utilities (wslview for 'open' command)
     eza
     zoxide
     neofetch
@@ -54,7 +53,9 @@ in
     # ...
   ] ++ (if pkgs.stdenv.isDarwin then [
     pkgs.dockutil # Install dockutil only on macOS
-  ] else []);
+  ] else [
+    pkgs.wslu # WSL Utilities only on Linux
+  ]);
 
   # Programs Configuration
   programs.home-manager.enable = true;
