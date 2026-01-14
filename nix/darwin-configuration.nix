@@ -214,6 +214,13 @@
     # Hide Spotlight Icon
     defaults write com.apple.Spotlight MenuItemHidden -int 1
     
+    # Import Custom Hotkeys (Spotlight disabled, Screenshots, etc.)
+    HOTKEYS_PLIST="/Users/simon/dotfiles/macos/hotkeys.plist"
+    if [ -f "$HOTKEYS_PLIST" ]; then
+      echo "Importing Keyboard Shortcuts..."
+      defaults import com.apple.symbolichotkeys "$HOTKEYS_PLIST"
+    fi
+
     echo "Configuring Terminal.app..."
     # Import Coolnight theme securely via plutil
     TERMINAL_PLIST="$HOME/Library/Preferences/com.apple.Terminal.plist"
