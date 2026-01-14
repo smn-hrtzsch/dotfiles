@@ -213,6 +213,8 @@ in
     extraConfig = {
       init.defaultBranch = "main";
       pull.rebase = true;
+      push.autoSetupRemote = true;
+      core.excludesfile = "~/.gitignore_global";
     };
   };
 
@@ -272,6 +274,10 @@ in
     ".config/raycast".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/raycast";
     ".config/gh".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/gh";
     ".config/neofetch".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/neofetch";
+    
+    # Manual Dotfiles
+    ".ssh/config".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/ssh/config";
+    ".npmrc".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/npm/.npmrc";
   } // (if pkgs.stdenv.isDarwin then {
     ".config/sketchybar".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/sketchybar";
   } else {});

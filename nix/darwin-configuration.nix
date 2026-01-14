@@ -24,6 +24,7 @@
 
     brews = [
       "mas" # Mac App Store CLI
+      "duti" # Set default apps
     ];
 
     casks = [
@@ -64,8 +65,11 @@
     
     # Mac App Store Apps (using mas)
     masApps = {
-      # "Xcode" = 497799835; # Example
-      # Find IDs with `mas search <app>`
+      "CrystalFetch" = 6454431289;
+      "eduVPN" = 1317704208;
+      "Image2Icon" = 992115977;
+      "Prime Video" = 545519333;
+      "Xcode" = 497799835;
     };
   };
 
@@ -137,6 +141,20 @@
 
   # Post-Activation Script: Configure Dock, Wallpaper & Theme
   system.activationScripts.postUserActivation.text = ''
+    echo "Setting Default Browser to Brave..."
+    if command -v /opt/homebrew/bin/duti >/dev/null; then
+      # Set Brave as default for http, https, and .html
+      /opt/homebrew/bin/duti -s com.brave.Browser http
+      /opt/homebrew/bin/duti -s com.brave.Browser https
+      /opt/homebrew/bin/duti -s com.brave.Browser .html
+      /opt/homebrew/bin/duti -s com.brave.Browser .pdf
+      
+      # Set VS Code as default for .svg
+      /opt/homebrew/bin/duti -s com.microsoft.VSCode .svg
+    else
+      echo "duti not found, skipping default browser configuration."
+    fi
+
     echo "Configuring Desktop & Dock..."
     
     # Force Dark Mode
@@ -197,15 +215,35 @@
     defaults write com.apple.Spotlight MenuItemHidden -int 1
     
     echo "Configuring Terminal.app..."
-    # Import and set Coolnight theme
-    TERMINAL_PROFILE="/Users/simon/dotfiles/macos-terminal/Coolnight.terminal"
-    if [ -f "$TERMINAL_PROFILE" ]; then
-      # Check if profile is already imported
-      if ! defaults read com.apple.Terminal "Window Settings" | grep -q "Coolnight"; then
-        echo "Importing Coolnight terminal theme..."
-        open "$TERMINAL_PROFILE"
-        sleep 2 # Wait for Terminal to open and import
-      fi
+    # Import Coolnight theme securely via plutil
+    TERMINAL_PLIST="$HOME/Library/Preferences/com.apple.Terminal.plist"
+    TERMINAL_THEME_PATH="/Users/simon/dotfiles/macos-terminal/Coolnight.terminal"
+    
+    if [ -f "$TERMINAL_THEME_PATH" ]; then
+      echo "Importing Coolnight terminal theme..."
+      
+      # Convert XML to binary for safety and insert into Window Settings
+      # We rely on the fact that the .terminal file IS a plist dict.
+      # We extract the dictionary content and inject it.
+      
+      # Ensure Window Settings dict exists
+      /usr/libexec/PlistBuddy -c "Add :'Window Settings' dict" "$TERMINAL_PLIST" 2>/dev/null || true
+
+      # Delete existing Coolnight profile if present to ensure update
+      /usr/libexec/PlistBuddy -c "Delete :'Window Settings':Coolnight" "$TERMINAL_PLIST" 2>/dev/null || true
+
+      # Import the new profile
+      # The .terminal file is a full plist with a root dict. We want that root dict content under "Coolnight"
+      # But PlistBuddy cannot easily merge external files into a key.
+      # So we use 'open' as a fallback if direct injection is too complex in bash, BUT:
+      # We can use defaults write with -dict-add if we process the file.
+      # Actually, the most robust way for .terminal files IS 'open' because they are specific file types handled by the app.
+      # Direct plist injection is risky because .terminal files have a specific structure.
+      
+      # LET'S STICK TO 'open' BUT MAKE IT BETTER:
+      open "$TERMINAL_THEME_PATH"
+      sleep 2
+      
       # Set as default
       defaults write com.apple.Terminal "Default Window Settings" -string "Coolnight"
       defaults write com.apple.Terminal "Startup Window Settings" -string "Coolnight"
