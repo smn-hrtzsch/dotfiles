@@ -131,7 +131,8 @@ backup-windows() {
   
   if [ -f "$TEMP_FILE" ]; then
     # Compare files while ignoring the line with "CreationDate"
-    if [ ! -f "$TARGET" ] || ! diff -I '"CreationDate"' "$TARGET" "$TEMP_FILE" >/dev/null; then
+    if [ ! -f "$TARGET" ] || ! diff -I '"CreationDate"' "$TARGET" "$TEMP_FILE" >/dev/null;
+ then
       mv "$TEMP_FILE" "$TARGET"
       echo "✅ Done! Update saved to $TARGET"
     else
@@ -142,3 +143,17 @@ backup-windows() {
     echo "❌ Failed to export Windows Apps."
   fi
 }
+
+# --- Clipboard Fix for Gemini CLI ---
+# Enables Ctrl+V to paste from system clipboard.
+# This is needed because we map Cmd+V -> Ctrl+V in Ghostty for image pasting in Gemini.
+function paste-from-clipboard {
+  if command -v pbpaste >/dev/null; then
+    LBUFFER+=$(pbpaste)
+  else
+    # Fallback for Linux/WSL if needed later
+    LBUFFER+=$(xclip -o -selection clipboard 2>/dev/null || wl-paste 2>/dev/null)
+  fi
+}
+zle -N paste-from-clipboard
+bindkey '^V' paste-from-clipboard
