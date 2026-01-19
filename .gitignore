@@ -56,3 +56,4 @@ gemini/.gemini/history/
 gemini/.gemini/tmp/
 .gemini-clipboard/
 config/.config/gh/hosts.yml
+gemini/.gemini/extensions
