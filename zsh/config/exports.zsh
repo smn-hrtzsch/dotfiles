@@ -57,4 +57,6 @@ if [[ "$(uname)" == "Linux" ]]; then
     export ANDROID_SDK_ROOT="$ANDROID_HOME"
     export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/cmdline-tools/tools/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/35.0.0:$PATH"
 fi
-\n# Antigravity\nexport PATH="/Users/simon/.antigravity/antigravity/bin:$PATH"
+
+# Antigravity
+export PATH="/Users/simon/.antigravity/antigravity/bin:$PATH"
