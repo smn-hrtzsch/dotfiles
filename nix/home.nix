@@ -46,6 +46,9 @@ in
     # Java
     openjdk21
 
+    # .NET
+    dotnet-sdk_9
+
     # Android
     android-tools
 
