@@ -86,3 +86,4 @@ fi
 if [ -f "$HOME/.zshrc_secrets" ]; then
     source "$HOME/.zshrc_secrets"
 fi
+ 
