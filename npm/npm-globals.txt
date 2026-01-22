@@ -1,3 +1,4 @@
 @github/copilot
 @google/gemini-cli
 firebase-tools
+opencode-ai
