@@ -1,0 +1,1 @@
+Wenn du Sachen installierst, während du dich in diesem Repo befindest, solltest du vorher überlgen, ob es sinnvoller ist, sie einfach zur Nix-Konfiguration hinzuzufügen und dann das Setup mit Nix neu zu bauen.
