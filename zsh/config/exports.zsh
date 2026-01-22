@@ -60,3 +60,6 @@ fi
 
 # Antigravity
 export PATH="/Users/simon/.antigravity/antigravity/bin:$PATH"
+
+# Opencode default editor
+export EDITOR="code --wait"

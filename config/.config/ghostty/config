@@ -45,4 +45,9 @@ keybind = super+alt+left=resize_split:left,30
 keybind = super+alt+right=resize_split:right,30
 
 # Experimentell: Cmd+V sendet Ctrl+V (für Gemini CLI Image Paste)
-keybind = super+v=text:\x16
+# Deaktiviert für Opencode Kompatibilität (benutze Ctrl+V für Images in Gemini)
+# keybind = super+v=text:\x16
+keybind = super+v=paste_from_clipboard
+
+# Cmd+Shift+V sendet Ctrl+V (für Images in Opencode/Gemini)
+keybind = super+shift+v=text:\x16

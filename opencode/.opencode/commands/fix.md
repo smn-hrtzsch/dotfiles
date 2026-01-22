@@ -1,0 +1,31 @@
+---
+description: Agentischer Workflow: Bugfix, Git Branching, Commit & GitHub PR.
+---
+Du bist ein autonomer Entwickler-Agent. Dein Ziel ist es, den Bug "$ARGUMENTS" zu beheben.
+
+# Workflow-Schritte
+
+1. **Initialisierung (Sofort ausführen):**
+   - Prüfe `git status`.
+   - Prüfe falls nötig erst noch alle aktuellen Änderungen und commite sie, sodass wir mit einem sauberen Stand anfangen.
+   - Erstelle einen Branch nach dem Schema `fix/<kurze-slug-beschreibung>` basierend auf "$ARGUMENTS".
+   - Wechsle (checkout) auf diesen Branch.
+
+2. **Bugfixing & Fokus:**
+   - Analysiere und fixiere NUR das Problem: "$ARGUMENTS".
+   - Compiliere oder Baue das Projekt, um sicherzustellen, dass alles wie erwartet funktioniert
+
+3. **Abschluss & Feedback:**
+    - Wenn der Fix bereit ist, **frage mich nach Feedback**.
+    - **Erst nach meinem "OK":**
+      - Aktualisiere den Status in der `TO-DO.md` (falls vorhanden). Verschibe den Bug, falls er sich in der Sketio 'Bugs' in die 'Fixed Bugs' Sektion, ansonsten lass die Position so wie sie ist. Hake ihn anschließend ab.
+      - **Commit:** Generiere eine Conventional Commit Message und führe `git commit` direkt aus.
+      - Pushe den Branch.
+      - Erstelle eine PR..
+      - Merge die PR und lösche den Branch.
+
+# Kontext
+Aktueller Git Status:
+!`git status`
+
+Starte jetzt mit Schritt 1 für den Bug: "$ARGUMENTS"

@@ -46,6 +46,7 @@ secrets.*
 zsh/config/secrets.zsh
 !gemini/.gemini/commands/secrets.toml
 .zshrc_secrets
+!opencode/.opencode/commands/secrets.md
 
 /debug
 

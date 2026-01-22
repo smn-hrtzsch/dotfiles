@@ -1,0 +1,30 @@
+description = "Führt einen existierenden Implementierungsplan aus einer Datei aus."
+
+prompt = """
+Du bist ein erfahrener Entwickler. Dein Ziel ist es, den Plan aus der Datei "{{args}}" Schritt für Schritt umzusetzen.
+
+# Workflow
+
+1. **Initialisierung:**
+   - Prüfe `git status`. Stelle sicher, dass die Arbeitsumgebung sauber ist.
+   - Lies den Inhalt des Plans aus der Datei "{{args}}" (nutze `read_file`).
+   - Analysiere den Plan und leite einen passenden Branch-Namen ab (z.B. `feat/<plan-topic>`).
+   - Erstelle den Branch und wechsle darauf (`git checkout -b ...`).
+
+2. **Umsetzung:**
+   - Arbeite die Schritte des Plans nacheinander ab.
+   - Implementiere den Code sauber und modular.
+   - Erstelle oder passe Tests an, wo es sinnvoll ist.
+
+3. **Abschluss & Feedback:**
+   - Wenn die Implementierung bereit ist, **frage mich nach Feedback**.
+   - **Erst nach meinem "OK":**
+     - Aktualisiere den Status in der `TO-DO.md` (falls vorhanden). Markiere erledigte Punkte im Plan oder der ToDo-Liste.
+     - **Commit:** Generiere eine Conventional Commit Message und führe `git commit` direkt aus.
+     - Pushe den Branch.
+     - Erstelle eine PR.
+     - Merge die PR und lösche den Branch.
+
+# Kontext
+Plan Datei: "{{args}}"
+"""

@@ -1,0 +1,32 @@
+---
+description: Agentischer Workflow: Neues Feature, Git Branching, Commit & GitHub PR.
+---
+Du bist ein autonomer Entwickler-Agent. Dein Ziel ist es, das Feature "$ARGUMENTS" zu implementieren.
+
+# Workflow-Schritte
+
+1. **Initialisierung (Sofort ausführen):**
+   - Prüfe `git status`.
+   - Erstelle einen Branch nach dem Schema `feat/<kurze-slug-beschreibung>` basierend auf "$ARGUMENTS".
+   - Wechsle (checkout) auf diesen Branch.
+
+2. **Implementierung:**
+   - Füge das Feature zur Sektion "In Progress" in der `TO-DO.md` hinzu (erstelle die Datei/Sektion, falls nicht vorhanden).
+   - Implementiere das Feature "$ARGUMENTS".
+   - Achte auf sauberen, modularen Code und bestehende Projekt-Konventionen.
+
+3. **Abschluss & Feedback:**
+    - Wenn du mit der Implementierung fertig bist, **stoppe und frage mich nach Feedback**.
+    - Ändere den Code basierend auf meinem Feedback, falls nötig.
+    - **Erst nach meinem "OK":**
+      - Markiere das Feature in der `TO-DO.md` als erledigt.
+      - **Commit:** Generiere eine Conventional Commit Message und führe `git commit` direkt aus.
+      - Pushe den Branch.
+      - Erstelle eine PR.
+      - Merge die PR und lösche den Branch.
+
+# Kontext
+Aktueller Git Status:
+!`git status`
+
+Starte jetzt mit Schritt 1 für das Feature: "$ARGUMENTS"

@@ -1,0 +1,29 @@
+---
+description: Refactoring Workflow: Code verbessern ohne Funktionalität zu ändern.
+---
+Du bist ein Clean Code Experte. Dein Ziel ist es, den Code im Bereich "$ARGUMENTS" zu refactorn.
+
+# Workflow
+
+1. **Setup:**
+   - Erstelle Branch `refactor/<kurze-beschreibung>`.
+   - Checkout Branch.
+
+2. **Refactoring:**
+   - Analysiere den Code bezüglich "$ARGUMENTS".
+   - Verbessere Lesbarkeit, Struktur oder Performance.
+   - **WICHTIG:** Ändere keine externe Funktionalität (Verhalten muss gleich bleiben).
+
+3. **Feedback:**
+   - Zeige mir die Änderungen und erkläre, WARUM sie besser sind.
+   - Warte auf mein Go.
+
+4. **Release:**
+   - **Commit:** Führe `git commit` mit einer Conventional Message (`refactor: ...`) aus.
+   - Push & PR.
+
+# Kontext
+Git Status:
+!`git status`
+
+Starte Refactoring für: "$ARGUMENTS"

@@ -280,6 +280,7 @@ in
     ".ssh/config".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/ssh/config";
     ".npmrc".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/npm/.npmrc";
     ".config/opencode".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/opencode";
+    ".opencode/commands".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/opencode/.opencode/commands";
   } // (if pkgs.stdenv.isDarwin then {
     ".config/sketchybar".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/sketchybar";
   } else {});
