@@ -30,6 +30,7 @@
     casks = [
       # Browsers
       "brave-browser"
+      "helium-browser"
 
       # Development
       "visual-studio-code"
