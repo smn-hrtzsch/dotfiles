@@ -271,8 +271,11 @@ in
     # Link p10k config directly to home
     ".p10k.zsh".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/zsh/.p10k.zsh";
     
-    # Gemini CLI Config
-    ".gemini".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/gemini/.gemini";
+    # Gemini CLI Config (individual files/dirs to preserve local state like oauth, history)
+    ".gemini/commands".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/gemini/.gemini/commands";
+    ".gemini/GEMINI.md".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/gemini/.gemini/GEMINI.md";
+    ".gemini/settings.json".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/gemini/.gemini/settings.json";
+    ".gemini/skills".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/gemini/.gemini/skills";
     
     # sketchybar is macOS only
     ".config/raycast".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/raycast";
