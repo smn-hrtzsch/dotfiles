@@ -56,6 +56,10 @@ if [[ "$(uname)" == "Linux" ]]; then
     export ANDROID_HOME="$HOME/Android/Sdk"
     export ANDROID_SDK_ROOT="$ANDROID_HOME"
     export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/cmdline-tools/tools/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/35.0.0:$PATH"
+    
+    # .NET (Linux/WSL) - Prefer local writable install for workload management
+    export DOTNET_ROOT=$HOME/.dotnet
+    export PATH=$DOTNET_ROOT:$DOTNET_ROOT/tools:$PATH
 fi
 
 # Antigravity

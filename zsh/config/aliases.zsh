@@ -108,6 +108,9 @@ alias run_capy_card_on_ios='
   xcrun simctl launch 93967CA2-E319-4C19-8212-E675A99A65BA com.CapyCode.CapyCard
 '
 
+alias run_capycard_on_android='run_capy_card_on_android'
+
+
 # --- OS Specific Aliases ---
 if [[ "$(uname)" != "Darwin" ]]; then
     # WSL / Linux Clipboard Integration
