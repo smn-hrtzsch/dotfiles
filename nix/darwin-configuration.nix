@@ -48,6 +48,7 @@
       # Tools
       "notion"
       "spotify"
+      "bitwarden"
       "google-drive"
       "maccy"
       "appcleaner"
@@ -174,6 +175,7 @@
       
       # Apps to add to the dock
       apps=(
+        "/Applications/Helium.app"
         "/Applications/Brave Browser.app"
         "/Applications/Ghostty.app"
         "/Applications/Notion.app"
@@ -184,6 +186,7 @@
         "/Applications/Android Studio.app"
         "/System/Applications/System Settings.app"
         "/Applications/AppCleaner.app"
+        "/Applications/Bitwarden.app"
       )
 
       # Clear existing dock
