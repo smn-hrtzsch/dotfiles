@@ -1,7 +1,7 @@
 # ---- Aliases ----
 
 # Standard Tools Ersatz
-alias ls="eza --icons=always -la"
+alias ls="eza --icons=always -laa --links --group"
 alias cd="z"
 
 # Navigation
