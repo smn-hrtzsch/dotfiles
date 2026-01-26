@@ -275,7 +275,7 @@ in
     ".gemini/commands".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/gemini/.gemini/commands";
     ".gemini/GEMINI.md".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/gemini/.gemini/GEMINI.md";
     ".gemini/settings.json".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/gemini/.gemini/settings.json";
-    ".gemini/skills".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/gemini/.gemini/skills";
+    ".gemini/skills".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/anthropic-skills/skills";
     
     # sketchybar is macOS only
     ".config/raycast".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/raycast";
