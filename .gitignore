@@ -53,6 +53,7 @@ zsh/config/secrets.zsh
 # Gemini local & sensitive files
 gemini/.gemini/google_accounts.json
 gemini/.gemini/oauth_creds.json
+gemini/.gemini/installation_id
 gemini/.gemini/history/
 gemini/.gemini/tmp/
 .gemini-clipboard/
