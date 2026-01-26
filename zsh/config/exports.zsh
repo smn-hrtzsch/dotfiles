@@ -65,5 +65,9 @@ fi
 # Antigravity
 export PATH="/Users/simon/.antigravity/antigravity/bin:$PATH"
 
+# Bun
+export BUN_INSTALL="$HOME/.bun"
+[[ -d $BUN_INSTALL/bin ]] && export PATH="$BUN_INSTALL/bin:$PATH"
+
 # Opencode default editor
 export EDITOR="code --wait"

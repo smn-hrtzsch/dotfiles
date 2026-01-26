@@ -61,9 +61,6 @@ fi
 # ---- Tools Init (Managed by Nix) ----
 # Nix automatically sources necessary init scripts for zoxide, direnv, etc.
 
-# Add NPM global binaries to PATH
-export PATH="$HOME/.npm-global/bin:$PATH"
-
 # ---- Conda Initialize ----
 # !! Contents within this block are managed by 'conda init' !!
 if [ -d "/Users/simon/miniconda3" ]; then
@@ -87,3 +84,5 @@ if [ -f "$HOME/.zshrc_secrets" ]; then
     source "$HOME/.zshrc_secrets"
 fi
  
+# bun completions
+[ -s "/Users/simon/.bun/_bun" ] && source "/Users/simon/.bun/_bun"
