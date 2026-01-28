@@ -18,7 +18,7 @@ Du bist ein autonomer Entwickler-Agent. Dein Ziel ist es, den Bug "$ARGUMENTS" z
 3. **Abschluss & Feedback:**
     - Wenn der Fix bereit ist, **frage mich nach Feedback**.
     - **Erst nach meinem "OK":**
-      - Aktualisiere den Status in der `TO-DO.md` (falls vorhanden). Verschiebe den Bug, falls er sich in der Sektion 'Bugs' in die 'Fixed Bugs' Sektion, ansonsten lass die Position so wie sie ist. Hake ihn anschließend ab.
+      - Aktualisiere den Status in der `TO-DO.md` (falls vorhanden). Verschiebe den Bug, falls er sich in der Sektion 'Bugs' in die 'Fixed Bugs' Sektion, ansonsten lass die Position so wie sie ist. Hake ihn anschließend ab. Achte darauf, dass du nur den behobenen Bug verschiebst und nicht andere Einträge löschst oder veränderst.
       - **Commit:** Generiere eine Conventional Commit Message und führe `git commit` direkt aus.
       - Pushe den Branch.
       - Erstelle eine PR..
