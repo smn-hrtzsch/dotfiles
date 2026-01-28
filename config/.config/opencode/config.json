@@ -6,7 +6,7 @@
     }
   },
   "permission": {
-    "edit": "ask",
+    "edit": "allow",
     "bash": {
       "*": "ask",
       "ls": "allow",
@@ -32,7 +32,8 @@
       "node -v": "allow",
       "npm -v": "allow",
       "python --version": "allow",
-      "python3 --version": "allow"
+      "python3 --version": "allow",
+      "dotnet *": "allow"
     }
   },
   "plugin": ["opencode-gemini-auth@latest"]
