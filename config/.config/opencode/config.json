@@ -33,7 +33,9 @@
       "npm -v": "allow",
       "python --version": "allow",
       "python3 --version": "allow",
-      "dotnet *": "allow"
+      "dotnet *": "allow",
+      "head *": "allow",
+      "tail *": "allow"
     }
   },
   "plugin": ["opencode-gemini-auth@latest"]
