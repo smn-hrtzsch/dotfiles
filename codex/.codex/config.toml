@@ -58,6 +58,7 @@ I follow the **Conventional Commits 1.0.0** specification:
   - Add `BREAKING CHANGE: <description>` in the footer.
 - **Rules:** English, imperative description ("add" not "added"), no trailing period in header.
 """
+model_reasoning_effort = "medium"
 
 [features]
 unified_exec = true
