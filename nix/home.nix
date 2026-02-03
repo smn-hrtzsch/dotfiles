@@ -198,6 +198,14 @@ in
     fi
   '';
 
+  home.activation.stowCodex = config.lib.dag.entryAfter ["writeBoundary"] ''
+    if command -v stow >/dev/null 2>&1; then
+      if [[ -d "${dotfilesDir}/codex" ]]; then
+        stow --restow -d "${dotfilesDir}" -t "${homeDirectory}" codex
+      fi
+    fi
+  '';
+
   # Automatically run Android SDK setup on Linux
   home.activation.setupAndroid = config.lib.dag.entryAfter ["writeBoundary"] ''
     if [[ "$(uname)" == "Linux" ]]; then
