@@ -241,15 +241,7 @@ in
     fi
   '';
 
-  home.activation.stowCodex = config.lib.dag.entryAfter ["writeBoundary"] ''
-    if command -v stow >/dev/null 2>&1; then
-      if [[ -d "${dotfilesDir}/codex" ]]; then
-        stow --restow -d "${dotfilesDir}" -t "${config.home.homeDirectory}" codex
-      fi
-    fi
-  '';
-
-  home.activation.syncCodexSkills = config.lib.dag.entryAfter ["stowCodex"] ''
+  home.activation.syncCodexSkills = config.lib.dag.entryAfter ["writeBoundary"] ''
     if [[ -d "${dotfilesDir}/anthropic-skills/skills" ]]; then
       mkdir -p "$HOME/.codex/skills"
       for skill in "${dotfilesDir}/anthropic-skills/skills"/*; do
@@ -285,5 +277,18 @@ in
     ".npmrc".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/npm/.npmrc";
     ".config/opencode".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/opencode";
     ".opencode/commands".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/opencode/.opencode/commands";
+
+    # Codex config and custom skills (managed via Home Manager)
+    ".codex/config.toml".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/config.toml";
+    ".codex/AGENTS.md".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/AGENTS.md";
+
+    ".codex/skills/opencode-commit".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-commit";
+    ".codex/skills/opencode-execute".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-execute";
+    ".codex/skills/opencode-feature".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-feature";
+    ".codex/skills/opencode-fix".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-fix";
+    ".codex/skills/opencode-plan".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-plan";
+    ".codex/skills/opencode-refactor".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-refactor";
+    ".codex/skills/opencode-review".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-review";
+    ".codex/skills/opencode-secrets".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-secrets";
   };
 }

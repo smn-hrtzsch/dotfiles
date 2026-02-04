@@ -136,7 +136,12 @@ echo "⚙️ Applying Nix Configuration..."
 cd ~/dotfiles
 # Ensure we are on the right branch/flake
 # git checkout __BRANCH__
-nix run home-manager/master -- switch --flake ./nix#wsl
+ARCH=$(uname -m)
+TARGET="wsl"
+if [[ "$ARCH" == "aarch64" || "$ARCH" == "arm64" ]]; then
+  TARGET="wsl-aarch64"
+fi
+nix run home-manager/master -- switch --flake ./nix#$TARGET
 
 echo "✅ Setup Complete! Please restart your shell."
 EOS

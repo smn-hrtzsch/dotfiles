@@ -35,7 +35,14 @@ rebuild_linux() {
 }
 
 rebuild_wsl() {
-  nix run home-manager/master -- switch --flake "$HOME/dotfiles/nix#wsl"
+  local arch
+  local target
+  arch=$(uname -m)
+  target="wsl"
+  if [[ "$arch" == "aarch64" || "$arch" == "arm64" ]]; then
+    target="wsl-aarch64"
+  fi
+  nix run home-manager/master -- switch --flake "$HOME/dotfiles/nix#$target"
 }
 
 rebuild_auto() {
@@ -204,12 +211,16 @@ update-system() {
     rebuild_auto
     
     # Update WezTerm Link & Windows Apps (WSL only)
-    if [[ "$(uname)" != "Darwin" ]]; then
-       if [ -f "$DOTFILES/scripts/link_wezterm.sh" ]; then
-          "$DOTFILES/scripts/link_wezterm.sh"
+    if is_wsl; then
+       if command -v powershell.exe >/dev/null 2>&1; then
+          if [ -f "$DOTFILES/scripts/link_wezterm.sh" ]; then
+             "$DOTFILES/scripts/link_wezterm.sh"
+          fi
+          # Automatically backup Windows Apps
+          backup-windows
+       else
+          echo "⚠️  powershell.exe not found, skipping Windows integration steps."
        fi
-       # Automatically backup Windows Apps
-       backup-windows
     fi
 
     echo "✅ Update Complete! Reloading shell..."

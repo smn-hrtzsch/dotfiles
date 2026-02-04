@@ -64,6 +64,22 @@
         };
       };
 
+      # WSL Configuration (ARM64)
+      homeConfigurations."wsl-aarch64" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.aarch64-linux;
+        modules = [
+          ./home.nix
+        ];
+        extraSpecialArgs = {
+          inherit inputs;
+          username = username;
+          homeDirectory = linuxHome;
+          gitUserName = gitUserName;
+          gitUserEmail = gitUserEmail;
+          isWSL = true;
+        };
+      };
+
       # Generic Linux Configuration (x86_64)
       homeConfigurations."linux-x86_64" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
