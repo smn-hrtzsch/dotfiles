@@ -78,6 +78,12 @@ Dieses Setup funktioniert auf den meisten Linux-Distributionen (getestet auf Ubu
 3.  **Folge den Anweisungen:**
     Das Skript installiert Nix, klont das Repo und fragt dich nach deinem Username und Git-Details, um die Konfiguration anzupassen.
 
+    Falls `nix` danach nicht gefunden wird, fuehre einmal aus:
+
+    ```bash
+    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+    ```
+
 **Hinweis zu ARM64 (Apple Silicon / aarch64):**
 Einige proprietaere Apps sind auf ARM64 in nixpkgs nicht verfuegbar.
 Auf ARM64 installiert das Setup daher Alternativen (z.B. Firefox und VSCodium) und laesst nicht-verfuegbare Apps aus.

@@ -50,6 +50,32 @@ else
     echo -e "${GREEN}   ✓ Nix already installed.${NC}"
 fi
 
+# Ensure Nix is available in this shell and future shells
+if [ -e "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh" ]; then
+    . "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh"
+fi
+
+if ! command -v nix &> /dev/null; then
+    echo -e "${YELLOW}   Nix is installed but not on PATH. Fixing shell profiles...${NC}"
+    for shellrc in "$HOME/.bashrc" "$HOME/.zshrc"; do
+        if [ ! -f "$shellrc" ]; then
+            touch "$shellrc"
+        fi
+        if ! grep -q "nix-daemon.sh" "$shellrc"; then
+            {
+              echo ""
+              echo "# Nix"
+              echo ". /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh"
+            } >> "$shellrc"
+        fi
+    done
+
+    # Try once more in current shell
+    if [ -e "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh" ]; then
+        . "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh"
+    fi
+fi
+
 # --- 3. Clone Repository ---
 REPO_DIR="$HOME/dotfiles"
 echo -e "${BLUE}>>> 3. Setting up Dotfiles Repo...${NC}"
