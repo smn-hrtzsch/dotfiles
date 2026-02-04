@@ -330,7 +330,7 @@ in
   '';
 
   home.activation.applyGnomeTerminalTheme = config.lib.dag.entryAfter ["writeBoundary"] ''
-    if command -v gsettings >/dev/null 2>&1 && [[ -n "${DBUS_SESSION_BUS_ADDRESS:-}" ]]; then
+    if command -v gsettings >/dev/null 2>&1 && [[ -n "$DBUS_SESSION_BUS_ADDRESS" ]]; then
       profile_id=$(gsettings get org.gnome.Terminal.ProfilesList default | tr -d "'")
       if [[ -n "$profile_id" ]]; then
         profile_path="/org/gnome/terminal/legacy/profiles:/:$profile_id/"
