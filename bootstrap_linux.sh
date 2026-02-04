@@ -96,9 +96,24 @@ echo -e "${GREEN}   ✓ Configuration updated.${NC}"
 # --- 5. Apply Configuration ---
 echo -e "${BLUE}>>> 5. Applying Nix Configuration (Home Manager)...${NC}"
 
+# Detect Architecture
+ARCH=$(uname -m)
+FLAKE_ATTR=""
+
+if [[ "$ARCH" == "x86_64" ]]; then
+    FLAKE_ATTR="linux-x86_64"
+    echo -e "${GREEN}   Detected x86_64 architecture.${NC}"
+elif [[ "$ARCH" == "aarch64" ]] || [[ "$ARCH" == "arm64" ]]; then
+    FLAKE_ATTR="linux-aarch64"
+    echo -e "${GREEN}   Detected ARM64 architecture.${NC}"
+else
+    echo -e "${RED}   Unsupported architecture: $ARCH. Please check nix/flake.nix.${NC}"
+    exit 1
+fi
+
 # Run Home Manager via nix run
-# We use the 'linux' output we created
-nix run home-manager/master -- switch --flake ./nix#linux
+echo -e "${BLUE}   Building configuration for ${FLAKE_ATTR}...${NC}"
+nix run home-manager/master -- switch --flake ./nix#${FLAKE_ATTR}
 
 # --- 6. Set Default Shell ---
 echo -e "${BLUE}>>> 6. Configuring Shell...${NC}"

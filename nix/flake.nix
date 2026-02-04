@@ -64,9 +64,25 @@
         };
       };
 
-      # Generic Linux Configuration
-      homeConfigurations."linux" = home-manager.lib.homeManagerConfiguration {
+      # Generic Linux Configuration (x86_64)
+      homeConfigurations."linux-x86_64" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [ 
+          ./home.nix 
+        ];
+        extraSpecialArgs = {
+          inherit inputs;
+          username = username;
+          homeDirectory = linuxHome;
+          gitUserName = gitUserName;
+          gitUserEmail = gitUserEmail;
+          isWSL = false;
+        };
+      };
+
+      # Generic Linux Configuration (ARM64 / AArch64) - For VMs on Mac
+      homeConfigurations."linux-aarch64" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.aarch64-linux;
         modules = [ 
           ./home.nix 
         ];
