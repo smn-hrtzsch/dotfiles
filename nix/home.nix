@@ -81,7 +81,7 @@ in
     pkgs.nerd-fonts.jetbrains-mono
   ] ++ (if (pkgs.stdenv.isLinux && !isWSL) then [
     # Desktop integration (Linux only)
-    pkgs.xdg-utils 
+    pkgs.xdg-utils
   ] else []);
 
   # Allow unfree packages (VS Code, Spotify, etc.)
