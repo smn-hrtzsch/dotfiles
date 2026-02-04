@@ -12,6 +12,8 @@ NC='\033[0m' # No Color
 
 # Branch to use (default: current dev branch)
 DOTFILES_BRANCH="${DOTFILES_BRANCH:-feat/linux-support}"
+# Darwin flake hostname (default to main machine)
+DARWIN_HOST="${DARWIN_HOST:-MacBook-Air-von-Simon}"
 
 echo -e "${BLUE}>>> Start Bootstrap für macOS Dotfiles Setup (Nix Edition)...${NC}"
 
@@ -157,7 +159,7 @@ read -r
 # Jetzt führen wir die Aktivierung aus.
 # WICHTIG: Wir rufen dies als normaler User auf! darwin-rebuild kümmert sich selbst um sudo,
 # wenn es nötig ist. Das verhindert, dass Homebrew fälschlicherweise als Root ausgeführt wird.
-sudo ./result/sw/bin/darwin-rebuild switch --flake ./nix#MacBook-Air-von-Simon
+sudo ./result/sw/bin/darwin-rebuild switch --flake ./nix#${DARWIN_HOST}
 
 # Aufräumen: Symlink entfernen
 rm ./result

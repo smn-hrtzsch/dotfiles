@@ -11,7 +11,13 @@ fzfc() {
 
 # --- Rebuild Helpers ---
 is_wsl() {
-  [[ -n "$WSL_DISTRO_NAME" ]] || grep -qi microsoft /proc/sys/kernel/osrelease 2>/dev/null
+  if [[ -n "$WSL_DISTRO_NAME" ]]; then
+    return 0
+  fi
+  if grep -qi microsoft /proc/sys/kernel/osrelease 2>/dev/null && [ -d /mnt/c/Windows ]; then
+    return 0
+  fi
+  return 1
 }
 
 rebuild_macos() {
@@ -22,10 +28,11 @@ rebuild_macos() {
   fi
   local user_home="$HOME"
   local dr="/run/current-system/sw/bin/darwin-rebuild"
+  local host="${DARWIN_HOST:-MacBook-Air-von-Simon}"
   if [ ! -x "$dr" ]; then
     dr="$(command -v darwin-rebuild)"
   fi
-  sudo "$dr" switch --flake "$user_home/dotfiles/nix"
+  sudo "$dr" switch --flake "$user_home/dotfiles/nix#$host"
 }
 
 rebuild_linux() {
