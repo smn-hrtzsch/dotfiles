@@ -32,7 +32,7 @@ rebuild_macos() {
   if [ ! -x "$dr" ]; then
     dr="$(command -v darwin-rebuild)"
   fi
-  sudo "$dr" switch --flake "$user_home/dotfiles/nix#$host"
+  sudo -H "$dr" switch --flake "$user_home/dotfiles/nix#$host"
 }
 
 rebuild_linux() {

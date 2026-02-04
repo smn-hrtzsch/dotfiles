@@ -159,7 +159,7 @@ read -r
 # Jetzt führen wir die Aktivierung aus.
 # WICHTIG: Wir rufen dies als normaler User auf! darwin-rebuild kümmert sich selbst um sudo,
 # wenn es nötig ist. Das verhindert, dass Homebrew fälschlicherweise als Root ausgeführt wird.
-sudo ./result/sw/bin/darwin-rebuild switch --flake ./nix#${DARWIN_HOST}
+sudo -H ./result/sw/bin/darwin-rebuild switch --flake ./nix#${DARWIN_HOST}
 
 # Aufräumen: Symlink entfernen
 rm ./result

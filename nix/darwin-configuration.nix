@@ -2,6 +2,13 @@
 
 let
   dotfilesDir = "${darwinHome}/dotfiles";
+  masApps = {
+    "CrystalFetch" = 6454431289;
+    "eduVPN" = 1317704208;
+    "Image2Icon" = 992115977;
+    "Prime Video" = 545519333;
+    "Xcode" = 497799835;
+  };
 in
 {
   # Enable Zsh
@@ -70,14 +77,6 @@ in
       "font-symbols-only-nerd-font"
     ];
     
-    # Mac App Store Apps (using mas)
-    masApps = {
-      "CrystalFetch" = 6454431289;
-      "eduVPN" = 1317704208;
-      "Image2Icon" = 992115977;
-      "Prime Video" = 545519333;
-      "Xcode" = 497799835;
-    };
   };
 
   # System Defaults
@@ -267,6 +266,21 @@ in
 
     # Restart SystemUIServer to apply
     killall SystemUIServer || true
+  '';
+
+  # Optional Mac App Store installs (skip if not signed in)
+  system.activationScripts.masApps.text = ''
+    MAS_BIN="${config.homebrew.brewPrefix}/mas"
+    if [ -x "$MAS_BIN" ]; then
+      if sudo -H -u ${username} "$MAS_BIN" account >/dev/null 2>&1; then
+        echo "Installing Mac App Store apps (optional)..."
+${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: id: "        sudo -H -u ${username} \"$MAS_BIN\" install ${toString id} || true") masApps)}
+      else
+        echo "mas not logged in, skipping App Store installs."
+      fi
+    else
+      echo "mas not found, skipping App Store installs."
+    fi
   '';
 
   # Run Homebrew Bundle as the real user (not root)
