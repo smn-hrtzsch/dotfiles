@@ -73,6 +73,7 @@ in
     pkgs.copyq   # Clipboard manager (Maccy alternative)
     pkgs.rclone  # Cloud storage (Google Drive etc.)
     pkgs.p7zip   # Archive tool (The Unarchiver alternative)
+    pkgs.android-studio # IDE
     
     # Fonts
     pkgs.nerd-fonts.meslo-lg
@@ -105,11 +106,15 @@ in
         favorite-apps = [
           "org.gnome.Nautilus.desktop"       # Finder equivalent
           "brave-browser.desktop"
-          "com.mitchellh.ghostty.desktop"    # Ghostty
-          "code.desktop"                     # VS Code
-          "spotify.desktop"
+          "com.mitchellh.ghostty.desktop"
+          # "notion.desktop"                 # Skipped (not in nixpkgs)
           "thunderbird.desktop"
+          "whatsapp-for-linux.desktop"
+          "spotify.desktop"
+          "code.desktop"
+          "android-studio.desktop"
           "org.gnome.Settings.desktop"
+          "bitwarden.desktop"
         ];
       };
       
