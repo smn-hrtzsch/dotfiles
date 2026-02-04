@@ -65,10 +65,24 @@ in
     pkgs.spotify
     pkgs.thunderbird
     pkgs.bitwarden
-    # pkgs.notion-app-enhanced # Often broken/unmaintained in nixpkgs, prefer web or snap if needed
+    # pkgs.notion-app-enhanced 
     pkgs.whatsapp-for-linux
     pkgs.zoom-us
     pkgs.localsend
+    pkgs.ghostty # Terminal
+    pkgs.copyq   # Clipboard manager (Maccy alternative)
+    pkgs.rclone  # Cloud storage (Google Drive etc.)
+    pkgs.p7zip   # Archive tool (The Unarchiver alternative)
+    
+    # Fonts
+    pkgs.nerd-fonts.meslo-lg
+    pkgs.nerd-fonts.fira-code
+    pkgs.nerd-fonts.jetbrains-mono
+  ]);
+
+  # Allow unfree packages (VS Code, Spotify, etc.)
+  nixpkgs.config.allowUnfree = true;
+
     
     # Desktop integration
     pkgs.xdg-utils # xdg-open etc
