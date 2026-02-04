@@ -138,9 +138,6 @@ in
     ".local/share/backgrounds/wallpaper.jpg".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/macos/wallpaper.jpg";
   } else {});
 
-  # Allow unfree packages (VS Code, Spotify, etc.)
-  nixpkgs.config.allowUnfree = true;
-
   # Programs Configuration
   programs.home-manager.enable = true;
   
