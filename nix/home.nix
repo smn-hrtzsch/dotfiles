@@ -83,6 +83,53 @@ in
   # Allow unfree packages (VS Code, Spotify, etc.)
   nixpkgs.config.allowUnfree = true;
 
+  # --- Linux Desktop Configuration (GNOME) ---
+  # Applies only on Linux (not WSL, not macOS)
+  dconf = if (pkgs.stdenv.isLinux && !isWSL) then {
+    enable = true;
+    settings = {
+      # Dark Mode & Theme
+      "org/gnome/desktop/interface" = {
+        color-scheme = "prefer-dark";
+        gtk-theme = "Adwaita-dark";
+      };
+
+      # Wallpaper
+      "org/gnome/desktop/background" = {
+        picture-uri = "file://${homeDirectory}/.local/share/backgrounds/wallpaper.jpg";
+        picture-uri-dark = "file://${homeDirectory}/.local/share/backgrounds/wallpaper.jpg";
+      };
+
+      # Dock (Taskbar) Configuration
+      "org/gnome/shell" = {
+        favorite-apps = [
+          "org.gnome.Nautilus.desktop"       # Finder equivalent
+          "brave-browser.desktop"
+          "com.mitchellh.ghostty.desktop"    # Ghostty
+          "code.desktop"                     # VS Code
+          "spotify.desktop"
+          "thunderbird.desktop"
+          "org.gnome.Settings.desktop"
+        ];
+      };
+      
+      # Window Buttons (macOS Style: Left side)
+      "org/gnome/desktop/wm/preferences" = {
+        button-layout = "close,minimize,maximize:"; # Colons separate left:right
+      };
+      
+      # Keyboard Tweaks (optional)
+      # "org/gnome/desktop/wm/keybindings" = {
+      #   close = ["<Super>w"];
+      # };
+    };
+  } else {};
+
+  # Link Wallpaper for Linux
+  home.file = (if (pkgs.stdenv.isLinux && !isWSL) then {
+    ".local/share/backgrounds/wallpaper.jpg".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/macos/wallpaper.jpg";
+  } else {});
+
     
     # Desktop integration
     pkgs.xdg-utils # xdg-open etc
