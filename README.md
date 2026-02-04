@@ -54,7 +54,20 @@ Da dieses Repository privat ist, richte zuerst einen SSH-Key ein, um das Reposit
 
 Dieses Setup funktioniert auf den meisten Linux-Distributionen (getestet auf Ubuntu/Debian, Fedora, Arch).
 
-1.  **Lade das Bootstrap-Script herunter und führe es aus:**
+1.  **Vorbereitung (Installiere curl & git):**
+    Auf einem frischen System fehlen oft grundlegende Tools. Führe dies zuerst aus:
+
+    *Ubuntu/Debian:*
+    ```bash
+    sudo apt update && sudo apt install -y curl git
+    ```
+
+    *Fedora:*
+    ```bash
+    sudo dnf install -y curl git
+    ```
+
+2.  **Lade das Bootstrap-Script herunter und führe es aus:**
 
     ```bash
     curl -sL https://raw.githubusercontent.com/smn-hrtzsch/dotfiles/feat/linux-support/bootstrap_linux.sh | bash
@@ -62,7 +75,7 @@ Dieses Setup funktioniert auf den meisten Linux-Distributionen (getestet auf Ubu
 
     *Hinweis: Ersetze `feat/linux-support` durch `main`, sobald der Branch gemergt ist.*
 
-2.  **Folge den Anweisungen:**
+3.  **Folge den Anweisungen:**
     Das Skript installiert Nix, klont das Repo und fragt dich nach deinem Username und Git-Details, um die Konfiguration anzupassen.
 
 ## 🪟 Windows (WSL 2) Setup
