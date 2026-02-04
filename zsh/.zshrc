@@ -63,15 +63,15 @@ fi
 
 # ---- Conda Initialize ----
 # !! Contents within this block are managed by 'conda init' !!
-if [ -d "/Users/simon/miniconda3" ]; then
-    __conda_setup="$('/Users/simon/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ -d "$HOME/miniconda3" ]; then
+    __conda_setup="$('$HOME/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
     if [ $? -eq 0 ]; then
         eval "$__conda_setup"
     else
-        if [ -f "/Users/simon/miniconda3/etc/profile.d/conda.sh" ]; then
-            . "/Users/simon/miniconda3/etc/profile.d/conda.sh"
+        if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
+            . "$HOME/miniconda3/etc/profile.d/conda.sh"
         else
-            export PATH="/Users/simon/miniconda3/bin:$PATH"
+            export PATH="$HOME/miniconda3/bin:$PATH"
         fi
     fi
     unset __conda_setup
@@ -85,4 +85,4 @@ if [ -f "$HOME/.zshrc_secrets" ]; then
 fi
  
 # bun completions
-[ -s "/Users/simon/.bun/_bun" ] && source "/Users/simon/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"

@@ -63,7 +63,7 @@ if [[ "$(uname)" == "Linux" ]]; then
 fi
 
 # Antigravity
-export PATH="/Users/simon/.antigravity/antigravity/bin:$PATH"
+export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 
 # Bun
 export BUN_INSTALL="$HOME/.bun"

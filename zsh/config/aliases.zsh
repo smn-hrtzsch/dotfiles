@@ -44,8 +44,8 @@ alias google='function _google() { local query=$(echo "$*" | sed "s/ /+/g"); ope
 alias openweb='function _openweb() { local url="https://$1"; open "$url"; }; _openweb'
 
 # Project Shortcuts
-if [[ -f "/Users/simon/Documents/TUBAF/WiSe-25_26/KI/.bouncai-env/bin/activate" ]]; then
-    alias bouncai-env="source \"/Users/simon/Documents/TUBAF/WiSe-25_26/KI/.bouncai-env/bin/activate\""
+if [[ -f "$HOME/Documents/TUBAF/WiSe-25_26/KI/.bouncai-env/bin/activate" ]]; then
+    alias bouncai-env="source \"$HOME/Documents/TUBAF/WiSe-25_26/KI/.bouncai-env/bin/activate\""
 elif [[ -f "/mnt/c/Users/Simon/Documents/TUBAF/KI-WS-25-26/bouncai-env/bin/activate" ]]; then
     alias bouncai-env="source \"/mnt/c/Users/Simon/Documents/TUBAF/KI-WS-25-26/bouncai-env/bin/activate\""
 else
@@ -100,7 +100,7 @@ alias startemulator='
 '
 
 alias run_capy_card_on_ios=' 
-  cd /Users/simon/CapyCode/CapyCard && \
+  cd $HOME/CapyCode/CapyCard && \
   dotnet build CapyCard/CapyCard.iOS/CapyCard.iOS.csproj -f net9.0-ios && \
   (xcrun simctl boot 93967CA2-E319-4C19-8212-E675A99A65BA 2>/dev/null || true) && \
   open -a Simulator && \

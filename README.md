@@ -50,6 +50,21 @@ Da dieses Repository privat ist, richte zuerst einen SSH-Key ein, um das Reposit
     ./bootstrap_macos.sh
     ```
 
+## 🐧 Linux (Generic) Setup
+
+Dieses Setup funktioniert auf den meisten Linux-Distributionen (getestet auf Ubuntu/Debian, Fedora, Arch).
+
+1.  **Lade das Bootstrap-Script herunter und führe es aus:**
+
+    ```bash
+    curl -sL https://raw.githubusercontent.com/smn-hrtzsch/dotfiles/feat/linux-support/bootstrap_linux.sh | bash
+    ```
+
+    *Hinweis: Ersetze `feat/linux-support` durch `main`, sobald der Branch gemergt ist.*
+
+2.  **Folge den Anweisungen:**
+    Das Skript installiert Nix, klont das Repo und fragt dich nach deinem Username und Git-Details, um die Konfiguration anzupassen.
+
 ## 🪟 Windows (WSL 2) Setup
 
 ### 1. Automatische Installation (Empfohlen)

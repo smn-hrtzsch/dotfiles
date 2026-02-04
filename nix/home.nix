@@ -1,5 +1,5 @@
 # nix/home.nix
-{ pkgs, config, username, homeDirectory, ... }:
+{ pkgs, config, username, homeDirectory, gitUserName, gitUserEmail, isWSL, ... }:
 
 let
   dotfilesDir = "${homeDirectory}/dotfiles";
@@ -56,8 +56,10 @@ in
     # ...
   ] ++ (if pkgs.stdenv.isDarwin then [
     pkgs.dockutil # Install dockutil only on macOS
+  ] else if isWSL then [
+    pkgs.wslu # WSL Utilities only on WSL
   ] else [
-    pkgs.wslu # WSL Utilities only on Linux
+    # Generic Linux packages if needed
   ]);
 
   # Programs Configuration
@@ -75,7 +77,7 @@ in
       local config = wezterm.config_builder()
       
       -- Start in WSL by default
-      config.default_domain = 'WSL:WSL-Nix'
+      ${if isWSL then "config.default_domain = 'WSL:WSL-Nix'" else ""}
 
       -- Font
       config.font = wezterm.font 'MesloLGS NF'
@@ -219,8 +221,8 @@ in
 
   programs.git = {
     enable = true;
-    userName = "Simon Hörtzsch"; 
-    userEmail = "simon@hoertzsch.de";
+    userName = gitUserName; 
+    userEmail = gitUserEmail;
     lfs.enable = true;
     extraConfig = {
       init.defaultBranch = "main";

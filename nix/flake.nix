@@ -14,8 +14,11 @@
 
   outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager }:
     let
-      # Shared variables
+      # Shared variables - CHANGE ME
       username = "simon";
+      gitUserName = "Simon Hörtzsch";
+      gitUserEmail = "simon@hoertzsch.de";
+      
       # Define home directories for different platforms
       darwinHome = "/Users/${username}";
       linuxHome = "/home/${username}"; 
@@ -26,7 +29,6 @@
         specialArgs = { inherit inputs self; };
         modules = [ 
           ./darwin-configuration.nix 
-
           home-manager.darwinModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -38,6 +40,9 @@
               inherit inputs;
               username = username;
               homeDirectory = darwinHome;
+              gitUserName = gitUserName;
+              gitUserEmail = gitUserEmail;
+              isWSL = false;
             };
           }
         ];
@@ -53,7 +58,27 @@
           inherit inputs;
           username = username;
           homeDirectory = linuxHome;
+          gitUserName = gitUserName;
+          gitUserEmail = gitUserEmail;
+          isWSL = true;
+        };
+      };
+
+      # Generic Linux Configuration
+      homeConfigurations."linux" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [ 
+          ./home.nix 
+        ];
+        extraSpecialArgs = {
+          inherit inputs;
+          username = username;
+          homeDirectory = linuxHome;
+          gitUserName = gitUserName;
+          gitUserEmail = gitUserEmail;
+          isWSL = false;
         };
       };
     };
 }
+
