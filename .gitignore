@@ -35,6 +35,7 @@ vscode/.vscode/extensions/
 config/.config/configstore/
 config/.config/github-copilot/
 config/.config/raycast/extensions/
+config/.config/opencode/skills
 
 # Logs
 *.log

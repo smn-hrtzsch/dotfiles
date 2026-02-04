@@ -20,7 +20,12 @@ rebuild_macos() {
       . "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh"
     fi
   fi
-  darwin-rebuild switch --flake "$HOME/dotfiles/nix"
+  local user_home="$HOME"
+  local dr="/run/current-system/sw/bin/darwin-rebuild"
+  if [ ! -x "$dr" ]; then
+    dr="$(command -v darwin-rebuild)"
+  fi
+  sudo "$dr" switch --flake "$user_home/dotfiles/nix"
 }
 
 rebuild_linux() {
@@ -194,6 +199,16 @@ update-system() {
   if [ -d "$DOTFILES" ]; then
     echo "📂 Switching to $DOTFILES"
     cd "$DOTFILES" || return
+
+    if [[ -n "$DOTFILES_BRANCH" ]]; then
+      if git diff --quiet && git diff --cached --quiet; then
+        echo "🔀 Switching to branch: $DOTFILES_BRANCH"
+        git fetch origin "$DOTFILES_BRANCH" || true
+        git checkout "$DOTFILES_BRANCH" || true
+      else
+        echo "⚠️  Working tree has changes, skipping branch switch."
+      fi
+    fi
     
     echo "⬇️  Pulling latest changes..."
     if git pull; then

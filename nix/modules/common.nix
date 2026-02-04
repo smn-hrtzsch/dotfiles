@@ -1,7 +1,25 @@
-{ pkgs, config, gitUserName, gitUserEmail, isWSL, ... }:
+{ pkgs, config, gitUserName, gitUserEmail, isWSL, lib, ... }:
 
 let
   dotfilesDir = "${config.home.homeDirectory}/dotfiles";
+  anthropicSkillsDir = "${dotfilesDir}/anthropic-skills/skills";
+  customCodexSkills = [
+    "opencode-commit"
+    "opencode-execute"
+    "opencode-feature"
+    "opencode-fix"
+    "opencode-plan"
+    "opencode-refactor"
+    "opencode-review"
+    "opencode-secrets"
+  ];
+  anthropicSkillNames = if builtins.pathExists anthropicSkillsDir
+    then builtins.attrNames (builtins.readDir anthropicSkillsDir)
+    else [];
+  codexAnthropicLinks = lib.listToAttrs (map (name: {
+    name = ".codex/skills/${name}";
+    value.source = config.lib.file.mkOutOfStoreSymlink "${anthropicSkillsDir}/${name}";
+  }) (builtins.filter (name: !(lib.elem name customCodexSkills)) anthropicSkillNames));
 in
 {
   nixpkgs.config.allowUnfree = true;
@@ -241,22 +259,6 @@ in
     fi
   '';
 
-  home.activation.syncCodexSkills = config.lib.dag.entryAfter ["writeBoundary"] ''
-    if [[ -d "${dotfilesDir}/anthropic-skills/skills" ]]; then
-      mkdir -p "$HOME/.codex/skills"
-      for skill in "${dotfilesDir}/anthropic-skills/skills"/*; do
-        if [ -d "$skill" ]; then
-          name=$(basename "$skill")
-          dest="$HOME/.codex/skills/$name"
-          if [ -e "$dest" ] && [ ! -L "$dest" ]; then
-            continue
-          fi
-          ln -sfn "$skill" "$dest"
-        fi
-      done
-    fi
-  '';
-
   # Symlink Dotfiles
   home.file = {
     ".config/ghostty".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/ghostty";
@@ -267,7 +269,7 @@ in
     ".gemini/commands".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/gemini/.gemini/commands";
     ".gemini/GEMINI.md".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/gemini/.gemini/GEMINI.md";
     ".gemini/settings.json".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/gemini/.gemini/settings.json";
-    ".gemini/skills".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/anthropic-skills/skills";
+    ".gemini/skills".source = config.lib.file.mkOutOfStoreSymlink anthropicSkillsDir;
 
     ".config/gh".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/gh";
     ".config/neofetch".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/neofetch";
@@ -275,7 +277,11 @@ in
     # Manual Dotfiles
     ".ssh/config".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/ssh/config";
     ".npmrc".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/npm/.npmrc";
-    ".config/opencode".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/opencode";
+    ".config/opencode/AGENTS.md".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/opencode/AGENTS.md";
+    ".config/opencode/config.json".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/opencode/config.json";
+    ".config/opencode/package.json".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/opencode/package.json";
+    ".config/opencode/bun.lock".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/opencode/bun.lock";
+    ".config/opencode/skills".source = config.lib.file.mkOutOfStoreSymlink anthropicSkillsDir;
     ".opencode/commands".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/opencode/.opencode/commands";
 
     # Codex config and custom skills (managed via Home Manager)
@@ -290,5 +296,5 @@ in
     ".codex/skills/opencode-refactor".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-refactor";
     ".codex/skills/opencode-review".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-review";
     ".codex/skills/opencode-secrets".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-secrets";
-  };
+  } // codexAnthropicLinks;
 }
