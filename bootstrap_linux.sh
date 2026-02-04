@@ -93,6 +93,46 @@ sed -i "s/gitUserEmail = \"$DEFAULT_GIT_EMAIL\";/gitUserEmail = \"$INPUT_GIT_EMA
 
 echo -e "${GREEN}   ✓ Configuration updated.${NC}"
 
+# --- 4.5 SSH Key Setup ---
+echo -e "${BLUE}>>> 4.5. Checking SSH Key Configuration...${NC}"
+SSH_KEY_PATH="$HOME/.ssh/id_ed25519"
+
+if [ ! -f "$SSH_KEY_PATH" ]; then
+    echo -e "${YELLOW}   No SSH key found. Generating a new one for GitHub...${NC}"
+    echo -e "${YELLOW}   Using email: $INPUT_GIT_EMAIL${NC}"
+    
+    # Ensure .ssh directory exists
+    mkdir -p "$HOME/.ssh"
+    chmod 700 "$HOME/.ssh"
+    
+    # Generate Key
+    ssh-keygen -t ed25519 -C "$INPUT_GIT_EMAIL" -f "$SSH_KEY_PATH"
+    
+    # Start ssh-agent and add key
+    eval "$(ssh-agent -s)"
+    ssh-add "$SSH_KEY_PATH"
+    
+    echo -e "${GREEN}   ✓ SSH Key generated.${NC}"
+    echo -e "\n${YELLOW}   PLEASE ADD THE FOLLOWING PUBLIC KEY TO GITHUB:${NC}"
+    echo -e "${YELLOW}   https://github.com/settings/ssh/new${NC}\n"
+    echo -e "${BLUE}----------------------------------------------------------------------${NC}"
+    cat "$SSH_KEY_PATH.pub"
+    echo -e "${BLUE}----------------------------------------------------------------------${NC}"
+    echo -e "\n"
+    echo -e "${YELLOW}   Press [ENTER] once you have added the key to GitHub...${NC}"
+    read -r
+    
+    # Optional: Switch remote to SSH if desired
+    echo -e "${YELLOW}   Would you like to switch the cloned repo to use SSH instead of HTTPS? (y/n)${NC}"
+    read -r -p "   > " SWITCH_SSH
+    if [[ "$SWITCH_SSH" =~ ^[Yy]$ ]]; then
+        git remote set-url origin "git@github.com:smn-hrtzsch/dotfiles.git"
+        echo -e "${GREEN}   ✓ Remote URL changed to SSH.${NC}"
+    fi
+else
+    echo -e "${GREEN}   ✓ SSH Key already exists. Skipping generation.${NC}"
+fi
+
 # --- 5. Apply Configuration ---
 echo -e "${BLUE}>>> 5. Applying Nix Configuration (Home Manager)...${NC}"
 
