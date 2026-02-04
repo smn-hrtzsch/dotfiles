@@ -194,6 +194,11 @@ update-system() {
     else
       echo "⚠️  Git pull failed (likely due to local changes). Proceeding with current local state..."
     fi
+
+    if [ -f "$DOTFILES/.gitmodules" ]; then
+      echo "🔁 Updating submodules..."
+      git submodule update --init --recursive
+    fi
     
     echo "⚙️  Rebuilding System..."
     rebuild_auto

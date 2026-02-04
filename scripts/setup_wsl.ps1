@@ -130,6 +130,7 @@ fi
 cd ~/dotfiles
 git fetch origin "__BRANCH__" || true
 git checkout "__BRANCH__" || git checkout -b "__BRANCH__" "origin/__BRANCH__" || true
+git submodule update --init --recursive
 
 echo "⚙️ Applying Nix Configuration..."
 cd ~/dotfiles

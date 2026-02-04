@@ -249,6 +249,22 @@ in
     fi
   '';
 
+  home.activation.syncCodexSkills = config.lib.dag.entryAfter ["stowCodex"] ''
+    if [[ -d "${dotfilesDir}/anthropic-skills/skills" ]]; then
+      mkdir -p "$HOME/.codex/skills"
+      for skill in "${dotfilesDir}/anthropic-skills/skills"/*; do
+        if [ -d "$skill" ]; then
+          name=$(basename "$skill")
+          dest="$HOME/.codex/skills/$name"
+          if [ -e "$dest" ] && [ ! -L "$dest" ]; then
+            continue
+          fi
+          ln -sfn "$skill" "$dest"
+        fi
+      done
+    fi
+  '';
+
   # Symlink Dotfiles
   home.file = {
     ".config/ghostty".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/ghostty";

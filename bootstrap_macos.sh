@@ -105,12 +105,14 @@ if [ ! -d "$REPO_DIR" ]; then
     cd "$REPO_DIR"
     echo -e "${YELLOW}   Wechsle auf Branch $DOTFILES_BRANCH (Standard für Setup)...${NC}"
     git checkout "$DOTFILES_BRANCH"
+    git submodule update --init --recursive
 else
     echo -e "${GREEN}   ✓ Repository bereits vorhanden. Überspringe Klonen.${NC}"
     cd "$REPO_DIR"
     if git diff --quiet && git diff --cached --quiet; then
         git fetch origin "$DOTFILES_BRANCH" || true
         git checkout "$DOTFILES_BRANCH" || true
+        git submodule update --init --recursive
     else
         echo -e "${YELLOW}   Working tree has changes, skipping branch switch.${NC}"
     fi
