@@ -15,6 +15,7 @@ in
     # Shell & Tools
     stow
     unzip
+    curl
     zsh-powerlevel10k
     zsh-autosuggestions
     zsh-syntax-highlighting

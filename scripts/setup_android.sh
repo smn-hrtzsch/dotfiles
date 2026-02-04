@@ -5,7 +5,10 @@
 
 set -e
 
-echo "Starting Android SDK setup for WSL..."
+# Ensure system paths are available (Home Manager activation can have a minimal PATH)
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+
+echo "Starting Android SDK setup for Linux/WSL..."
 
 # 1. Ensure we are on Linux
 if [[ "$(uname)" != "Linux" ]]; then
@@ -16,6 +19,17 @@ fi
 # 2. Define Paths
 ANDROID_HOME="$HOME/Android/Sdk"
 CMDLINE_TOOLS_URL="https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip"
+
+# 2.1 Check dependencies
+if ! command -v curl >/dev/null 2>&1; then
+    echo "curl not found. Please install it (e.g. 'sudo apt install curl') and re-run setup_android.sh."
+    exit 0
+fi
+
+if ! command -v unzip >/dev/null 2>&1; then
+    echo "unzip not found. Please install it (e.g. 'sudo apt install unzip') and re-run setup_android.sh."
+    exit 0
+fi
 
 # 3. Create directory structure
 mkdir -p "$ANDROID_HOME/cmdline-tools"
