@@ -25,10 +25,10 @@ alias python='python3'
 alias pip='python3 -m pip'
 
 # System Maintenance
-alias rebuild='rebuild-auto'
-alias rebuild-macos='rebuild-macos'
-alias rebuild-linux='rebuild-linux'
-alias rebuild-wsl='rebuild-wsl'
+alias rebuild='rebuild_auto'
+alias rebuild-macos='rebuild_macos'
+alias rebuild-linux='rebuild_linux'
+alias rebuild-wsl='rebuild_wsl'
 
 # Web Helpers
 alias google='function _google() { local query=$(echo "$*" | sed "s/ /+/g"); open "https://www.google.com/search?q=$query"; }; _google'

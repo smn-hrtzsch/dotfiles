@@ -14,7 +14,7 @@ is_wsl() {
   [[ -n "$WSL_DISTRO_NAME" ]] || grep -qi microsoft /proc/sys/kernel/osrelease 2>/dev/null
 }
 
-rebuild-macos() {
+rebuild_macos() {
   if ! command -v nix &>/dev/null; then
     if [ -e "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh" ]; then
       . "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh"
@@ -23,7 +23,7 @@ rebuild-macos() {
   darwin-rebuild switch --flake "$HOME/dotfiles/nix"
 }
 
-rebuild-linux() {
+rebuild_linux() {
   local arch
   local target
   arch=$(uname -m)
@@ -34,17 +34,17 @@ rebuild-linux() {
   nix run home-manager/master -- switch --flake "$HOME/dotfiles/nix#$target"
 }
 
-rebuild-wsl() {
+rebuild_wsl() {
   nix run home-manager/master -- switch --flake "$HOME/dotfiles/nix#wsl"
 }
 
-rebuild-auto() {
+rebuild_auto() {
   if [[ "$(uname)" == "Darwin" ]]; then
-    rebuild-macos
+    rebuild_macos
   elif is_wsl; then
-    rebuild-wsl
+    rebuild_wsl
   else
-    rebuild-linux
+    rebuild_linux
   fi
 }
 
@@ -196,7 +196,7 @@ update-system() {
     fi
     
     echo "⚙️  Rebuilding System..."
-    rebuild-auto
+    rebuild_auto
     
     # Update WezTerm Link & Windows Apps (WSL only)
     if [[ "$(uname)" != "Darwin" ]]; then
