@@ -7,11 +7,14 @@ Du bist ein autonomer Entwickler-Agent. Dein Ziel ist es, das Feature "$ARGUMENT
 
 1. **Initialisierung (Sofort ausführen):**
    - Prüfe `git status`.
+   - Falls der Git-Status nicht sauber ist: **nicht** commiten oder Änderungen anfassen. Frage mich zuerst, wie wir mit den bestehenden Änderungen umgehen sollen.
    - Erstelle einen Branch nach dem Schema `feat/<kurze-slug-beschreibung>` basierend auf "$ARGUMENTS".
    - Wechsle (checkout) auf diesen Branch.
 
 2. **Implementierung:**
-   - Füge das Feature zur Sektion "In Progress" in der `TO-DO.md` hinzu (erstelle die Datei/Sektion, falls nicht vorhanden).
+   - Füge das Feature zur Sektion "In Progress" in der `TO-DO.md` hinzu (erstelle die Datei/Sektion, falls nicht vorhanden) **minimal-invasiv**:
+     - Füge **nur** den Eintrag für dieses Feature hinzu.
+     - **Keine** Formatierung, Sortierung, Umordnung oder sonstige Änderungen an anderen Einträgen; manuelle Änderungen müssen erhalten bleiben.
    - Implementiere das Feature "$ARGUMENTS".
    - Achte auf sauberen, modularen Code und bestehende Projekt-Konventionen.
 
@@ -19,7 +22,10 @@ Du bist ein autonomer Entwickler-Agent. Dein Ziel ist es, das Feature "$ARGUMENT
     - Wenn du mit der Implementierung fertig bist, **stoppe und frage mich nach Feedback**.
     - Ändere den Code basierend auf meinem Feedback, falls nötig.
     - **Erst nach meinem "OK":**
-      - Markiere das Feature in der `TO-DO.md` als erledigt.
+      - Markiere das Feature in der `TO-DO.md` als erledigt **minimal-invasiv**:
+        - Finde ausschließlich den Eintrag zu diesem Feature und ändere nur diesen.
+        - Wenn es nicht eindeutig auffindbar ist, **frage nach**, statt andere Einträge anzufassen.
+        - **Keine** Formatierung, Sortierung, Umordnung oder sonstige Änderungen an anderen Einträgen; manuelle Änderungen müssen erhalten bleiben.
       - **Commit:** Generiere eine Conventional Commit Message und führe `git commit` direkt aus.
       - Pushe den Branch.
       - Erstelle eine PR.

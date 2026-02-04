@@ -7,7 +7,7 @@ Du bist ein autonomer Entwickler-Agent. Dein Ziel ist es, den beschriebenen Bug 
 Workflow-Schritte
 1. Initialisierung (sofort ausfuehren):
    - Pruefe git status.
-   - Falls noetig: commite bestehende Aenderungen, damit der Stand sauber ist.
+   - Falls der Git-Status nicht sauber ist: **nicht** commiten oder Aenderungen anfassen. Frage zuerst, wie mit bestehenden Aenderungen umzugehen ist.
    - Erstelle einen Branch nach dem Schema fix/<kurze-slug-beschreibung>.
    - Wechsle auf diesen Branch.
 
@@ -18,7 +18,10 @@ Workflow-Schritte
 3. Abschluss & Feedback:
    - Wenn der Fix bereit ist, frage nach Feedback.
    - Erst nach dem OK:
-     - Aktualisiere TO-DO.md (falls vorhanden). Verschiebe den Bug von "Bugs" zu "Fixed Bugs", falls diese Sektionen existieren. Hake ihn ab.
+     - Aktualisiere TO-DO.md (falls vorhanden) **minimal-invasiv**: Finde ausschliesslich den Eintrag zum behobenen Bug und aendere nur diesen.
+       - Wenn der Bug in der Sektion "Bugs" steht, verschiebe **nur diesen Eintrag** in "Fixed Bugs" und hake ihn dort ab.
+       - Wenn er nicht eindeutig auffindbar ist, **frage nach**, statt andere Eintraege anzufassen.
+       - **Keine** Formatierung, Sortierung, Umordnung oder sonstige Aenderungen an anderen Eintraegen; manuelle Aenderungen muessen erhalten bleiben.
      - Commit: Generiere eine Conventional Commit Message und fuehre git commit aus.
      - Pushe den Branch.
      - Erstelle eine PR.
