@@ -82,7 +82,7 @@ in
   ] ++ (if (pkgs.stdenv.isLinux && !isWSL) then [
     # Desktop integration (Linux only)
     pkgs.xdg-utils
-  ] else []);
+  ] else []));
 
   # Allow unfree packages (VS Code, Spotify, etc.)
   nixpkgs.config.allowUnfree = true;
