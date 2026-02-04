@@ -58,31 +58,46 @@ in
     pkgs.dockutil # Install dockutil only on macOS
   ] else if isWSL then [
     pkgs.wslu # WSL Utilities only on WSL
-  ] else [
-    # Generic Linux GUI Apps
-    pkgs.brave
-    pkgs.vscode
-    pkgs.spotify
-    pkgs.thunderbird
-    pkgs.bitwarden
-    # pkgs.notion-app-enhanced 
-    pkgs.whatsapp-for-linux
-    pkgs.zoom-us
-    pkgs.localsend
-    pkgs.ghostty # Terminal
-    pkgs.copyq   # Clipboard manager (Maccy alternative)
-    pkgs.rclone  # Cloud storage (Google Drive etc.)
-    pkgs.p7zip   # Archive tool (The Unarchiver alternative)
-    pkgs.android-studio # IDE
-    
-    # Fonts
-    pkgs.nerd-fonts.meslo-lg
-    pkgs.nerd-fonts.fira-code
-    pkgs.nerd-fonts.jetbrains-mono
-  ] ++ (if (pkgs.stdenv.isLinux && !isWSL) then [
-    # Desktop integration (Linux only)
-    pkgs.xdg-utils
-  ] else []));
+  ] else (
+    let
+      linuxGuiApps = if pkgs.stdenv.hostPlatform.system == "x86_64-linux" then [
+        # Generic Linux GUI Apps (x86_64)
+        pkgs.brave
+        pkgs.vscode
+        pkgs.spotify
+        pkgs.thunderbird
+        pkgs.bitwarden
+        # pkgs.notion-app-enhanced
+        pkgs.whatsapp-for-linux
+        pkgs.zoom-us
+        pkgs.localsend
+        pkgs.ghostty # Terminal
+        pkgs.copyq   # Clipboard manager (Maccy alternative)
+        pkgs.rclone  # Cloud storage (Google Drive etc.)
+        pkgs.p7zip   # Archive tool (The Unarchiver alternative)
+        pkgs.android-studio # IDE
+      ] else [
+        # Generic Linux GUI Apps (aarch64)
+        pkgs.firefox
+        pkgs.vscodium
+        pkgs.thunderbird
+        pkgs.localsend
+        pkgs.ghostty
+        pkgs.copyq
+        pkgs.rclone
+        pkgs.p7zip
+      ];
+    in
+      linuxGuiApps ++ [
+        # Fonts
+        pkgs.nerd-fonts.meslo-lg
+        pkgs.nerd-fonts.fira-code
+        pkgs.nerd-fonts.jetbrains-mono
+      ] ++ (if (pkgs.stdenv.isLinux && !isWSL) then [
+        # Desktop integration (Linux only)
+        pkgs.xdg-utils
+      ] else [])
+  ));
 
   # Allow unfree packages (VS Code, Spotify, etc.)
   nixpkgs.config.allowUnfree = true;

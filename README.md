@@ -78,6 +78,11 @@ Dieses Setup funktioniert auf den meisten Linux-Distributionen (getestet auf Ubu
 3.  **Folge den Anweisungen:**
     Das Skript installiert Nix, klont das Repo und fragt dich nach deinem Username und Git-Details, um die Konfiguration anzupassen.
 
+**Hinweis zu ARM64 (Apple Silicon / aarch64):**
+Einige proprietaere Apps (z.B. Spotify, Zoom, WhatsApp, Android Studio, Brave, VS Code) sind auf ARM64-Linux nicht verfuegbar.
+Auf ARM64 installiert das Setup daher Alternativen (z.B. Firefox und VSCodium) und laesst nicht-verfuegbare Apps aus.
+Wenn du volle App-Paritaet moechtest, nutze eine x86_64 Linux VM.
+
 ## 🪟 Windows (WSL 2) Setup
 
 ### 1. Automatische Installation (Empfohlen)
