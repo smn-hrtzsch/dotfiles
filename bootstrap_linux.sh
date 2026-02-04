@@ -66,6 +66,11 @@ else
     cd "$REPO_DIR"
 fi
 
+# --- 3.1 Initialize Submodules (Important for Skills) ---
+echo -e "${BLUE}>>> 3.1. Initializing Git Submodules...${NC}"
+git submodule update --init --recursive
+echo -e "${GREEN}   ✓ Submodules updated.${NC}"
+
 # --- 4. User Configuration ---
 echo -e "${BLUE}>>> 4. User Configuration...${NC}"
 echo -e "${YELLOW}   We need to configure the flake for your user.${NC}"
