@@ -9,6 +9,45 @@ fzfc() {
   fi
 }
 
+# --- Rebuild Helpers ---
+is_wsl() {
+  [[ -n "$WSL_DISTRO_NAME" ]] || grep -qi microsoft /proc/sys/kernel/osrelease 2>/dev/null
+}
+
+rebuild-macos() {
+  if ! command -v nix &>/dev/null; then
+    if [ -e "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh" ]; then
+      . "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh"
+    fi
+  fi
+  darwin-rebuild switch --flake "$HOME/dotfiles/nix"
+}
+
+rebuild-linux() {
+  local arch
+  local target
+  arch=$(uname -m)
+  target="linux-x86_64"
+  if [[ "$arch" == "aarch64" || "$arch" == "arm64" ]]; then
+    target="linux-aarch64"
+  fi
+  nix run home-manager/master -- switch --flake "$HOME/dotfiles/nix#$target"
+}
+
+rebuild-wsl() {
+  nix run home-manager/master -- switch --flake "$HOME/dotfiles/nix#wsl"
+}
+
+rebuild-auto() {
+  if [[ "$(uname)" == "Darwin" ]]; then
+    rebuild-macos
+  elif is_wsl; then
+    rebuild-wsl
+  else
+    rebuild-linux
+  fi
+}
+
 # CapyCard Android Runner
 run_capy_card_on_android() {
   # --- SETUP ---
@@ -157,13 +196,7 @@ update-system() {
     fi
     
     echo "⚙️  Rebuilding System..."
-    if [[ "$(uname)" == "Darwin" ]]; then
-       # macOS
-       nix run nix-darwin -- switch --flake ./nix#macbook
-    else
-       # Linux / WSL
-       nix run home-manager/master -- switch --flake ./nix#wsl
-    fi
+    rebuild-auto
     
     # Update WezTerm Link & Windows Apps (WSL only)
     if [[ "$(uname)" != "Darwin" ]]; then

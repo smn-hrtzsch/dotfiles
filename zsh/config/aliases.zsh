@@ -25,19 +25,10 @@ alias python='python3'
 alias pip='python3 -m pip'
 
 # System Maintenance
-alias rebuild='
-    if [[ "$(uname)" == "Darwin" ]]; then
-        # Try to load nix if missing
-        if ! command -v nix &>/dev/null; then
-             if [ -e "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh" ]; then
-                . "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh"
-             fi
-        fi
-        darwin-rebuild switch --flake ~/dotfiles/nix
-    else
-        home-manager switch --flake ~/dotfiles/nix#wsl
-    fi
-'
+alias rebuild='rebuild-auto'
+alias rebuild-macos='rebuild-macos'
+alias rebuild-linux='rebuild-linux'
+alias rebuild-wsl='rebuild-wsl'
 
 # Web Helpers
 alias google='function _google() { local query=$(echo "$*" | sed "s/ /+/g"); open "https://www.google.com/search?q=$query"; }; _google'
