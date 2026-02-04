@@ -1,4 +1,4 @@
-{ pkgs, username, darwinHome, ... }:
+{ pkgs, username, darwinHome, lib, config, ... }:
 
 let
   dotfilesDir = "${darwinHome}/dotfiles";
@@ -19,7 +19,6 @@ in
   # Homebrew Configuration
   homebrew = {
     enable = true;
-    user = username;
     onActivation.cleanup = "zap"; # Removes packages not listed here
     onActivation.autoUpdate = true;
     onActivation.upgrade = true;
@@ -268,6 +267,16 @@ in
 
     # Restart SystemUIServer to apply
     killall SystemUIServer || true
+  '';
+
+  # Run Homebrew Bundle as the real user (not root)
+  system.activationScripts.homebrew.text = lib.mkForce ''
+    echo >&2 "Homebrew bundle (user)..."
+    if [ -f "${config.homebrew.brewPrefix}/brew" ]; then
+      sudo -H -u ${username} /bin/sh -lc "PATH=${config.homebrew.brewPrefix}:${lib.makeBinPath [ pkgs.mas ]}:$PATH ${config.homebrew.onActivation.brewBundleCmd}"
+    else
+      echo -e "\e[1;31merror: Homebrew is not installed, skipping...\e[0m" >&2
+    fi
   '';
 
   # Necessary for using flakes on this system.
