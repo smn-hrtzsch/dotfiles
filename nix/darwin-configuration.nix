@@ -293,7 +293,6 @@ in
   nixpkgs.hostPlatform = "aarch64-darwin";
 
   # User Configuration
-  system.primaryUser = username;
   users.users.${username} = {
     name = username;
     home = darwinHome;
