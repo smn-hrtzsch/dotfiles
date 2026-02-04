@@ -60,10 +60,14 @@ if [ ! -d "$REPO_DIR" ]; then
     cd "$REPO_DIR"
     
     # Check out the correct branch (for now, feat/linux-support, later main)
-    # git checkout feat/linux-support
+    # Since we are pipe-ing the script from this branch, we should be on this branch to have the correct flake.nix
+    git checkout feat/linux-support
 else
     echo -e "${GREEN}   ✓ Repository already exists.${NC}"
     cd "$REPO_DIR"
+    
+    # Ensure we are on the correct branch if the repo exists but is on main
+    # git checkout feat/linux-support || true
 fi
 
 # --- 3.1 Initialize Submodules (Important for Skills) ---
