@@ -84,16 +84,19 @@ DEFAULT_USER="simon"
 DEFAULT_GIT_NAME="Simon Hörtzsch"
 DEFAULT_GIT_EMAIL="simon@hoertzsch.de"
 
-read -p "   Enter your username (default: $USER): " INPUT_USER
+read -p "   Enter your username (default: $USER): " INPUT_USER < /dev/tty
 INPUT_USER=${INPUT_USER:-$USER}
 
-read -p "   Enter your Git Name (default: Generic User): " INPUT_GIT_NAME
+read -p "   Enter your Git Name (default: Generic User): " INPUT_GIT_NAME < /dev/tty
 INPUT_GIT_NAME=${INPUT_GIT_NAME:-"Generic User"}
 
-read -p "   Enter your Git Email (default: user@example.com): " INPUT_GIT_EMAIL
+read -p "   Enter your Git Email (default: user@example.com): " INPUT_GIT_EMAIL < /dev/tty
 INPUT_GIT_EMAIL=${INPUT_GIT_EMAIL:-"user@example.com"}
 
 echo -e "${BLUE}   Updating nix/flake.nix with your details...${NC}"
+
+# Ensure we are in the repo directory
+cd "$REPO_DIR"
 
 # Update flake.nix using sed (Linux syntax)
 sed -i "s/username = \"$DEFAULT_USER\";/username = \"$INPUT_USER\";/" nix/flake.nix
@@ -129,11 +132,11 @@ if [ ! -f "$SSH_KEY_PATH" ]; then
     echo -e "${BLUE}----------------------------------------------------------------------${NC}"
     echo -e "\n"
     echo -e "${YELLOW}   Press [ENTER] once you have added the key to GitHub...${NC}"
-    read -r
+    read -r < /dev/tty
     
     # Optional: Switch remote to SSH if desired
     echo -e "${YELLOW}   Would you like to switch the cloned repo to use SSH instead of HTTPS? (y/n)${NC}"
-    read -r -p "   > " SWITCH_SSH
+    read -r -p "   > " SWITCH_SSH < /dev/tty
     if [[ "$SWITCH_SSH" =~ ^[Yy]$ ]]; then
         git remote set-url origin "git@github.com:smn-hrtzsch/dotfiles.git"
         echo -e "${GREEN}   ✓ Remote URL changed to SSH.${NC}"
