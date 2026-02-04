@@ -43,7 +43,8 @@
       "tail *": "allow",
       "bun run dev": "allow",
       "bun run build": "allow",
-      "gh pr create *": "allow"
+      "gh pr create *": "allow",
+      "strings *": "allow",
     }
   },
   "plugin": ["opencode-gemini-auth@latest"]
