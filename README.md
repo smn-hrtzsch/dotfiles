@@ -88,6 +88,10 @@ Dieses Setup funktioniert auf den meisten Linux-Distributionen (getestet auf Ubu
     Der Setup setzt den Coolnight‑Look und den Meslo Nerd Font automatisch per dconf.
     Falls du das Terminal offen hattest, starte es danach einmal neu.
 
+    **Ghostty auf VMs:**
+    Wenn Ghostty auf einer VM wegen OpenGL/EGL abstuerzt, starte die App "Ghostty (X11)".
+    Diese nutzt Software‑Rendering und ist VM‑freundlicher.
+
 **Hinweis zu ARM64 (Apple Silicon / aarch64):**
 Einige proprietaere Apps sind auf ARM64 in nixpkgs nicht verfuegbar.
 Auf ARM64 installiert das Setup daher Alternativen (z.B. Firefox und VSCodium) und laesst nicht-verfuegbare Apps aus.

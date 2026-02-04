@@ -13,6 +13,9 @@ in
   # Fontconfig (for Nerd Fonts)
   fonts.fontconfig.enable = true;
 
+  # XDG (Desktop Entries)
+  xdg.enable = true;
+
   # User Packages
   home.packages = with pkgs; [
     # Shell & Tools
@@ -160,7 +163,7 @@ in
         visible-name = "Coolnight";
         use-theme-colors = false;
         use-system-font = false;
-        font = "MesloLGS Nerd Font Mono 12";
+        font = "MesloLGS Nerd Font Mono 16";
         foreground-color = "#CBE0F0";
         background-color = "#181818";
         cursor-background-color = "#47FF9C";
@@ -434,6 +437,14 @@ in
     ghostty = {
       name = "Ghostty";
       exec = "ghostty";
+      icon = "ghostty";
+      type = "Application";
+      terminal = false;
+      categories = [ "System" "TerminalEmulator" ];
+    };
+    ghostty-x11 = {
+      name = "Ghostty (X11)";
+      exec = "env GDK_BACKEND=x11 LIBGL_ALWAYS_SOFTWARE=1 ghostty";
       icon = "ghostty";
       type = "Application";
       terminal = false;
