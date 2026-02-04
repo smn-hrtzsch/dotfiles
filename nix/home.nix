@@ -59,8 +59,23 @@ in
   ] else if isWSL then [
     pkgs.wslu # WSL Utilities only on WSL
   ] else [
-    # Generic Linux packages if needed
+    # Generic Linux GUI Apps
+    pkgs.brave
+    pkgs.vscode
+    pkgs.spotify
+    pkgs.thunderbird
+    pkgs.bitwarden
+    # pkgs.notion-app-enhanced # Often broken/unmaintained in nixpkgs, prefer web or snap if needed
+    pkgs.whatsapp-for-linux
+    pkgs.zoom-us
+    pkgs.localsend
+    
+    # Desktop integration
+    pkgs.xdg-utils # xdg-open etc
   ]);
+
+  # Allow unfree packages (VS Code, Spotify, etc.)
+  nixpkgs.config.allowUnfree = true;
 
   # Programs Configuration
   programs.home-manager.enable = true;

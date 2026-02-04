@@ -100,5 +100,24 @@ echo -e "${BLUE}>>> 5. Applying Nix Configuration (Home Manager)...${NC}"
 # We use the 'linux' output we created
 nix run home-manager/master -- switch --flake ./nix#linux
 
+# --- 6. Set Default Shell ---
+echo -e "${BLUE}>>> 6. Configuring Shell...${NC}"
+if [[ "$SHELL" != *zsh* ]]; then
+    echo -e "${YELLOW}   Changing default shell to zsh...${NC}"
+    # Use chsh to set zsh (which should be in /home/user/.nix-profile/bin/zsh or /bin/zsh)
+    # We prefer the nix installed one if available
+    ZSH_PATH=$(which zsh)
+    if grep -q "$ZSH_PATH" /etc/shells; then
+        chsh -s "$ZSH_PATH"
+    else
+        echo -e "${YELLOW}   Adding $ZSH_PATH to /etc/shells (requires sudo)...${NC}"
+        echo "$ZSH_PATH" | sudo tee -a /etc/shells
+        chsh -s "$ZSH_PATH"
+    fi
+    echo -e "${GREEN}   ✓ Shell changed to Zsh.${NC}"
+else
+    echo -e "${GREEN}   ✓ Zsh is already the default shell.${NC}"
+fi
+
 echo -e "${GREEN}>>> Bootstrap completed successfully! 🚀${NC}"
 echo -e "${GREEN}>>> Please restart your shell.${NC}"
