@@ -151,7 +151,7 @@ in
         default-show-menubar = false;
       };
 
-      "org/gnome/terminal/legacy/profiles:/" = {
+      "org/gnome/terminal/legacy/profiles:" = {
         default = "b1dcc9dd-5262-4d8d-a863-c897e6d979b9";
         list = [ "b1dcc9dd-5262-4d8d-a863-c897e6d979b9" ];
       };
@@ -427,6 +427,18 @@ in
     ".local/share/backgrounds/wallpaper.jpg".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/macos/wallpaper.jpg";
   } else {}) // (if pkgs.stdenv.isDarwin then {
     ".config/sketchybar".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/sketchybar";
+  } else {});
+
+  # Desktop entries (Linux only)
+  xdg.desktopEntries = (if (pkgs.stdenv.isLinux && !isWSL) then {
+    ghostty = {
+      name = "Ghostty";
+      exec = "ghostty";
+      icon = "ghostty";
+      type = "Application";
+      terminal = false;
+      categories = [ "System" "TerminalEmulator" ];
+    };
   } else {});
 
 }
