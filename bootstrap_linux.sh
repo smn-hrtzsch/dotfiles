@@ -221,6 +221,12 @@ EOF
         sudo apt-get update || true
         sudo apt-get install -y brave-browser || true
         sudo apt-get install -y code || true
+
+        # Ghostty (Ubuntu/Debian only, optional)
+        if ! command -v ghostty >/dev/null 2>&1; then
+            echo -e "${BLUE}>>> 5.2 Installing Ghostty (Ubuntu/Debian)...${NC}"
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mkasberg/ghostty-ubuntu/HEAD/install.sh)" || true
+        fi
     else
         echo -e "${YELLOW}   apt-get not found, skipping vendor GUI installs for ARM64.${NC}"
     fi

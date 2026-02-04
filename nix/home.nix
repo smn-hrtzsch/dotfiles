@@ -10,6 +10,9 @@ in
 
   home.stateVersion = "24.11";
 
+  # Fontconfig (for Nerd Fonts)
+  fonts.fontconfig.enable = true;
+
   # User Packages
   home.packages = with pkgs; [
     # Shell & Tools
@@ -141,6 +144,35 @@ in
       # Window Buttons (macOS Style: Left side)
       "org/gnome/desktop/wm/preferences" = {
         button-layout = "close,minimize,maximize:"; # Colons separate left:right
+      };
+
+      # GNOME Terminal (Coolnight theme + Meslo Nerd Font)
+      "org/gnome/terminal/legacy" = {
+        default-show-menubar = false;
+      };
+
+      "org/gnome/terminal/legacy/profiles:" = {
+        default = "b1dcc9dd-5262-4d8d-a863-c897e6d979b9";
+        list = [ "b1dcc9dd-5262-4d8d-a863-c897e6d979b9" ];
+      };
+
+      "org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9" = {
+        visible-name = "Coolnight";
+        use-theme-colors = false;
+        use-system-font = false;
+        font = "MesloLGS Nerd Font Mono 12";
+        foreground-color = "#CBE0F0";
+        background-color = "#181818";
+        cursor-background-color = "#47FF9C";
+        cursor-foreground-color = "#011423";
+        cursor-colors-set = true;
+        bold-is-bright = true;
+        palette = [
+          "#6f8a9e" "#E52E2E" "#44FFB1" "#FFE073"
+          "#0FC5ED" "#a277ff" "#24EAF7" "#24EAF7"
+          "#6f8a9e" "#E52E2E" "#44FFB1" "#FFE073"
+          "#A277FF" "#a277ff" "#24EAF7" "#24EAF7"
+        ];
       };
       
       # Keyboard Tweaks (optional)
@@ -285,6 +317,12 @@ in
           fi
         fi
       done < "${dotfilesDir}/npm/npm-globals.txt"
+    fi
+  '';
+
+  home.activation.refreshFontCache = config.lib.dag.entryAfter ["writeBoundary"] ''
+    if command -v fc-cache >/dev/null 2>&1; then
+      fc-cache -f
     fi
   '';
 

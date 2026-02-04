@@ -84,6 +84,10 @@ Dieses Setup funktioniert auf den meisten Linux-Distributionen (getestet auf Ubu
     . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
     ```
 
+    **GNOME Terminal Theme & Font:**
+    Der Setup setzt den Coolnight‑Look und den Meslo Nerd Font automatisch per dconf.
+    Falls du das Terminal offen hattest, starte es danach einmal neu.
+
 **Hinweis zu ARM64 (Apple Silicon / aarch64):**
 Einige proprietaere Apps sind auf ARM64 in nixpkgs nicht verfuegbar.
 Auf ARM64 installiert das Setup daher Alternativen (z.B. Firefox und VSCodium) und laesst nicht-verfuegbare Apps aus.
