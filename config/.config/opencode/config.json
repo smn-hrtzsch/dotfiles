@@ -12,6 +12,7 @@
       "ls": "allow",
       "ls *": "allow",
       "dir": "allow",
+      "mkdir *": "allow",
       "pwd": "allow",
       "whoami": "allow",
       "date": "allow",
