@@ -89,8 +89,8 @@ Dieses Setup funktioniert auf den meisten Linux-Distributionen (getestet auf Ubu
     Falls du das Terminal offen hattest, starte es danach einmal neu.
 
     **Ghostty auf VMs:**
-    Wenn Ghostty auf einer VM wegen OpenGL/EGL abstuerzt, starte die App "Ghostty (X11)".
-    Diese nutzt Software‑Rendering (GSK_RENDERER=cairo) und ist VM‑freundlicher.
+    Wenn Ghostty auf einer VM wegen OpenGL/EGL abstuerzt, starte die App "Ghostty" (ist VM‑safe konfiguriert).
+    Fuer natives Rendering gibt es zusaetzlich "Ghostty (Native)".
     Hinweis: Auf Ubuntu 25.10 ist standardmaessig "GNOME Console" installiert. Der Theme‑Hook greift nur fuer **GNOME Terminal**.
     Das Bootstrap-Skript installiert GNOME Terminal automatisch.
 

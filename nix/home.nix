@@ -131,7 +131,8 @@ in
         favorite-apps = [
           "org.gnome.Nautilus.desktop"       # Finder equivalent
           "brave-browser.desktop"
-          "com.mitchellh.ghostty.desktop"
+          "ghostty.desktop"                  # Ghostty (VM-safe)
+          "org.gnome.Terminal.desktop"       # GNOME Terminal
           # "notion.desktop"                 # Skipped (not in nixpkgs)
           "thunderbird.desktop"
           "whatsapp-for-linux.desktop"
@@ -462,15 +463,15 @@ in
   xdg.desktopEntries = (if (pkgs.stdenv.isLinux && !isWSL) then {
     ghostty = {
       name = "Ghostty";
-      exec = "ghostty";
+      exec = "env GDK_BACKEND=x11 GSK_RENDERER=cairo LIBGL_ALWAYS_SOFTWARE=1 ghostty";
       icon = "ghostty";
       type = "Application";
       terminal = false;
       categories = [ "System" "TerminalEmulator" ];
     };
-    ghostty-x11 = {
-      name = "Ghostty (X11)";
-      exec = "env GDK_BACKEND=x11 GSK_RENDERER=cairo LIBGL_ALWAYS_SOFTWARE=1 ghostty";
+    ghostty-native = {
+      name = "Ghostty (Native)";
+      exec = "ghostty";
       icon = "ghostty";
       type = "Application";
       terminal = false;
