@@ -237,14 +237,26 @@ if [[ "$SHELL" != *zsh* ]]; then
     # Use chsh to set zsh (which should be in /home/user/.nix-profile/bin/zsh or /bin/zsh)
     # We prefer the nix installed one if available
     ZSH_PATH=$(which zsh)
-    if grep -q "$ZSH_PATH" /etc/shells; then
-        chsh -s "$ZSH_PATH"
-    else
+    if ! grep -q "$ZSH_PATH" /etc/shells; then
         echo -e "${YELLOW}   Adding $ZSH_PATH to /etc/shells (requires sudo)...${NC}"
         echo "$ZSH_PATH" | sudo tee -a /etc/shells
-        chsh -s "$ZSH_PATH"
     fi
-    echo -e "${GREEN}   ✓ Shell changed to Zsh.${NC}"
+
+    if command -v sudo >/dev/null 2>&1; then
+        if sudo chsh -s "$ZSH_PATH" "$USER"; then
+            echo -e "${GREEN}   ✓ Shell changed to Zsh.${NC}"
+        else
+            echo -e "${YELLOW}   Could not change shell automatically.${NC}"
+            echo -e "${YELLOW}   Try manually: sudo chsh -s \"$ZSH_PATH\" \"$USER\"${NC}"
+        fi
+    else
+        if chsh -s "$ZSH_PATH"; then
+            echo -e "${GREEN}   ✓ Shell changed to Zsh.${NC}"
+        else
+            echo -e "${YELLOW}   Could not change shell automatically.${NC}"
+            echo -e "${YELLOW}   Try manually as root: chsh -s \"$ZSH_PATH\" \"$USER\"${NC}"
+        fi
+    fi
 else
     echo -e "${GREEN}   ✓ Zsh is already the default shell.${NC}"
 fi
