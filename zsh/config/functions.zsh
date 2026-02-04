@@ -28,9 +28,7 @@ rebuild_macos() {
   fi
   local user_home="$HOME"
   local dr="/run/current-system/sw/bin/darwin-rebuild"
-  local auto_host
-  auto_host=$(scutil --get LocalHostName 2>/dev/null || hostname -s)
-  local host="${DARWIN_HOST:-${auto_host:-MacBook-Air-von-Simon}}"
+  local host="${DARWIN_HOST:-macos}"
   if [ ! -x "$dr" ]; then
     dr="$(command -v darwin-rebuild)"
   fi

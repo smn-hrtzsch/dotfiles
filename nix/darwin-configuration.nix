@@ -19,6 +19,7 @@ in
   # Homebrew Configuration
   homebrew = {
     enable = true;
+    user = username;
     onActivation.cleanup = "zap"; # Removes packages not listed here
     onActivation.autoUpdate = true;
     onActivation.upgrade = true;
@@ -283,6 +284,7 @@ in
   nixpkgs.hostPlatform = "aarch64-darwin";
 
   # User Configuration
+  system.primaryUser = username;
   users.users.${username} = {
     name = username;
     home = darwinHome;

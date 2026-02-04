@@ -41,6 +41,8 @@ let
   ];
 in
 lib.mkIf pkgs.stdenv.isLinux {
+  nixpkgs.config.allowUnfree = true;
+
   # Fontconfig (for Nerd Fonts)
   fonts.fontconfig.enable = true;
 

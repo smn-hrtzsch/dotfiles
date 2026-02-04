@@ -22,8 +22,6 @@ let
   }) (builtins.filter (name: !(lib.elem name customCodexSkills)) anthropicSkillNames));
 in
 {
-  nixpkgs.config.allowUnfree = true;
-
   home.packages = with pkgs; [
     # Shell & Tools
     stow

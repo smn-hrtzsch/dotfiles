@@ -48,6 +48,9 @@
         ];
       };
 
+      # Stable alias for macOS builds (avoids host name mismatches)
+      darwinConfigurations."macos" = self.darwinConfigurations."MacBook-Air-von-Simon";
+
       # WSL / Linux Configuration (Standalone Home Manager)
       homeConfigurations."wsl" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux; # WSL runs on x86_64 usually
