@@ -11,6 +11,9 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
+# Branch to use (default: current dev branch)
+DOTFILES_BRANCH="${DOTFILES_BRANCH:-feat/linux-support}"
+
 echo -e "${BLUE}>>> Starting Bootstrap for Generic Linux Dotfiles Setup (Nix Edition)...${NC}"
 
 # --- 1. Dependencies Check ---
@@ -85,15 +88,19 @@ if [ ! -d "$REPO_DIR" ]; then
     git clone https://github.com/smn-hrtzsch/dotfiles.git "$REPO_DIR"
     cd "$REPO_DIR"
     
-    # Check out the correct branch (for now, feat/linux-support, later main)
-    # Since we are pipe-ing the script from this branch, we should be on this branch to have the correct flake.nix
-    git checkout feat/linux-support
+    # Check out the requested branch (default is dev branch)
+    git checkout "$DOTFILES_BRANCH"
 else
     echo -e "${GREEN}   ✓ Repository already exists.${NC}"
     cd "$REPO_DIR"
-    
-    # Ensure we are on the correct branch if the repo exists but is on main
-    # git checkout feat/linux-support || true
+
+    # Switch branch only if working tree is clean
+    if git diff --quiet && git diff --cached --quiet; then
+        git fetch origin "$DOTFILES_BRANCH" || true
+        git checkout "$DOTFILES_BRANCH" || true
+    else
+        echo -e "${YELLOW}   Working tree has changes, skipping branch switch.${NC}"
+    fi
 fi
 
 # --- 3.1 Initialize Submodules (Important for Skills) ---

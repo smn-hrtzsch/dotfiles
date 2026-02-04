@@ -1,4 +1,9 @@
-{ pkgs, ... }: {
+{ pkgs, username, darwinHome, ... }:
+
+let
+  dotfilesDir = "${darwinHome}/dotfiles";
+in
+{
   # Enable Zsh
   programs.zsh.enable = true;
   programs.fish.enable = true;
@@ -135,10 +140,10 @@
     menuExtraClock.ShowDate = 1; # Always show date
     
     # Screenshots
-    screencapture = {
-      location = "/Users/simon/Pictures/Screenshots";
-      type = "png";
-    };
+      screencapture = {
+        location = "${darwinHome}/Pictures/Screenshots";
+        type = "png";
+      };
   };
 
   # Post-Activation Script: Configure Dock, Wallpaper & Theme
@@ -163,7 +168,7 @@
     osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to true' > /dev/null 2>&1
 
     # Set Wallpaper
-    WALLPAPER_PATH="/Users/simon/dotfiles/macos/wallpaper.jpg"
+    WALLPAPER_PATH="${dotfilesDir}/macos/wallpaper.jpg"
     if [ -f "$WALLPAPER_PATH" ]; then
       echo "Setting wallpaper..."
       osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"$WALLPAPER_PATH\"" > /dev/null 2>&1
@@ -219,7 +224,7 @@
     defaults write com.apple.Spotlight MenuItemHidden -int 1
     
     # Import Custom Hotkeys (Spotlight disabled, Screenshots, etc.)
-    HOTKEYS_PLIST="/Users/simon/dotfiles/macos/hotkeys.plist"
+    HOTKEYS_PLIST="${dotfilesDir}/macos/hotkeys.plist"
     if [ -f "$HOTKEYS_PLIST" ]; then
       echo "Importing Keyboard Shortcuts..."
       defaults import com.apple.symbolichotkeys "$HOTKEYS_PLIST"
@@ -228,7 +233,7 @@
     echo "Configuring Terminal.app..."
     # Import Coolnight theme securely via plutil
     TERMINAL_PLIST="$HOME/Library/Preferences/com.apple.Terminal.plist"
-    TERMINAL_THEME_PATH="/Users/simon/dotfiles/macos-terminal/Coolnight.terminal"
+    TERMINAL_THEME_PATH="${dotfilesDir}/macos-terminal/Coolnight.terminal"
     
     if [ -f "$TERMINAL_THEME_PATH" ]; then
       echo "Importing Coolnight terminal theme..."
@@ -278,9 +283,9 @@
   nixpkgs.hostPlatform = "aarch64-darwin";
 
   # User Configuration
-  users.users.simon = {
-    name = "simon";
-    home = "/Users/simon";
+  users.users.${username} = {
+    name = username;
+    home = darwinHome;
   };
 
   # Allow unfree packages (VS Code, etc.)

@@ -26,7 +26,7 @@
     {
       # macOS Configuration (Apple Silicon)
       darwinConfigurations."MacBook-Air-von-Simon" = nix-darwin.lib.darwinSystem {
-        specialArgs = { inherit inputs self; };
+        specialArgs = { inherit inputs self username darwinHome; };
         modules = [ 
           ./darwin-configuration.nix 
           home-manager.darwinModules.home-manager
@@ -97,4 +97,3 @@
       };
     };
 }
-

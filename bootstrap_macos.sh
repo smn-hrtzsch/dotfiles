@@ -10,6 +10,9 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
+# Branch to use (default: current dev branch)
+DOTFILES_BRANCH="${DOTFILES_BRANCH:-feat/linux-support}"
+
 echo -e "${BLUE}>>> Start Bootstrap für macOS Dotfiles Setup (Nix Edition)...${NC}"
 
 # --- 1. Xcode Command Line Tools ---
@@ -100,12 +103,18 @@ if [ ! -d "$REPO_DIR" ]; then
     # StrictHostKeyChecking=no verhindert die "Are you sure..." Frage beim ersten Connect
     git clone git@github.com:smn-hrtzsch/dotfiles.git "$REPO_DIR"
     cd "$REPO_DIR"
-    echo -e "${YELLOW}   Wechsle auf Branch chore/nix-migration (Standard für Setup)...${NC}"
-    git checkout chore/nix-migration
+    echo -e "${YELLOW}   Wechsle auf Branch $DOTFILES_BRANCH (Standard für Setup)...${NC}"
+    git checkout "$DOTFILES_BRANCH"
 else
     echo -e "${GREEN}   ✓ Repository bereits vorhanden. Überspringe Klonen.${NC}"
     cd "$REPO_DIR"
-    echo -e "${BLUE}   Info: Bleibe auf aktuellem Branch: $(git branch --show-current)${NC}"
+    if git diff --quiet && git diff --cached --quiet; then
+        git fetch origin "$DOTFILES_BRANCH" || true
+        git checkout "$DOTFILES_BRANCH" || true
+    else
+        echo -e "${YELLOW}   Working tree has changes, skipping branch switch.${NC}"
+    fi
+    echo -e "${BLUE}   Info: Aktueller Branch: $(git branch --show-current)${NC}"
 fi
 
 # Branch wechseln (NUR FÜR DIE MIGRATIONSPHASE WICHTIG - VERALTET)

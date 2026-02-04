@@ -13,14 +13,39 @@
 
 .PARAMETER InstallPath
     Path where the VHDX will be stored (Default: C:\WSL\<DistroName>)
+
+.PARAMETER Branch
+    Dotfiles git branch to use (Default: feat/linux-support)
+
+.PARAMETER LinuxUser
+    Linux username to create inside the WSL distro (Default: current Windows username)
+
+.PARAMETER LinuxPassword
+    Linux user password (Default: same as LinuxUser)
 #>
 
 param (
     [string]$DistroName = "Ubuntu-Nix",
-    [string]$InstallPath = "C:\WSL"
+    [string]$InstallPath = "C:\WSL",
+    [string]$Branch = "feat/linux-support",
+    [string]$LinuxUser = $env:USERNAME,
+    [string]$LinuxPassword = $null
 )
 
 $ErrorActionPreference = "Stop"
+
+if ([string]::IsNullOrWhiteSpace($LinuxUser)) {
+    $LinuxUser = "user"
+}
+
+$LinuxUser = $LinuxUser.ToLower() -replace "[^a-z0-9_-]", ""
+if ([string]::IsNullOrWhiteSpace($LinuxUser)) {
+    $LinuxUser = "user"
+}
+
+if ([string]::IsNullOrWhiteSpace($LinuxPassword)) {
+    $LinuxPassword = $LinuxUser
+}
 $UbuntuUrl = "https://cloud-images.ubuntu.com/wsl/releases/24.04/current/ubuntu-noble-wsl-amd64-24.04lts.rootfs.tar.gz"
 $ImageFile = "$InstallPath\ubuntu-noble-wsl.tar.gz"
 $DistroPath = "$InstallPath\$DistroName"
@@ -48,26 +73,26 @@ if (wsl --list --quiet | Select-String -Pattern $DistroName) {
 }
 
 # 4. Configure User & Basics
-Write-Host "Configuring User 'simon'..." -ForegroundColor Cyan
-$SetupScript = @"
-echo 'Creating user simon...'
-id -u simon &>/dev/null || useradd -m -s /bin/bash simon
-echo 'simon:simon' | chpasswd
-usermod -aG sudo simon
+Write-Host "Configuring User '$LinuxUser'..." -ForegroundColor Cyan
+$SetupScript = @'
+echo "Creating user __USER__..."
+id -u __USER__ &>/dev/null || useradd -m -s /bin/bash __USER__
+echo "__USER__:__PASSWORD__" | chpasswd
+usermod -aG sudo __USER__
 
 echo 'Installing dependencies...'
 apt-get update && apt-get install -y curl git xz-utils
 
-echo 'Configuring wsl.conf...'
+echo "Configuring wsl.conf..."
 cat <<EOF > /etc/wsl.conf
 [user]
-default=simon
+default=__USER__
 [boot]
 systemd=true
 EOF
 
-echo 'Creating user bootstrap script...'
-cat <<'EOS' > /home/simon/finish_setup.sh
+echo "Creating user bootstrap script..."
+cat <<'EOS' > /home/__USER__/finish_setup.sh
 #!/bin/bash
 set -e
 
@@ -79,7 +104,9 @@ echo "🔄 Loading Nix Environment..."
 
 echo "🔑 SSH Key Generation..."
 if [ ! -f ~/.ssh/id_ed25519 ]; then
-    ssh-keygen -t ed25519 -C "simon@hoertzsch.de" -f ~/.ssh/id_ed25519 -N ""
+    read -p "Git Email (default: __USER__@example.com): " GIT_EMAIL
+    GIT_EMAIL=${GIT_EMAIL:-__USER__@example.com}
+    ssh-keygen -t ed25519 -C "$GIT_EMAIL" -f ~/.ssh/id_ed25519 -N ""
 fi
 
 echo ""
@@ -92,7 +119,7 @@ echo "========================================================"
 echo ""
 read -p "Press ENTER after you have added the key to GitHub..."
 
-echo "📥 Cloning Dotfiles..."
+echo "📥 Cloning Dotfiles (__BRANCH__)..."
 if [ -d ~/dotfiles ]; then
     echo "Dotfiles already exist. Pulling..."
     cd ~/dotfiles && git pull
@@ -100,18 +127,26 @@ else
     git clone git@github.com:smn-hrtzsch/dotfiles.git ~/dotfiles
 fi
 
+cd ~/dotfiles
+git fetch origin "__BRANCH__" || true
+git checkout "__BRANCH__" || git checkout -b "__BRANCH__" "origin/__BRANCH__" || true
+
 echo "⚙️ Applying Nix Configuration..."
 cd ~/dotfiles
 # Ensure we are on the right branch/flake
-# git checkout chore/nix-migration 
+# git checkout __BRANCH__
 nix run home-manager/master -- switch --flake ./nix#wsl
 
 echo "✅ Setup Complete! Please restart your shell."
 EOS
 
-chown simon:simon /home/simon/finish_setup.sh
-chmod +x /home/simon/finish_setup.sh
-"@
+chown __USER__:__USER__ /home/__USER__/finish_setup.sh
+chmod +x /home/__USER__/finish_setup.sh
+'@
+
+$SetupScript = $SetupScript.Replace("__USER__", $LinuxUser)
+$SetupScript = $SetupScript.Replace("__PASSWORD__", $LinuxPassword)
+$SetupScript = $SetupScript.Replace("__BRANCH__", $Branch)
 
 # Inject script via stdin to avoid path issues
 $SetupScript | wsl -d $DistroName -u root --exec bash
@@ -120,7 +155,7 @@ $SetupScript | wsl -d $DistroName -u root --exec bash
 Write-Host "Linking WezTerm Config..." -ForegroundColor Cyan
 $WezTermConfigDir = "$env:USERPROFILE\.config\wezterm"
 $WezTermConfigFile = "$WezTermConfigDir\wezterm.lua"
-$WSLConfigPath = "\\wsl.localhost\$DistroName\home\simon\.config\wezterm\wezterm.lua"
+$WSLConfigPath = "\\wsl.localhost\$DistroName\home\$LinuxUser\.config\wezterm\wezterm.lua"
 
 if (-not (Test-Path $WezTermConfigDir)) {
     New-Item -ItemType Directory -Force -Path $WezTermConfigDir | Out-Null
