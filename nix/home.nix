@@ -133,11 +133,6 @@ in
     };
   } else {};
 
-  # Link Wallpaper for Linux
-  home.file = (if (pkgs.stdenv.isLinux && !isWSL) then {
-    ".local/share/backgrounds/wallpaper.jpg".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/macos/wallpaper.jpg";
-  } else {});
-
   # Programs Configuration
   programs.home-manager.enable = true;
   
@@ -373,7 +368,9 @@ in
     ".npmrc".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/npm/.npmrc";
     ".config/opencode".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/opencode";
     ".opencode/commands".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/opencode/.opencode/commands";
-  } // (if pkgs.stdenv.isDarwin then {
+  } // (if (pkgs.stdenv.isLinux && !isWSL) then {
+    ".local/share/backgrounds/wallpaper.jpg".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/macos/wallpaper.jpg";
+  } else {}) // (if pkgs.stdenv.isDarwin then {
     ".config/sketchybar".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/sketchybar";
   } else {});
 
