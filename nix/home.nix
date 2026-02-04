@@ -3,6 +3,8 @@
 
 let
   dotfilesDir = "${homeDirectory}/dotfiles";
+  ghosttyExec = if pkgs.stdenv.hostPlatform.system == "aarch64-linux" then "/usr/bin/ghostty" else "ghostty";
+  ghosttyExecVm = if pkgs.stdenv.hostPlatform.system == "aarch64-linux" then "env GDK_BACKEND=x11 GSK_RENDERER=cairo LIBGL_ALWAYS_SOFTWARE=1 /usr/bin/ghostty" else "ghostty";
 in
 {
   home.username = username;
@@ -329,23 +331,33 @@ in
     fi
   '';
 
-  home.activation.applyGnomeTerminalTheme = config.lib.dag.entryAfter ["writeBoundary"] ''
+  home.activation.applyGnomeTerminalTheme = config.lib.dag.entryAfter ["dconfSettings"] ''
     if command -v gsettings >/dev/null 2>&1 \
-      && gsettings list-schemas | grep -q "org.gnome.Terminal.ProfilesList" \
-      && [[ -n "$DBUS_SESSION_BUS_ADDRESS" ]]; then
-      profile_id=$(gsettings get org.gnome.Terminal.ProfilesList default | tr -d "'")
-      if [[ -n "$profile_id" ]]; then
-        profile_path="/org/gnome/terminal/legacy/profiles:/:$profile_id/"
-        gsettings set org.gnome.Terminal.Legacy.Profile:$profile_path use-theme-colors false
-        gsettings set org.gnome.Terminal.Legacy.Profile:$profile_path use-system-font false
-        gsettings set org.gnome.Terminal.Legacy.Profile:$profile_path font "MesloLGS Nerd Font Mono 16"
-        gsettings set org.gnome.Terminal.Legacy.Profile:$profile_path foreground-color "#CBE0F0"
-        gsettings set org.gnome.Terminal.Legacy.Profile:$profile_path background-color "#181818"
-        gsettings set org.gnome.Terminal.Legacy.Profile:$profile_path cursor-background-color "#47FF9C"
-        gsettings set org.gnome.Terminal.Legacy.Profile:$profile_path cursor-foreground-color "#011423"
-        gsettings set org.gnome.Terminal.Legacy.Profile:$profile_path cursor-colors-set true
-        gsettings set org.gnome.Terminal.Legacy.Profile:$profile_path bold-is-bright true
-        gsettings set org.gnome.Terminal.Legacy.Profile:$profile_path palette "['#6f8a9e', '#E52E2E', '#44FFB1', '#FFE073', '#0FC5ED', '#a277ff', '#24EAF7', '#24EAF7', '#6f8a9e', '#E52E2E', '#44FFB1', '#FFE073', '#A277FF', '#a277ff', '#24EAF7', '#24EAF7']"
+      && gsettings list-schemas | grep -q "org.gnome.Terminal.ProfilesList"; then
+
+      apply_theme() {
+        profile_id=$(gsettings get org.gnome.Terminal.ProfilesList default | tr -d "'")
+        if [[ -n "$profile_id" ]]; then
+          profile_path="/org/gnome/terminal/legacy/profiles:/:$profile_id/"
+          gsettings set org.gnome.Terminal.Legacy.Profile:$profile_path use-theme-colors false
+          gsettings set org.gnome.Terminal.Legacy.Profile:$profile_path use-system-font false
+          gsettings set org.gnome.Terminal.Legacy.Profile:$profile_path font "MesloLGS Nerd Font Mono 16"
+          gsettings set org.gnome.Terminal.Legacy.Profile:$profile_path foreground-color "#CBE0F0"
+          gsettings set org.gnome.Terminal.Legacy.Profile:$profile_path background-color "#181818"
+          gsettings set org.gnome.Terminal.Legacy.Profile:$profile_path cursor-background-color "#47FF9C"
+          gsettings set org.gnome.Terminal.Legacy.Profile:$profile_path cursor-foreground-color "#011423"
+          gsettings set org.gnome.Terminal.Legacy.Profile:$profile_path cursor-colors-set true
+          gsettings set org.gnome.Terminal.Legacy.Profile:$profile_path bold-is-bright true
+          gsettings set org.gnome.Terminal.Legacy.Profile:$profile_path palette "['#6f8a9e', '#E52E2E', '#44FFB1', '#FFE073', '#0FC5ED', '#a277ff', '#24EAF7', '#24EAF7', '#6f8a9e', '#E52E2E', '#44FFB1', '#FFE073', '#A277FF', '#a277ff', '#24EAF7', '#24EAF7']"
+        fi
+      }
+
+      if [[ -n "$DBUS_SESSION_BUS_ADDRESS" ]]; then
+        apply_theme
+      else
+        if command -v dbus-run-session >/dev/null 2>&1; then
+          dbus-run-session -- bash -c "$(declare -f apply_theme); apply_theme"
+        fi
       fi
     fi
   '';
@@ -463,7 +475,7 @@ in
   xdg.desktopEntries = (if (pkgs.stdenv.isLinux && !isWSL) then {
     ghostty = {
       name = "Ghostty";
-      exec = "env GDK_BACKEND=x11 GSK_RENDERER=cairo LIBGL_ALWAYS_SOFTWARE=1 ghostty";
+      exec = ghosttyExecVm;
       icon = "ghostty";
       type = "Application";
       terminal = false;
@@ -471,7 +483,7 @@ in
     };
     ghostty-native = {
       name = "Ghostty (Native)";
-      exec = "ghostty";
+      exec = ghosttyExec;
       icon = "ghostty";
       type = "Application";
       terminal = false;
