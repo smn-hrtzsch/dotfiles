@@ -85,12 +85,11 @@ in
         pkgs.android-studio # IDE
       ] else [
         # Generic Linux GUI Apps (aarch64)
-        # Note: Brave/VS Code are installed via vendor repos in bootstrap on ARM64.
+        # Note: Brave/VS Code/Ghostty are installed via vendor repos in bootstrap on ARM64.
         pkgs.firefox
         pkgs.vscodium
         pkgs.thunderbird
         pkgs.localsend
-        pkgs.ghostty
         pkgs.copyq
         pkgs.rclone
         pkgs.p7zip
@@ -330,7 +329,9 @@ in
   '';
 
   home.activation.applyGnomeTerminalTheme = config.lib.dag.entryAfter ["writeBoundary"] ''
-    if command -v gsettings >/dev/null 2>&1 && [[ -n "$DBUS_SESSION_BUS_ADDRESS" ]]; then
+    if command -v gsettings >/dev/null 2>&1 \
+      && gsettings list-schemas | grep -q "org.gnome.Terminal.ProfilesList" \
+      && [[ -n "$DBUS_SESSION_BUS_ADDRESS" ]]; then
       profile_id=$(gsettings get org.gnome.Terminal.ProfilesList default | tr -d "'")
       if [[ -n "$profile_id" ]]; then
         profile_path="/org/gnome/terminal/legacy/profiles:/:$profile_id/"
@@ -345,6 +346,12 @@ in
         gsettings set org.gnome.Terminal.Legacy.Profile:$profile_path bold-is-bright true
         gsettings set org.gnome.Terminal.Legacy.Profile:$profile_path palette "['#6f8a9e', '#E52E2E', '#44FFB1', '#FFE073', '#0FC5ED', '#a277ff', '#24EAF7', '#24EAF7', '#6f8a9e', '#E52E2E', '#44FFB1', '#FFE073', '#A277FF', '#a277ff', '#24EAF7', '#24EAF7']"
       fi
+    fi
+  '';
+
+  home.activation.updateDesktopDatabase = config.lib.dag.entryAfter ["writeBoundary"] ''
+    if command -v update-desktop-database >/dev/null 2>&1; then
+      update-desktop-database "$HOME/.local/share/applications" || true
     fi
   '';
 

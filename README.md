@@ -91,6 +91,8 @@ Dieses Setup funktioniert auf den meisten Linux-Distributionen (getestet auf Ubu
     **Ghostty auf VMs:**
     Wenn Ghostty auf einer VM wegen OpenGL/EGL abstuerzt, starte die App "Ghostty (X11)".
     Diese nutzt Software‑Rendering (GSK_RENDERER=cairo) und ist VM‑freundlicher.
+    Hinweis: Auf Ubuntu 25.10 ist standardmaessig "GNOME Console" installiert. Der Theme‑Hook greift nur fuer **GNOME Terminal**.
+    Das Bootstrap-Skript installiert GNOME Terminal automatisch.
 
 **Hinweis zu ARM64 (Apple Silicon / aarch64):**
 Einige proprietaere Apps sind auf ARM64 in nixpkgs nicht verfuegbar.
