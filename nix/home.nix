@@ -79,7 +79,10 @@ in
     pkgs.nerd-fonts.meslo-lg
     pkgs.nerd-fonts.fira-code
     pkgs.nerd-fonts.jetbrains-mono
-  ]);
+  ] ++ (if (pkgs.stdenv.isLinux && !isWSL) then [
+    # Desktop integration (Linux only)
+    pkgs.xdg-utils 
+  ] else []);
 
   # Allow unfree packages (VS Code, Spotify, etc.)
   nixpkgs.config.allowUnfree = true;
@@ -134,11 +137,6 @@ in
   home.file = (if (pkgs.stdenv.isLinux && !isWSL) then {
     ".local/share/backgrounds/wallpaper.jpg".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/macos/wallpaper.jpg";
   } else {});
-
-    
-    # Desktop integration
-    pkgs.xdg-utils # xdg-open etc
-  ]);
 
   # Allow unfree packages (VS Code, Spotify, etc.)
   nixpkgs.config.allowUnfree = true;
