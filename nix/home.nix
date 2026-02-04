@@ -78,6 +78,7 @@ in
         pkgs.android-studio # IDE
       ] else [
         # Generic Linux GUI Apps (aarch64)
+        # Note: Brave/VS Code are installed via vendor repos in bootstrap on ARM64.
         pkgs.firefox
         pkgs.vscodium
         pkgs.thunderbird

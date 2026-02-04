@@ -79,8 +79,9 @@ Dieses Setup funktioniert auf den meisten Linux-Distributionen (getestet auf Ubu
     Das Skript installiert Nix, klont das Repo und fragt dich nach deinem Username und Git-Details, um die Konfiguration anzupassen.
 
 **Hinweis zu ARM64 (Apple Silicon / aarch64):**
-Einige proprietaere Apps (z.B. Spotify, Zoom, WhatsApp, Android Studio, Brave, VS Code) sind auf ARM64-Linux nicht verfuegbar.
+Einige proprietaere Apps sind auf ARM64 in nixpkgs nicht verfuegbar.
 Auf ARM64 installiert das Setup daher Alternativen (z.B. Firefox und VSCodium) und laesst nicht-verfuegbare Apps aus.
+Auf Ubuntu/Debian (ARM64) versucht das Bootstrap-Skript zusaetzlich, **Brave** und **VS Code** ueber die offiziellen Hersteller-Repos zu installieren.
 Wenn du volle App-Paritaet moechtest, nutze eine x86_64 Linux VM.
 
 ## 🪟 Windows (WSL 2) Setup

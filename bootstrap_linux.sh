@@ -163,6 +163,43 @@ else
     exit 1
 fi
 
+# --- 5.1 Install Vendor GUI Apps on ARM64 (Ubuntu/Debian) ---
+if [[ "$ARCH" == "aarch64" ]] || [[ "$ARCH" == "arm64" ]]; then
+    if command -v apt-get &> /dev/null; then
+        echo -e "${BLUE}>>> 5.1 Installing vendor GUI apps (Brave & VS Code) for ARM64...${NC}"
+        echo -e "${YELLOW}   This uses official vendor repositories (sudo required).${NC}"
+
+        # Install required tools
+        sudo apt-get update || true
+        sudo apt-get install -y curl wget gpg apt-transport-https || true
+
+        # Brave (ARM64 supported)
+        sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg \
+          https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg || true
+        sudo curl -fsSLo /etc/apt/sources.list.d/brave-browser-release.sources \
+          https://brave-browser-apt-release.s3.brave.com/brave-browser.sources || true
+
+        # VS Code (ARM64 supported)
+        wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /tmp/microsoft.gpg || true
+        sudo install -D -o root -g root -m 644 /tmp/microsoft.gpg /usr/share/keyrings/microsoft.gpg || true
+        rm -f /tmp/microsoft.gpg
+        sudo tee /etc/apt/sources.list.d/vscode.sources > /dev/null <<'EOF'
+Types: deb
+URIs: https://packages.microsoft.com/repos/code
+Suites: stable
+Components: main
+Architectures: amd64,arm64,armhf
+Signed-By: /usr/share/keyrings/microsoft.gpg
+EOF
+
+        sudo apt-get update || true
+        sudo apt-get install -y brave-browser || true
+        sudo apt-get install -y code || true
+    else
+        echo -e "${YELLOW}   apt-get not found, skipping vendor GUI installs for ARM64.${NC}"
+    fi
+fi
+
 # Run Home Manager via nix run
 echo -e "${BLUE}   Building configuration for ${FLAKE_ATTR}...${NC}"
 nix run home-manager/master -- switch --flake ./nix#${FLAKE_ATTR}
