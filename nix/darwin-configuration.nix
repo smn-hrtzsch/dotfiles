@@ -147,13 +147,13 @@ in
 
   # Post-Activation Script: Configure Dock, Wallpaper & Theme
   system.activationScripts.postUserActivation.text = ''
-    echo "Setting Default Browser to Brave..."
+    echo "Setting Default Browser to Helium..."
     if command -v /opt/homebrew/bin/duti >/dev/null; then
-      # Set Brave as default for http, https, and .html
-      /opt/homebrew/bin/duti -s com.brave.Browser http || true
-      /opt/homebrew/bin/duti -s com.brave.Browser https || true
-      /opt/homebrew/bin/duti -s com.brave.Browser .html || true
-      /opt/homebrew/bin/duti -s com.brave.Browser .pdf || true
+      # Set Helium as default for http, https, and .html/.pdf
+      /opt/homebrew/bin/duti -s com.helium.Helium http || true
+      /opt/homebrew/bin/duti -s com.helium.Helium https || true
+      /opt/homebrew/bin/duti -s com.helium.Helium .html || true
+      /opt/homebrew/bin/duti -s com.helium.Helium .pdf || true
       
       # Set VS Code as default for .svg
       /opt/homebrew/bin/duti -s com.microsoft.VSCode .svg || true
