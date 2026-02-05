@@ -355,11 +355,14 @@ in
     ".gemini/skills".source = config.lib.file.mkOutOfStoreSymlink anthropicSkillsDir;
 
     # Manual Dotfiles
-    ".ssh/config".source = config.lib.file.mkOutOfStoreSymlink (
-      if pkgs.stdenv.isDarwin
-      then "${dotfilesDir}/ssh/config.darwin"
-      else "${dotfilesDir}/ssh/config"
-    );
+    ".ssh/config" = {
+      source = config.lib.file.mkOutOfStoreSymlink (
+        if pkgs.stdenv.isDarwin
+        then "${dotfilesDir}/ssh/config.darwin"
+        else "${dotfilesDir}/ssh/config"
+      );
+      force = true;
+    };
     ".npmrc".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/npm/.npmrc";
     ".opencode/commands".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/opencode/.opencode/commands";
 
