@@ -250,6 +250,37 @@ in
     fi
   '';
 
+  home.activation.fixGhosttyRepoConfig = config.lib.dag.entryAfter ["writeBoundary"] ''
+    ghostty_home="$HOME/.config/ghostty"
+    ghostty_repo="${dotfilesDir}/config/.config/ghostty"
+
+    if [ -L "$ghostty_home" ]; then
+      link_target=$(readlink "$ghostty_home" || true)
+      if [ "$link_target" = "$ghostty_repo" ]; then
+        rm "$ghostty_home"
+        mkdir -p "$ghostty_home"
+      fi
+    fi
+
+    if [ -e "$ghostty_repo/config" ]; then
+      rm -f "$ghostty_repo/config"
+    fi
+
+    if [ -d "$ghostty_home" ]; then
+      if [ ! -e "$ghostty_home/themes" ]; then
+        ln -sfn "$ghostty_repo/themes" "$ghostty_home/themes"
+      fi
+
+      if [ ! -e "$ghostty_home/config" ]; then
+        if [ "$(uname)" = "Darwin" ]; then
+          ln -sfn "$ghostty_repo/config.darwin" "$ghostty_home/config"
+        else
+          ln -sfn "$ghostty_repo/config.linux" "$ghostty_home/config"
+        fi
+      fi
+    fi
+  '';
+
   home.activation.linkCodexAnthropicSkills = config.lib.dag.entryAfter ["writeBoundary"] ''
     skills_src="${anthropicSkillsDir}"
     skills_dst="$HOME/.codex/skills"
