@@ -21,7 +21,13 @@
       
       # Define home directories for different platforms
       darwinHome = "/Users/${username}";
-      linuxHome = "/home/${username}"; 
+      linuxHome = "/home/${username}";
+
+      # Package set helper (enable unfree for Linux targets)
+      mkPkgs = system: import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
     in
     {
       # macOS Configuration (Apple Silicon)
@@ -53,7 +59,7 @@
 
       # WSL / Linux Configuration (Standalone Home Manager)
       homeConfigurations."wsl" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux; # WSL runs on x86_64 usually
+        pkgs = mkPkgs "x86_64-linux"; # WSL runs on x86_64 usually
         modules = [ 
           ./home.nix 
         ];
@@ -69,7 +75,7 @@
 
       # WSL Configuration (ARM64)
       homeConfigurations."wsl-aarch64" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.aarch64-linux;
+        pkgs = mkPkgs "aarch64-linux";
         modules = [
           ./home.nix
         ];
@@ -85,7 +91,7 @@
 
       # Generic Linux Configuration (x86_64)
       homeConfigurations."linux-x86_64" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        pkgs = mkPkgs "x86_64-linux";
         modules = [ 
           ./home.nix 
         ];
@@ -101,7 +107,7 @@
 
       # Generic Linux Configuration (ARM64 / AArch64) - For VMs on Mac
       homeConfigurations."linux-aarch64" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.aarch64-linux;
+        pkgs = mkPkgs "aarch64-linux";
         modules = [ 
           ./home.nix 
         ];
