@@ -277,7 +277,11 @@ in
     ".config/neofetch".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/neofetch";
 
     # Manual Dotfiles
-    ".ssh/config".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/ssh/config";
+    ".ssh/config".source = config.lib.file.mkOutOfStoreSymlink (
+      if pkgs.stdenv.isDarwin
+      then "${dotfilesDir}/ssh/config.darwin"
+      else "${dotfilesDir}/ssh/config"
+    );
     ".npmrc".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/npm/.npmrc";
     ".config/opencode/AGENTS.md" = {
       source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/opencode/AGENTS.md";
