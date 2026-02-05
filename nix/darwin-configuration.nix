@@ -149,14 +149,20 @@ in
   system.activationScripts.postUserActivation.text = ''
     echo "Setting Default Browser to Helium..."
     if command -v /opt/homebrew/bin/duti >/dev/null; then
-      # Set Helium as default for http, https, and .html/.pdf
-      /opt/homebrew/bin/duti -s com.helium.Helium http || true
-      /opt/homebrew/bin/duti -s com.helium.Helium https || true
-      /opt/homebrew/bin/duti -s com.helium.Helium .html || true
-      /opt/homebrew/bin/duti -s com.helium.Helium .pdf || true
+      # Resolve Helium bundle id dynamically (falls back if not found)
+      HELIUM_BUNDLE_ID="$(osascript -e 'id of app "Helium"' 2>/dev/null || true)"
+      if [ -z "$HELIUM_BUNDLE_ID" ]; then
+        HELIUM_BUNDLE_ID="com.helium.Helium"
+      fi
+
+      # Set Helium as default for http, https, and .html/.pdf (as user)
+      sudo -H -u ${username} /opt/homebrew/bin/duti -s "$HELIUM_BUNDLE_ID" http || true
+      sudo -H -u ${username} /opt/homebrew/bin/duti -s "$HELIUM_BUNDLE_ID" https || true
+      sudo -H -u ${username} /opt/homebrew/bin/duti -s "$HELIUM_BUNDLE_ID" .html || true
+      sudo -H -u ${username} /opt/homebrew/bin/duti -s "$HELIUM_BUNDLE_ID" .pdf || true
       
       # Set VS Code as default for .svg
-      /opt/homebrew/bin/duti -s com.microsoft.VSCode .svg || true
+      sudo -H -u ${username} /opt/homebrew/bin/duti -s com.microsoft.VSCode .svg || true
     else
       echo "duti not found, skipping default browser configuration."
     fi
