@@ -1,11 +1,14 @@
-{ pkgs, config, lib, isWSL, ... }:
+{ pkgs, config, lib, isWSL, inputs, ... }:
 
 let
   dotfilesDir = "${config.home.homeDirectory}/dotfiles";
-  ghosttyExec = if pkgs.stdenv.hostPlatform.system == "aarch64-linux" then "/usr/bin/ghostty" else "ghostty";
+  ghosttyExec = "ghostty";
   ghosttyExecVm = if pkgs.stdenv.hostPlatform.system == "aarch64-linux"
-    then "env GDK_BACKEND=x11 GSK_RENDERER=cairo LIBGL_ALWAYS_SOFTWARE=1 /usr/bin/ghostty"
+    then "env GDK_BACKEND=x11 GSK_RENDERER=cairo LIBGL_ALWAYS_SOFTWARE=1 ghostty"
     else "ghostty";
+  ghosttyPkg = if inputs ? ghostty
+    then inputs.ghostty.packages.${pkgs.stdenv.hostPlatform.system}.default
+    else pkgs.ghostty;
   linuxGuiApps = with pkgs; if pkgs.stdenv.hostPlatform.system == "x86_64-linux" then [
     # Generic Linux GUI Apps (x86_64)
     brave
@@ -16,17 +19,18 @@ let
     # notion-app-enhanced
     zoom-us
     localsend
-    ghostty
+    ghosttyPkg
     copyq
     rclone
     p7zip
   ] else [
     # Generic Linux GUI Apps (aarch64)
-    # Note: Brave/VS Code/Ghostty are installed via vendor repos in bootstrap on ARM64.
+    # Note: Brave/VS Code are installed via vendor repos in bootstrap on ARM64.
     firefox
     vscodium
     thunderbird
     localsend
+    ghosttyPkg
     copyq
     rclone
     p7zip
