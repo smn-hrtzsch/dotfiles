@@ -14,7 +14,6 @@ let
     thunderbird
     bitwarden-desktop
     # notion-app-enhanced
-    whatsapp-for-linux
     zoom-us
     localsend
     ghostty
@@ -76,7 +75,6 @@ lib.mkIf pkgs.stdenv.isLinux {
           "org.gnome.Terminal.desktop"       # GNOME Terminal
           # "notion.desktop"                 # Skipped (not in nixpkgs)
           "thunderbird.desktop"
-          "whatsapp-for-linux.desktop"
           "spotify.desktop"
           "code.desktop"
           "android-studio.desktop"
