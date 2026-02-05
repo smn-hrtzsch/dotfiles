@@ -8,6 +8,10 @@ lib.mkIf pkgs.stdenv.isDarwin {
     dockutil
   ];
 
+  home.sessionPath = [
+    "/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+  ];
+
   home.file = {
     ".config/raycast".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/raycast";
     ".config/sketchybar".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/sketchybar";
