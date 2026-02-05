@@ -243,6 +243,7 @@ PY
     # Configure Dock Icons
     if command -v ${pkgs.dockutil}/bin/dockutil >/dev/null; then
       dockutil=${pkgs.dockutil}/bin/dockutil
+      dock_target="${darwinHome}"
       
       # Apps to add to the dock
       helium_app=""
@@ -268,7 +269,7 @@ PY
       )
 
       # Only update Dock if it differs
-      current_apps=$("$dockutil" --list 2>/dev/null | awk -F '\t' '$2 ~ /\.app$/ {print $2}')
+      current_apps=$("$dockutil" --list "$dock_target" 2>/dev/null | awk -F '\t' '$2 ~ /\.app$/ {print $2}')
       desired_apps=()
       for app in "''${apps[@]}"; do
         if [ -n "$app" ] && [ -e "$app" ]; then
@@ -277,12 +278,12 @@ PY
       done
       if [ "$(printf '%s\n' "''${desired_apps[@]}")" != "$current_apps" ]; then
         # Clear existing dock
-        $dockutil --no-restart --remove all
+        $dockutil --no-restart --remove all "$dock_target"
 
         # Add apps
         for app in "''${apps[@]}"; do
           if [ -e "$app" ]; then
-            $dockutil --no-restart --add "$app"
+            $dockutil --no-restart --add "$app" "$dock_target"
           else
             echo "App not found: $app"
           fi
