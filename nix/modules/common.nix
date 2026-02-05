@@ -168,10 +168,12 @@ in
 
   programs.git = {
     enable = true;
-    userName = gitUserName;
-    userEmail = gitUserEmail;
     lfs.enable = true;
-    extraConfig = {
+    settings = {
+      user = {
+        name = gitUserName;
+        email = gitUserEmail;
+      };
       init.defaultBranch = "main";
       pull.rebase = true;
       push.autoSetupRemote = true;
