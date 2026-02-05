@@ -164,17 +164,53 @@ in
         HELIUM_BUNDLE_ID="$(/usr/bin/mdls -name kMDItemCFBundleIdentifier -raw "$HELIUM_APP" 2>/dev/null)"
       fi
       if [ -z "$HELIUM_BUNDLE_ID" ]; then
-        HELIUM_BUNDLE_ID="com.helium.Helium"
+        HELIUM_BUNDLE_ID="net.imput.helium"
       fi
 
-      # Set Helium as default for http, https, and .html/.pdf (as user)
-      sudo -H -u ${username} /opt/homebrew/bin/duti -s "$HELIUM_BUNDLE_ID" http || true
-      sudo -H -u ${username} /opt/homebrew/bin/duti -s "$HELIUM_BUNDLE_ID" https || true
-      sudo -H -u ${username} /opt/homebrew/bin/duti -s "$HELIUM_BUNDLE_ID" .html || true
-      sudo -H -u ${username} /opt/homebrew/bin/duti -s "$HELIUM_BUNDLE_ID" .pdf || true
-      
+      supports_scheme() {
+        local app="$1"
+        local scheme="$2"
+        /usr/bin/python3 - <<'PY' "$app" "$scheme" >/dev/null 2>&1
+import plistlib, sys
+path = sys.argv[1]
+scheme = sys.argv[2]
+try:
+    with open(path, 'rb') as f:
+        data = plistlib.load(f)
+    for entry in data.get('CFBundleURLTypes', []):
+        for s in entry.get('CFBundleURLSchemes', []):
+            if s == scheme:
+                sys.exit(0)
+except Exception:
+    pass
+sys.exit(1)
+PY
+      }
+
+      set_ext_if_needed() {
+        local ext="$1"
+        local desired="$2"
+        local current
+        current=$(/opt/homebrew/bin/duti -x "$ext" 2>/dev/null | awk '{print $1}')
+        if [ "$current" != "$desired" ]; then
+          sudo -H -u ${username} /opt/homebrew/bin/duti -s "$desired" ".$ext" >/dev/null 2>&1 || true
+        fi
+      }
+
+      # Set Helium as default for http/https only if app declares the scheme
+      if [ -n "$HELIUM_APP" ] && supports_scheme "$HELIUM_APP/Contents/Info.plist" "http"; then
+        sudo -H -u ${username} /opt/homebrew/bin/duti -s "$HELIUM_BUNDLE_ID" http >/dev/null 2>&1 || true
+      fi
+      if [ -n "$HELIUM_APP" ] && supports_scheme "$HELIUM_APP/Contents/Info.plist" "https"; then
+        sudo -H -u ${username} /opt/homebrew/bin/duti -s "$HELIUM_BUNDLE_ID" https >/dev/null 2>&1 || true
+      fi
+
+      # File types (only set if needed)
+      set_ext_if_needed "html" "$HELIUM_BUNDLE_ID"
+      set_ext_if_needed "pdf" "$HELIUM_BUNDLE_ID"
+
       # Set VS Code as default for .svg
-      sudo -H -u ${username} /opt/homebrew/bin/duti -s com.microsoft.VSCode .svg || true
+      set_ext_if_needed "svg" "com.microsoft.VSCode"
     else
       echo "duti not found, skipping default browser configuration."
     fi
