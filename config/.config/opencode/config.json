@@ -51,6 +51,8 @@
       "which *":"allow",
       "qlmanage *":"allow",
       "ffmpeg *":"allow",
+      "gh run list *":"allow",
+      "gh run view *":"allow",
     }
   },
   "plugin": ["opencode-gemini-auth@latest"]
