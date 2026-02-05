@@ -12,7 +12,7 @@ let
     vscode
     spotify
     thunderbird
-    bitwarden
+    bitwarden-desktop
     # notion-app-enhanced
     whatsapp-for-linux
     zoom-us
