@@ -340,6 +340,11 @@ in
   # Symlink Dotfiles
   home.file = {
     # ~/.config is symlinked to dotfiles; avoid linking subpaths here
+    ".gitconfig" = {
+      text = "";
+      force = true;
+    };
+
     # Link p10k config directly to home
     ".p10k.zsh".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/zsh/.p10k.zsh";
 
