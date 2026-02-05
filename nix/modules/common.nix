@@ -3,7 +3,6 @@
 let
   dotfilesDir = "${config.home.homeDirectory}/dotfiles";
   anthropicSkillsDir = "${dotfilesDir}/anthropic-skills/skills";
-  anthropicSkillsPath = ../../anthropic-skills/skills;
   customCodexSkills = [
     "opencode-commit"
     "opencode-execute"
@@ -14,16 +13,6 @@ let
     "opencode-review"
     "opencode-secrets"
   ];
-  anthropicSkillNames = if builtins.pathExists anthropicSkillsPath
-    then builtins.attrNames (builtins.readDir anthropicSkillsPath)
-    else [];
-  codexAnthropicLinks = lib.listToAttrs (map (name: {
-    name = ".codex/skills/${name}";
-    value = {
-      source = config.lib.file.mkOutOfStoreSymlink "${anthropicSkillsDir}/${name}";
-      force = true;
-    };
-  }) (builtins.filter (name: !(lib.elem name customCodexSkills)) anthropicSkillNames));
 in
 {
   home.packages = with pkgs; [
@@ -261,6 +250,27 @@ in
     fi
   '';
 
+  home.activation.linkCodexAnthropicSkills = config.lib.dag.entryAfter ["writeBoundary"] ''
+    skills_src="${anthropicSkillsDir}"
+    skills_dst="$HOME/.codex/skills"
+
+    if [ -d "$skills_src" ]; then
+      mkdir -p "$skills_dst"
+
+      for skill in "$skills_src"/*; do
+        if [ -d "$skill" ]; then
+          name=$(basename "$skill")
+          case "$name" in
+            opencode-commit|opencode-execute|opencode-feature|opencode-fix|opencode-plan|opencode-refactor|opencode-review|opencode-secrets)
+              continue
+              ;;
+          esac
+          ln -sfn "$skill" "$skills_dst/$name"
+        fi
+      done
+    fi
+  '';
+
   # Symlink Dotfiles
   home.file = {
     ".config/ghostty".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/ghostty";
@@ -341,5 +351,5 @@ in
       source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-secrets";
       force = true;
     };
-  } // codexAnthropicLinks;
+  };
 }
