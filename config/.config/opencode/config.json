@@ -47,7 +47,8 @@
       "gh pr create *": "allow",
       "strings *": "allow",
       "gh pr list *": "allow",
-      "env *": "allow"
+      "env *": "allow",
+      "which *":"allow",
     }
   },
   "plugin": ["opencode-gemini-auth@latest"]
