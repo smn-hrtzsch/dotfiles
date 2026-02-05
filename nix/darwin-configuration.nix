@@ -187,29 +187,37 @@ sys.exit(1)
 PY
       }
 
+      get_handler() {
+        local ext="$1"
+        /opt/homebrew/bin/duti -x "$ext" 2>/dev/null | awk '{print $1}'
+      }
+
       set_ext_if_needed() {
         local ext="$1"
         local desired="$2"
         local current
-        current=$(/opt/homebrew/bin/duti -x "$ext" 2>/dev/null | awk '{print $1}')
+        current=$(get_handler "$ext")
         if [ "$current" != "$desired" ]; then
           sudo -H -u ${username} /opt/homebrew/bin/duti -s "$desired" ".$ext" >/dev/null 2>&1 || true
         fi
       }
 
-      # Set Helium as default for http/https only if app declares the scheme
-      if [ -n "$HELIUM_APP" ] && supports_scheme "$HELIUM_APP/Contents/Info.plist" "http"; then
-        sudo -H -u ${username} /opt/homebrew/bin/duti -s "$HELIUM_BUNDLE_ID" http >/dev/null 2>&1 || true
-      fi
-      if [ -n "$HELIUM_APP" ] && supports_scheme "$HELIUM_APP/Contents/Info.plist" "https"; then
-        sudo -H -u ${username} /opt/homebrew/bin/duti -s "$HELIUM_BUNDLE_ID" https >/dev/null 2>&1 || true
-      fi
+      set_scheme_if_supported() {
+        local scheme="$1"
+        local desired="$2"
+        if [ -n "$HELIUM_APP" ] && supports_scheme "$HELIUM_APP/Contents/Info.plist" "$scheme"; then
+          sudo -H -u ${username} /opt/homebrew/bin/duti -s "$desired" "$scheme" >/dev/null 2>&1 || true
+        fi
+      }
+
+      # Set Helium as default for http only if app declares the scheme
+      set_scheme_if_supported "http" "$HELIUM_BUNDLE_ID"
 
       # File types (only set if needed)
       set_ext_if_needed "html" "$HELIUM_BUNDLE_ID"
       set_ext_if_needed "pdf" "$HELIUM_BUNDLE_ID"
 
-      # Set VS Code as default for .svg
+      # Set VS Code as default for .svg (only if needed)
       set_ext_if_needed "svg" "com.microsoft.VSCode"
     else
       echo "duti not found, skipping default browser configuration."
@@ -217,14 +225,19 @@ PY
 
     echo "Configuring Desktop & Dock..."
     
-    # Force Dark Mode
-    osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to true' > /dev/null 2>&1
+    # Force Dark Mode (only if needed)
+    if [ "$(defaults read -g AppleInterfaceStyle 2>/dev/null)" != "Dark" ]; then
+      osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to true' > /dev/null 2>&1
+    fi
 
     # Set Wallpaper
     WALLPAPER_PATH="${dotfilesDir}/macos/wallpaper.jpg"
     if [ -f "$WALLPAPER_PATH" ]; then
-      echo "Setting wallpaper..."
-      osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"$WALLPAPER_PATH\"" > /dev/null 2>&1
+      current_wallpaper=$(osascript -e 'tell application "System Events" to get picture of first desktop' 2>/dev/null || true)
+      if [ "$current_wallpaper" != "$WALLPAPER_PATH" ]; then
+        echo "Setting wallpaper..."
+        osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"$WALLPAPER_PATH\"" > /dev/null 2>&1
+      fi
     fi
 
     # Configure Dock Icons
@@ -247,40 +260,66 @@ PY
         "/Applications/Bitwarden.app"
       )
 
-      # Clear existing dock
-      $dockutil --no-restart --remove all
-
-      # Add apps
+      # Only update Dock if it differs
+      current_apps=$("$dockutil" --list 2>/dev/null | awk -F '\t' '$2 ~ /\.app$/ {print $2}')
+      desired_apps=()
       for app in "''${apps[@]}"; do
         if [ -e "$app" ]; then
-          $dockutil --no-restart --add "$app"
-        else
-          echo "App not found: $app"
+          desired_apps+=("$app")
         fi
       done
+      if [ "$(printf '%s\n' "''${desired_apps[@]}")" != "$current_apps" ]; then
+        # Clear existing dock
+        $dockutil --no-restart --remove all
 
-      # Restart Dock to apply changes
-      killall Dock
+        # Add apps
+        for app in "''${apps[@]}"; do
+          if [ -e "$app" ]; then
+            $dockutil --no-restart --add "$app"
+          else
+            echo "App not found: $app"
+          fi
+        done
+
+        # Restart Dock to apply changes
+        killall Dock
+      else
+        echo "Dock already configured."
+      fi
     else
       echo "dockutil not found, skipping Dock configuration."
     fi
     
     echo "Configuring Menu Bar..."
-    # Enable Bluetooth in Menu Bar
-    defaults write com.apple.controlcenter "NSStatusItem Visible Bluetooth" -bool true
-    # Enable Sound in Menu Bar
-    defaults write com.apple.controlcenter "NSStatusItem Visible Sound" -bool true
-    # Enable Battery in Menu Bar
-    defaults write com.apple.controlcenter "NSStatusItem Visible Battery" -bool true
+    # Enable Bluetooth/Sound/Battery in Menu Bar (only if needed)
+    if [ "$(defaults read com.apple.controlcenter "NSStatusItem Visible Bluetooth" 2>/dev/null)" != "1" ]; then
+      defaults write com.apple.controlcenter "NSStatusItem Visible Bluetooth" -bool true
+    fi
+    if [ "$(defaults read com.apple.controlcenter "NSStatusItem Visible Sound" 2>/dev/null)" != "1" ]; then
+      defaults write com.apple.controlcenter "NSStatusItem Visible Sound" -bool true
+    fi
+    if [ "$(defaults read com.apple.controlcenter "NSStatusItem Visible Battery" 2>/dev/null)" != "1" ]; then
+      defaults write com.apple.controlcenter "NSStatusItem Visible Battery" -bool true
+    fi
     
-    # Hide Spotlight Icon
-    defaults write com.apple.Spotlight MenuItemHidden -int 1
+    # Hide Spotlight Icon (only if needed)
+    if [ "$(defaults read com.apple.Spotlight MenuItemHidden 2>/dev/null)" != "1" ]; then
+      defaults write com.apple.Spotlight MenuItemHidden -int 1
+    fi
     
     # Import Custom Hotkeys (Spotlight disabled, Screenshots, etc.)
     HOTKEYS_PLIST="${dotfilesDir}/macos/hotkeys.plist"
     if [ -f "$HOTKEYS_PLIST" ]; then
-      echo "Importing Keyboard Shortcuts..."
-      defaults import com.apple.symbolichotkeys "$HOTKEYS_PLIST"
+      HOTKEYS_HASH_FILE="$HOME/Library/Preferences/.dotfiles_hotkeys.sha256"
+      new_hash=$(shasum -a 256 "$HOTKEYS_PLIST" | awk '{print $1}')
+      old_hash=$(cat "$HOTKEYS_HASH_FILE" 2>/dev/null || true)
+      if [ "$new_hash" != "$old_hash" ]; then
+        echo "Importing Keyboard Shortcuts..."
+        defaults import com.apple.symbolichotkeys "$HOTKEYS_PLIST"
+        echo "$new_hash" > "$HOTKEYS_HASH_FILE"
+      else
+        echo "Keyboard Shortcuts already up to date."
+      fi
     fi
 
     echo "Configuring Terminal.app..."
@@ -289,33 +328,19 @@ PY
     TERMINAL_THEME_PATH="${dotfilesDir}/macos-terminal/Coolnight.terminal"
     
     if [ -f "$TERMINAL_THEME_PATH" ]; then
-      echo "Importing Coolnight terminal theme..."
-      
-      # Convert XML to binary for safety and insert into Window Settings
-      # We rely on the fact that the .terminal file IS a plist dict.
-      # We extract the dictionary content and inject it.
-      
-      # Ensure Window Settings dict exists
-      /usr/libexec/PlistBuddy -c "Add :'Window Settings' dict" "$TERMINAL_PLIST" 2>/dev/null || true
-
-      # Delete existing Coolnight profile if present to ensure update
-      /usr/libexec/PlistBuddy -c "Delete :'Window Settings':Coolnight" "$TERMINAL_PLIST" 2>/dev/null || true
-
-      # Import the new profile
-      # The .terminal file is a full plist with a root dict. We want that root dict content under "Coolnight"
-      # But PlistBuddy cannot easily merge external files into a key.
-      # So we use 'open' as a fallback if direct injection is too complex in bash, BUT:
-      # We can use defaults write with -dict-add if we process the file.
-      # Actually, the most robust way for .terminal files IS 'open' because they are specific file types handled by the app.
-      # Direct plist injection is risky because .terminal files have a specific structure.
-      
-      # LET'S STICK TO 'open' BUT MAKE IT BETTER:
-      open "$TERMINAL_THEME_PATH"
-      sleep 2
-      
-      # Set as default
-      defaults write com.apple.Terminal "Default Window Settings" -string "Coolnight"
-      defaults write com.apple.Terminal "Startup Window Settings" -string "Coolnight"
+      current_default=$(defaults read com.apple.Terminal "Default Window Settings" 2>/dev/null || true)
+      current_startup=$(defaults read com.apple.Terminal "Startup Window Settings" 2>/dev/null || true)
+      if [ "$current_default" != "Coolnight" ] || [ "$current_startup" != "Coolnight" ]; then
+        echo "Importing Coolnight terminal theme..."
+        open "$TERMINAL_THEME_PATH"
+        sleep 2
+        
+        # Set as default
+        defaults write com.apple.Terminal "Default Window Settings" -string "Coolnight"
+        defaults write com.apple.Terminal "Startup Window Settings" -string "Coolnight"
+      else
+        echo "Terminal theme already set to Coolnight."
+      fi
     fi
 
     # Restart SystemUIServer to apply
