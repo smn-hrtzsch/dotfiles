@@ -33,17 +33,17 @@
       # macOS Configuration (Apple Silicon)
       darwinConfigurations."MacBook-Air-von-Simon" = nix-darwin.lib.darwinSystem {
         specialArgs = { inherit inputs self username darwinHome; };
-        modules = [ 
-          ./darwin-configuration.nix 
+        modules = [
+          ./darwin-configuration.nix
           home-manager.darwinModules.home-manager
           {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.backupFileExtension = "backup";
-          home-manager.users.${username} = import ./home.nix;
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "backup";
+            home-manager.users.${username} = import ./home.nix;
             
             # Pass arguments to home.nix
-            home-manager.extraSpecialArgs = { 
+            home-manager.extraSpecialArgs = {
               inherit inputs;
               username = username;
               homeDirectory = darwinHome;
@@ -63,7 +63,6 @@
         pkgs = mkPkgs "x86_64-linux"; # WSL runs on x86_64 usually
         modules = [
           ./home.nix
-          { home-manager.backupFileExtension = "backup"; }
         ];
         extraSpecialArgs = {
           inherit inputs;
@@ -80,7 +79,6 @@
         pkgs = mkPkgs "aarch64-linux";
         modules = [
           ./home.nix
-          { home-manager.backupFileExtension = "backup"; }
         ];
         extraSpecialArgs = {
           inherit inputs;
@@ -97,7 +95,6 @@
         pkgs = mkPkgs "x86_64-linux";
         modules = [
           ./home.nix
-          { home-manager.backupFileExtension = "backup"; }
         ];
         extraSpecialArgs = {
           inherit inputs;
@@ -114,7 +111,6 @@
         pkgs = mkPkgs "aarch64-linux";
         modules = [
           ./home.nix
-          { home-manager.backupFileExtension = "backup"; }
         ];
         extraSpecialArgs = {
           inherit inputs;
