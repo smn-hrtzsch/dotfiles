@@ -1,5 +1,5 @@
 # Ghostty Configuration File
-# Pfad /Users/simon/.config/ghostty/config
+# Pfad ~/.config/ghostty/config (macOS)
 
 # --- Theme ---
 theme = "coolnight.conf"
@@ -44,10 +44,10 @@ keybind = super+alt+down=resize_split:down,30
 keybind = super+alt+left=resize_split:left,30
 keybind = super+alt+right=resize_split:right,30
 
-# Experimentell: Cmd+V sendet Ctrl+V (für Gemini CLI Image Paste)
-# Deaktiviert für Opencode Kompatibilität (benutze Ctrl+V für Images in Gemini)
+# Experimentell: Cmd+V sendet Ctrl+V (fuer Gemini CLI Image Paste)
+# Deaktiviert fuer Opencode Kompatibilitaet (benutze Ctrl+V fuer Images in Gemini)
 # keybind = super+v=text:\x16
 keybind = super+v=paste_from_clipboard
 
-# Cmd+Shift+V sendet Ctrl+V (für Images in Opencode/Gemini)
+# Cmd+Shift+V sendet Ctrl+V (fuer Images in Opencode/Gemini)
 keybind = super+shift+v=text:\x16

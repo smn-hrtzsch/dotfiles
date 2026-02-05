@@ -1,0 +1,44 @@
+# Ghostty Configuration File
+# Pfad ~/.config/ghostty/config (Linux)
+
+# --- Theme ---
+theme = "coolnight.conf"
+
+# --- Environment ---
+term = "xterm-256color"
+
+# --- Window ---
+window-padding-x = 10
+window-padding-y = 10
+background-opacity = 1
+window-decoration = auto
+
+# -- Surface ---
+split-divider-color = "#CCCCCC"
+confirm-close-surface = false
+
+# --- Font ---
+font-family = "MesloLGS Nerd Font Mono"
+font-size = 16
+
+# --- Cursor ---
+shell-integration-features = no-cursor
+cursor-style = bar
+cursor-style-blink = true
+
+# --- Mouse ---
+cursor-click-to-move = true
+
+# --- Custom Keybindings ---
+
+# Wechseln zwischen Splits mit Alt + Shift + Pfeiltaste
+keybind = alt+shift+up=goto_split:up
+keybind = alt+shift+down=goto_split:down
+keybind = alt+shift+left=goto_split:left
+keybind = alt+shift+right=goto_split:right
+
+# Resizen von Splits mit Alt + Ctrl + Pfeiltaste
+keybind = alt+ctrl+up=resize_split:up,30
+keybind = alt+ctrl+down=resize_split:down,30
+keybind = alt+ctrl+left=resize_split:left,30
+keybind = alt+ctrl+right=resize_split:right,30

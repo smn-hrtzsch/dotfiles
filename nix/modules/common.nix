@@ -273,7 +273,12 @@ in
 
   # Symlink Dotfiles
   home.file = {
-    ".config/ghostty".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/ghostty";
+    ".config/ghostty/themes".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/ghostty/themes";
+    ".config/ghostty/config".source = config.lib.file.mkOutOfStoreSymlink (
+      if pkgs.stdenv.isDarwin
+      then "${dotfilesDir}/config/.config/ghostty/config.darwin"
+      else "${dotfilesDir}/config/.config/ghostty/config.linux"
+    );
     # Link p10k config directly to home
     ".p10k.zsh".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/zsh/.p10k.zsh";
 
