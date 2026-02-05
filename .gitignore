@@ -36,6 +36,7 @@ config/.config/configstore/
 config/.config/github-copilot/
 config/.config/raycast/extensions/
 config/.config/opencode/skills
+config/.config/opencode/package.json
 
 # Logs
 *.log
