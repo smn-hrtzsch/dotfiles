@@ -26,7 +26,7 @@ in
   # Homebrew Configuration
   homebrew = {
     enable = true;
-    onActivation.cleanup = "zap"; # Removes packages not listed here
+    onActivation.cleanup = "none"; # Do not remove packages not listed here
     onActivation.autoUpdate = true;
     onActivation.upgrade = true;
 

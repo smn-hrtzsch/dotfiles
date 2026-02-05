@@ -37,9 +37,10 @@
           ./darwin-configuration.nix 
           home-manager.darwinModules.home-manager
           {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.${username} = import ./home.nix;
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.backupFileExtension = "backup";
+          home-manager.users.${username} = import ./home.nix;
             
             # Pass arguments to home.nix
             home-manager.extraSpecialArgs = { 
@@ -60,8 +61,9 @@
       # WSL / Linux Configuration (Standalone Home Manager)
       homeConfigurations."wsl" = home-manager.lib.homeManagerConfiguration {
         pkgs = mkPkgs "x86_64-linux"; # WSL runs on x86_64 usually
-        modules = [ 
-          ./home.nix 
+        modules = [
+          ./home.nix
+          { home-manager.backupFileExtension = "backup"; }
         ];
         extraSpecialArgs = {
           inherit inputs;
@@ -78,6 +80,7 @@
         pkgs = mkPkgs "aarch64-linux";
         modules = [
           ./home.nix
+          { home-manager.backupFileExtension = "backup"; }
         ];
         extraSpecialArgs = {
           inherit inputs;
@@ -92,8 +95,9 @@
       # Generic Linux Configuration (x86_64)
       homeConfigurations."linux-x86_64" = home-manager.lib.homeManagerConfiguration {
         pkgs = mkPkgs "x86_64-linux";
-        modules = [ 
-          ./home.nix 
+        modules = [
+          ./home.nix
+          { home-manager.backupFileExtension = "backup"; }
         ];
         extraSpecialArgs = {
           inherit inputs;
@@ -108,8 +112,9 @@
       # Generic Linux Configuration (ARM64 / AArch64) - For VMs on Mac
       homeConfigurations."linux-aarch64" = home-manager.lib.homeManagerConfiguration {
         pkgs = mkPkgs "aarch64-linux";
-        modules = [ 
-          ./home.nix 
+        modules = [
+          ./home.nix
+          { home-manager.backupFileExtension = "backup"; }
         ];
         extraSpecialArgs = {
           inherit inputs;

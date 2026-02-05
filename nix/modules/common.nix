@@ -3,6 +3,7 @@
 let
   dotfilesDir = "${config.home.homeDirectory}/dotfiles";
   anthropicSkillsDir = "${dotfilesDir}/anthropic-skills/skills";
+  anthropicSkillsPath = ../../anthropic-skills/skills;
   customCodexSkills = [
     "opencode-commit"
     "opencode-execute"
@@ -13,12 +14,15 @@ let
     "opencode-review"
     "opencode-secrets"
   ];
-  anthropicSkillNames = if builtins.pathExists anthropicSkillsDir
-    then builtins.attrNames (builtins.readDir anthropicSkillsDir)
+  anthropicSkillNames = if builtins.pathExists anthropicSkillsPath
+    then builtins.attrNames (builtins.readDir anthropicSkillsPath)
     else [];
   codexAnthropicLinks = lib.listToAttrs (map (name: {
     name = ".codex/skills/${name}";
-    value.source = config.lib.file.mkOutOfStoreSymlink "${anthropicSkillsDir}/${name}";
+    value = {
+      source = config.lib.file.mkOutOfStoreSymlink "${anthropicSkillsDir}/${name}";
+      force = true;
+    };
   }) (builtins.filter (name: !(lib.elem name customCodexSkills)) anthropicSkillNames));
 in
 {
@@ -301,13 +305,37 @@ in
     ".codex/config.toml".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/config.toml";
     ".codex/AGENTS.md".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/AGENTS.md";
 
-    ".codex/skills/opencode-commit".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-commit";
-    ".codex/skills/opencode-execute".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-execute";
-    ".codex/skills/opencode-feature".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-feature";
-    ".codex/skills/opencode-fix".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-fix";
-    ".codex/skills/opencode-plan".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-plan";
-    ".codex/skills/opencode-refactor".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-refactor";
-    ".codex/skills/opencode-review".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-review";
-    ".codex/skills/opencode-secrets".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-secrets";
+    ".codex/skills/opencode-commit" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-commit";
+      force = true;
+    };
+    ".codex/skills/opencode-execute" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-execute";
+      force = true;
+    };
+    ".codex/skills/opencode-feature" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-feature";
+      force = true;
+    };
+    ".codex/skills/opencode-fix" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-fix";
+      force = true;
+    };
+    ".codex/skills/opencode-plan" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-plan";
+      force = true;
+    };
+    ".codex/skills/opencode-refactor" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-refactor";
+      force = true;
+    };
+    ".codex/skills/opencode-review" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-review";
+      force = true;
+    };
+    ".codex/skills/opencode-secrets" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-secrets";
+      force = true;
+    };
   } // codexAnthropicLinks;
 }
