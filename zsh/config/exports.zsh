@@ -31,9 +31,8 @@ if [[ "$(uname)" == "Darwin" ]]; then
     export ANDROID_HOME=$HOME/Library/Android/sdk
     export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH
 
-    # .NET SDK
-    export DOTNET_ROOT=/usr/local/share/dotnet
-    export PATH=$PATH:$DOTNET_ROOT
+    # .NET tools
+    unset DOTNET_ROOT
     export PATH="$PATH:$HOME/.dotnet/tools"
 
     # LaTeX

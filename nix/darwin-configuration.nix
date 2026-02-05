@@ -48,7 +48,6 @@ in
       "visual-studio-code"
       "android-studio"
       "ghostty"
-      "dotnet-sdk"
       "sf-symbols"
       # "pyenv" # Moved to Nix packages or brews
 
