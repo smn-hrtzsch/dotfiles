@@ -20,6 +20,116 @@ is_wsl() {
   return 1
 }
 
+fix_darwin_etc_conflicts() {
+  if [[ "$(uname)" != "Darwin" ]]; then
+    return 0
+  fi
+
+  local -a targets
+  local path backup link
+  local date_cmd sudo_cmd mv_cmd readlink_cmd
+  local moved=0
+  targets=("/etc/zshrc" "/etc/zprofile")
+
+  date_cmd="/bin/date"
+  sudo_cmd="/usr/bin/sudo"
+  mv_cmd="/bin/mv"
+  readlink_cmd="/usr/bin/readlink"
+
+  if [ ! -x "$date_cmd" ]; then
+    date_cmd="$(command -v date)"
+  fi
+  if [ ! -x "$sudo_cmd" ]; then
+    sudo_cmd="$(command -v sudo)"
+  fi
+  if [ ! -x "$mv_cmd" ]; then
+    mv_cmd="$(command -v mv)"
+  fi
+  if [ ! -x "$readlink_cmd" ]; then
+    readlink_cmd="$(command -v readlink)"
+  fi
+
+  for path in "${targets[@]}"; do
+    if [ -e "$path" ]; then
+      if [ -L "$path" ]; then
+        link=$($readlink_cmd "$path" 2>/dev/null || true)
+        if [[ "$link" == /nix/store/* || "$link" == /etc/static/* ]]; then
+          continue
+        fi
+      fi
+
+      backup="${path}.before-nix-darwin"
+      if [ -e "$backup" ]; then
+        backup="${backup}.$($date_cmd +%Y%m%d%H%M%S)"
+      fi
+
+      echo "🧹 Moving $path to $backup"
+      if [ -z "$sudo_cmd" ] || [ -z "$mv_cmd" ]; then
+        echo "❌ Missing sudo or mv; cannot move $path"
+        return 1
+      fi
+      $sudo_cmd $mv_cmd "$path" "$backup" || return 1
+      moved=1
+    fi
+  done
+
+  if [ "$moved" -eq 1 ]; then
+    echo "✅ /etc conflicts moved aside."
+  fi
+}
+
+fix_home_manager_conflicts() {
+  local dotfiles="$HOME/dotfiles"
+  local -a targets
+  local path backup link
+  local date_cmd mv_cmd readlink_cmd
+  local moved=0
+
+  date_cmd="/bin/date"
+  mv_cmd="/bin/mv"
+  readlink_cmd="/usr/bin/readlink"
+
+  if [ ! -x "$date_cmd" ]; then
+    date_cmd="$(command -v date)"
+  fi
+  if [ ! -x "$mv_cmd" ]; then
+    mv_cmd="$(command -v mv)"
+  fi
+  if [ ! -x "$readlink_cmd" ]; then
+    readlink_cmd="$(command -v readlink)"
+  fi
+
+  targets=("$HOME/.zshrc" "$HOME/.ssh/config")
+
+  for path in "${targets[@]}"; do
+    if [ -e "$path" ]; then
+      if [ -L "$path" ]; then
+        link=$($readlink_cmd "$path" 2>/dev/null || true)
+        if [[ "$link" == /nix/store/* || "$link" == /etc/static/* || "$link" == "$dotfiles"/* ]]; then
+          continue
+        fi
+      fi
+
+      backup="${path}.before-home-manager"
+      if [ -e "$backup" ]; then
+        backup="${backup}.$($date_cmd +%Y%m%d%H%M%S)"
+      fi
+
+      echo "🧹 Moving $path to $backup"
+      if [ -z "$mv_cmd" ]; then
+        echo "❌ Missing mv; cannot move $path"
+        return 1
+      fi
+      $mv_cmd "$path" "$backup" || return 1
+      moved=1
+    fi
+  done
+
+  if [ "$moved" -eq 1 ]; then
+    echo "✅ Home Manager conflicts moved aside."
+  fi
+}
+
 rebuild_macos() {
   if ! command -v nix &>/dev/null; then
     if [ -e "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh" ]; then
@@ -230,7 +340,18 @@ update-system() {
     fi
     
     echo "⚙️  Rebuilding System..."
-    rebuild_auto
+    if ! fix_darwin_etc_conflicts; then
+      echo "❌ Failed to move /etc conflicts. Aborting rebuild."
+      return 1
+    fi
+    if ! fix_home_manager_conflicts; then
+      echo "❌ Failed to move Home Manager conflicts. Aborting rebuild."
+      return 1
+    fi
+    if ! rebuild_auto; then
+      echo "❌ Rebuild failed. Check the output above."
+      return 1
+    fi
     
     # Update WezTerm Link & Windows Apps (WSL only)
     if is_wsl; then

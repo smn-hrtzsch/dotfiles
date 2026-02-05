@@ -264,9 +264,17 @@ in
       fi
     }
 
-    if [ -L "$ghostty_home" ]; then
+    home_target=$(resolve_path "$ghostty_home")
+    repo_target=$(resolve_path "$ghostty_repo")
+    skip_links=0
+    case "$home_target" in
+      "$repo_target"|"$repo_target"/*)
+        skip_links=1
+        ;;
+    esac
+
+    if [ "$skip_links" -eq 0 ] && [ -L "$ghostty_home" ]; then
       link_target=$(resolve_path "$ghostty_home")
-      repo_target=$(resolve_path "$ghostty_repo")
       case "$link_target" in
         "$repo_target"|"$repo_target"/*)
           rm -f "$ghostty_home"
@@ -275,20 +283,31 @@ in
       esac
     fi
 
-    if [ -e "$ghostty_repo/config" ]; then
-      rm -f "$ghostty_repo/config"
-    fi
-
-    if [ -d "$ghostty_home" ]; then
-      if [ ! -e "$ghostty_home/themes" ]; then
-        ln -sfn "$ghostty_repo/themes" "$ghostty_home/themes"
+    if [ "$skip_links" -eq 0 ]; then
+      if [ -e "$ghostty_repo/config" ]; then
+        rm -f "$ghostty_repo/config"
       fi
 
-      if [ ! -e "$ghostty_home/config" ]; then
+      if [ -d "$ghostty_home" ]; then
+        if [ ! -e "$ghostty_home/themes" ]; then
+          ln -sfn "$ghostty_repo/themes" "$ghostty_home/themes"
+        fi
+
+        if [ ! -e "$ghostty_home/config" ]; then
+          if [ "$(uname)" = "Darwin" ]; then
+            ln -sfn "$ghostty_repo/config.darwin" "$ghostty_home/config"
+          else
+            ln -sfn "$ghostty_repo/config.linux" "$ghostty_home/config"
+          fi
+        fi
+      fi
+    fi
+    if [ "$skip_links" -ne 0 ]; then
+      if [ ! -e "$ghostty_repo/config" ]; then
         if [ "$(uname)" = "Darwin" ]; then
-          ln -sfn "$ghostty_repo/config.darwin" "$ghostty_home/config"
+          ln -sfn "$ghostty_repo/config.darwin" "$ghostty_repo/config"
         else
-          ln -sfn "$ghostty_repo/config.linux" "$ghostty_home/config"
+          ln -sfn "$ghostty_repo/config.linux" "$ghostty_repo/config"
         fi
       fi
     fi
@@ -317,12 +336,7 @@ in
 
   # Symlink Dotfiles
   home.file = {
-    ".config/ghostty/themes".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/ghostty/themes";
-    ".config/ghostty/config".source = config.lib.file.mkOutOfStoreSymlink (
-      if pkgs.stdenv.isDarwin
-      then "${dotfilesDir}/config/.config/ghostty/config.darwin"
-      else "${dotfilesDir}/config/.config/ghostty/config.linux"
-    );
+    # ~/.config is symlinked to dotfiles; avoid linking subpaths here
     # Link p10k config directly to home
     ".p10k.zsh".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/zsh/.p10k.zsh";
 
@@ -332,9 +346,6 @@ in
     ".gemini/settings.json".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/gemini/.gemini/settings.json";
     ".gemini/skills".source = config.lib.file.mkOutOfStoreSymlink anthropicSkillsDir;
 
-    ".config/gh".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/gh";
-    ".config/neofetch".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/neofetch";
-
     # Manual Dotfiles
     ".ssh/config".source = config.lib.file.mkOutOfStoreSymlink (
       if pkgs.stdenv.isDarwin
@@ -342,26 +353,6 @@ in
       else "${dotfilesDir}/ssh/config"
     );
     ".npmrc".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/npm/.npmrc";
-    ".config/opencode/AGENTS.md" = {
-      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/opencode/AGENTS.md";
-      force = true;
-    };
-    ".config/opencode/config.json" = {
-      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/opencode/config.json";
-      force = true;
-    };
-    ".config/opencode/package.json" = {
-      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/opencode/package.json";
-      force = true;
-    };
-    ".config/opencode/bun.lock" = {
-      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/opencode/bun.lock";
-      force = true;
-    };
-    ".config/opencode/skills" = {
-      source = config.lib.file.mkOutOfStoreSymlink anthropicSkillsDir;
-      force = true;
-    };
     ".opencode/commands".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/opencode/.opencode/commands";
 
     # Codex config and custom skills (managed via Home Manager)

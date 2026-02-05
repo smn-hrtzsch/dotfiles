@@ -37,6 +37,10 @@ config/.config/github-copilot/
 config/.config/raycast/extensions/
 config/.config/opencode/skills
 config/.config/opencode/package.json
+config/.config/direnv/
+config/.config/git/
+config/.config/wezterm/
+config/.config/ghostty/config
 
 # Logs
 *.log
