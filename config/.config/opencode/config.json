@@ -49,6 +49,8 @@
       "gh pr list *": "allow",
       "env *": "allow",
       "which *":"allow",
+      "qlmanage *":"allow",
+      "ffmpeg *":"allow",
     }
   },
   "plugin": ["opencode-gemini-auth@latest"]
