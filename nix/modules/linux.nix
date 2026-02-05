@@ -20,7 +20,6 @@ let
     copyq
     rclone
     p7zip
-    android-studio
   ] else [
     # Generic Linux GUI Apps (aarch64)
     # Note: Brave/VS Code/Ghostty are installed via vendor repos in bootstrap on ARM64.
@@ -77,7 +76,6 @@ lib.mkIf pkgs.stdenv.isLinux {
           "thunderbird.desktop"
           "spotify.desktop"
           "code.desktop"
-          "android-studio.desktop"
           "org.gnome.Settings.desktop"
           "bitwarden.desktop"
         ];
