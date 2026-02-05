@@ -10,8 +10,8 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-# Branch to use (default: current dev branch)
-DOTFILES_BRANCH="${DOTFILES_BRANCH:-feat/linux-support}"
+# Branch to use (default: main)
+DOTFILES_BRANCH="${DOTFILES_BRANCH:-main}"
 # Darwin flake hostname (default to stable alias)
 DARWIN_HOST="${DARWIN_HOST:-macos}"
 

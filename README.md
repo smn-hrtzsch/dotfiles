@@ -37,9 +37,14 @@ Da dieses Repository privat ist, richte zuerst einen SSH-Key ein, um das Reposit
 3.  **Repository klonen:**
 
     ```bash
-    git clone git@github.com:smn-hrtzsch/dotfiles.git ~/dotfiles
+    git clone --recurse-submodules git@github.com:smn-hrtzsch/dotfiles.git ~/dotfiles
     cd ~/dotfiles
-    git checkout feat/linux-support
+    git checkout main
+    ```
+
+    *Falls du das Repo schon geklont hast:* 
+    ```bash
+    git submodule update --init --recursive
     ```
 
 4.  **Bootstrap-Skript starten:**
@@ -47,7 +52,7 @@ Da dieses Repository privat ist, richte zuerst einen SSH-Key ein, um das Reposit
 
     ```bash
     chmod +x bootstrap_macos.sh
-    DOTFILES_BRANCH=feat/linux-support ./bootstrap_macos.sh
+    DOTFILES_BRANCH=main ./bootstrap_macos.sh
     ```
 
 ## 🐧 Linux (Generic) Setup
@@ -70,15 +75,15 @@ Dieses Setup funktioniert auf den meisten Linux-Distributionen (getestet auf Ubu
 2.  **Lade das Bootstrap-Script herunter und führe es aus:**
 
     ```bash
-    curl -sL https://raw.githubusercontent.com/smn-hrtzsch/dotfiles/feat/linux-support/bootstrap_linux.sh | bash
+    curl -sL https://raw.githubusercontent.com/smn-hrtzsch/dotfiles/main/bootstrap_linux.sh | bash
     ```
 
     *Optional:* Anderen Branch erzwingen:
     ```bash
-    DOTFILES_BRANCH=feat/linux-support curl -sL https://raw.githubusercontent.com/smn-hrtzsch/dotfiles/feat/linux-support/bootstrap_linux.sh | bash
+    DOTFILES_BRANCH=main curl -sL https://raw.githubusercontent.com/smn-hrtzsch/dotfiles/main/bootstrap_linux.sh | bash
     ```
 
-    *Hinweis: Ersetze `feat/linux-support` durch `main`, sobald der Branch gemergt ist.*
+    *Hinweis: Für Dev-Branches `DOTFILES_BRANCH=<branch>` setzen.*
 
 3.  **Folge den Anweisungen:**
     Das Skript installiert Nix, klont das Repo und fragt dich nach deinem Username und Git-Details, um die Konfiguration anzupassen.
@@ -117,7 +122,7 @@ Ich habe ein PowerShell-Skript erstellt, das eine neue WSL-Distro (`Ubuntu-Nix`)
     ```powershell
     # Falls das Repo schon auf Windows liegt:
     cd \Pfad\Zu\dotfiles\scripts
-    .\setup_wsl.ps1 -DistroName "Ubuntu-Nix" -Branch "feat/linux-support" -LinuxUser "simon"
+    .\setup_wsl.ps1 -DistroName "Ubuntu-Nix" -Branch "main" -LinuxUser "simon"
 
     # ODER direkt aus dem Web (One-Liner):
     Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/smn-hrtzsch/dotfiles/main/scripts/setup_wsl.ps1'))

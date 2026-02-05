@@ -15,7 +15,7 @@
     Path where the VHDX will be stored (Default: C:\WSL\<DistroName>)
 
 .PARAMETER Branch
-    Dotfiles git branch to use (Default: feat/linux-support)
+    Dotfiles git branch to use (Default: main)
 
 .PARAMETER LinuxUser
     Linux username to create inside the WSL distro (Default: current Windows username)
@@ -27,7 +27,7 @@
 param (
     [string]$DistroName = "Ubuntu-Nix",
     [string]$InstallPath = "C:\WSL",
-    [string]$Branch = "feat/linux-support",
+    [string]$Branch = "main",
     [string]$LinuxUser = $env:USERNAME,
     [string]$LinuxPassword = $null
 )

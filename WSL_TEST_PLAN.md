@@ -71,7 +71,7 @@ wsl -d Ubuntu-Test
     # Repo klonen & anwenden
     git clone https://github.com/smn-hrtzsch/dotfiles.git ~/dotfiles
     cd ~/dotfiles
-    git checkout chore/nix-migration
+    git checkout main
     
     # Nix Config anwenden
     nix run home-manager/master -- switch --flake ./nix#wsl

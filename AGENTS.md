@@ -69,7 +69,7 @@ update-system
 
 This repository has no formal test suite. Validation is done through:
 
-1. **CI Pipeline** (`.github/workflows/nix-check.yml`): Runs on `chore/nix-migration` branch
+1. **CI Pipeline** (`.github/workflows/nix-check.yml`): Runs on default branch
    - Checks flake syntax
    - Builds macOS Darwin configuration
    - Builds WSL home configuration
@@ -184,7 +184,7 @@ Key variables set in `zsh/config/exports.zsh`:
 - **Never commit secrets** - Use `~/.zshrc_secrets` for sensitive exports
 - **Nix preferred** - When installing tools, prefer adding to Nix config over manual install
 - **Test on both platforms** - Changes to `home.nix` affect both macOS and WSL
-- **CI runs on branch** - Currently only triggers on `chore/nix-migration` branch
+- **CI runs on branch** - Uses default branch
 - **shellcheck available** - Use for linting shell scripts (`shellcheck script.sh`)
 
 ## Useful Aliases
