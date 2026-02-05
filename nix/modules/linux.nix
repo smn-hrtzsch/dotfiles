@@ -83,9 +83,9 @@ lib.mkIf pkgs.stdenv.isLinux {
         ];
       };
 
-      # Window Buttons (macOS Style: Left side)
+      # Window Buttons (Linux standard: right side)
       "org/gnome/desktop/wm/preferences" = {
-        button-layout = "close,minimize,maximize:"; # Colons separate left:right
+        button-layout = ":minimize,maximize,close"; # Colons separate left:right
       };
 
       # GNOME Terminal (Coolnight theme + Meslo Nerd Font)
