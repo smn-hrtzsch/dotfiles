@@ -113,7 +113,7 @@ in
     # Trackpad
     trackpad = {
       Clicking = true;
-      TrackpadThreeFingerDrag = true;
+      TrackpadThreeFingerDrag = false;
     };
 
     # Keyboard
