@@ -149,8 +149,20 @@ in
   system.activationScripts.postUserActivation.text = ''
     echo "Setting Default Browser to Helium..."
     if command -v /opt/homebrew/bin/duti >/dev/null; then
-      # Resolve Helium bundle id dynamically (falls back if not found)
-      HELIUM_BUNDLE_ID="$(osascript -e 'id of app "Helium"' 2>/dev/null || true)"
+      # Resolve Helium bundle id from app bundle (avoid resolving to Brave)
+      HELIUM_APP=""
+      if [ -d "/Applications/Helium.app" ]; then
+        HELIUM_APP="/Applications/Helium.app"
+      elif [ -d "/Applications/Helium Browser.app" ]; then
+        HELIUM_APP="/Applications/Helium Browser.app"
+      else
+        HELIUM_APP="$(mdfind 'kMDItemFSName == "Helium.app" || kMDItemFSName == "Helium Browser.app"' | head -n 1)"
+      fi
+
+      HELIUM_BUNDLE_ID=""
+      if [ -n "$HELIUM_APP" ]; then
+        HELIUM_BUNDLE_ID="$(/usr/bin/mdls -name kMDItemCFBundleIdentifier -raw "$HELIUM_APP" 2>/dev/null)"
+      fi
       if [ -z "$HELIUM_BUNDLE_ID" ]; then
         HELIUM_BUNDLE_ID="com.helium.Helium"
       fi
