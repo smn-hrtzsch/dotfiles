@@ -5,10 +5,17 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# ---- Nix / Home Manager ----
+# Source Home Manager session variables if they exist
+if [ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
+  source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+fi
+
 # ---- Plugins & Theme ----
-source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# Source Homebrew plugins only if they exist (for non-Nix setups)
+[[ ! -f /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme ]] || source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
+[[ ! -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]] || source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+[[ ! -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] || source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -27,6 +34,20 @@ bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
 bindkey '^I' autosuggest-accept
 bindkey '^[[Z' expand-or-complete
+# Word Navigation (Ctrl+Left/Right)
+bindkey '^[[1;5D' backward-word
+bindkey '^[[1;5C' forward-word
+# Line Navigation (Home/End)
+bindkey '^[[H' beginning-of-line
+bindkey '^[[F' end-of-line
+
+# ---- Load Modular Config ----
+# Loads all .zsh files from ~/dotfiles/zsh/config/
+if [ -d "$HOME/dotfiles/zsh/config" ]; then
+    for config_file in "$HOME/dotfiles/zsh/config/"*.zsh; do
+        source "$config_file"
+    done
+fi
 
 # ---- Tools Init ----
 eval "$(pyenv init -)"
@@ -37,27 +58,24 @@ if command -v direnv &> /dev/null; then
   eval "$(direnv hook zsh)"
 fi
 
-# ---- Load Modular Config ----
-# Loads all .zsh files from ~/dotfiles/zsh/config/
-if [ -d "$HOME/dotfiles/zsh/config" ]; then
-    for config_file in "$HOME/dotfiles/zsh/config/"*.zsh; do
-        source "$config_file"
-    done
-fi
+# ---- Tools Init (Managed by Nix) ----
+# Nix automatically sources necessary init scripts for zoxide, direnv, etc.
 
 # ---- Conda Initialize ----
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/simon/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/Users/simon/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/simon/miniconda3/etc/profile.d/conda.sh"
+if [ -d "$HOME/miniconda3" ]; then
+    __conda_setup="$('$HOME/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+    if [ $? -eq 0 ]; then
+        eval "$__conda_setup"
     else
-        export PATH="/Users/simon/miniconda3/bin:$PATH"
+        if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
+            . "$HOME/miniconda3/etc/profile.d/conda.sh"
+        else
+            export PATH="$HOME/miniconda3/bin:$PATH"
+        fi
     fi
+    unset __conda_setup
 fi
-unset __conda_setup
 # <<< conda initialize <<<
 
 # ---- Load Secrets ----
@@ -65,3 +83,6 @@ unset __conda_setup
 if [ -f "$HOME/.zshrc_secrets" ]; then
     source "$HOME/.zshrc_secrets"
 fi
+ 
+# bun completions
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"

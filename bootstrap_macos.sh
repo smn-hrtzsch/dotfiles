@@ -1,114 +1,168 @@
 #!/bin/bash
 
-# Beende das Skript bei Fehlern
+# Beende bei Fehler
 set -e
 
-# --- Konfiguration ---
-GITHUB_USERNAME="smn-hrtzsch" # Bitte anpassen, falls nötig
-REPO_NAME="dotfiles"
-DOTFILES_DIR="$HOME/$REPO_NAME"
-REPO_URL="https://github.com/$GITHUB_USERNAME/$REPO_NAME.git"
+# Farben für Output
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
 
-echo ">>> Start Bootstrap für macOS Dotfiles Setup..."
+# Branch to use (default: main)
+DOTFILES_BRANCH="${DOTFILES_BRANCH:-main}"
+# Darwin flake hostname (default to stable alias)
+DARWIN_HOST="${DARWIN_HOST:-macos}"
+
+echo -e "${BLUE}>>> Start Bootstrap für macOS Dotfiles Setup (Nix Edition)...${NC}"
 
 # --- 1. Xcode Command Line Tools ---
-echo ">>> 1. Überprüfe Xcode Command Line Tools..."
+echo -e "${BLUE}>>> 1. Überprüfe Xcode Command Line Tools...${NC}"
 if ! xcode-select -p &>/dev/null; then
-    echo "   Xcode Command Line Tools nicht gefunden. Starte Installation..."
-    # Dieser Befehl öffnet ein GUI-Fenster für die Installation.
-    # Das Skript wird hier warten, bis der Benutzer die Installation abgeschlossen oder abgebrochen hat.
+    echo -e "${YELLOW}   Xcode Command Line Tools nicht gefunden. Starte Installation...${NC}"
     xcode-select --install
-    
-    # Kurze Pause, damit der Benutzer reagieren kann und um sicherzustellen, dass der Prozess abgeschlossen ist
-    # In einer idealen Welt würde man hier auf den Erfolg warten, aber xcode-select --install gibt nicht direkt Feedback.
-    echo "   Bitte folge den Anweisungen im Fenster, um die Xcode Command Line Tools zu installieren."
-    echo "   Wenn die Installation abgeschlossen ist, drücke Enter, um fortzufahren, oder brich das Skript mit Ctrl+C ab, falls es Probleme gab."
+    echo -e "${YELLOW}   Bitte folge den Anweisungen im Popup-Fenster!${NC}"
+    echo -e "${YELLOW}   Drücke [ENTER], wenn die Installation abgeschlossen ist...${NC}"
     read -r
-    
-    if ! xcode-select -p &>/dev/null; then
-        echo "   FEHLER: Xcode Command Line Tools immer noch nicht gefunden. Bitte manuell installieren und Skript erneut starten."
-        exit 1
-    fi
-    echo "   Xcode Command Line Tools erfolgreich installiert/gefunden."
 else
-    echo "   Xcode Command Line Tools bereits installiert."
+    echo -e "${GREEN}   ✓ Xcode Command Line Tools bereits installiert.${NC}"
 fi
 
-# --- 2. Homebrew ---
-echo ">>> 2. Überprüfe Homebrew..."
-HOMEBREW_PREFIX=""
-if [[ "$(uname -m)" == "arm64" ]]; then
-    HOMEBREW_PREFIX="/opt/homebrew"
-elif [[ "$(uname -m)" == "x86_64" ]]; then
-    HOMEBREW_PREFIX="/usr/local"
-else
-    echo "   FEHLER: Unbekannte Architektur $(uname -m)"
-    exit 1
+# --- 2. Homebrew Installation (Voraussetzung für nix-darwin Homebrew Modul) ---
+echo -e "${BLUE}>>> 2. Überprüfe Homebrew...${NC}"
+
+# Suche Homebrew an Standard-Pfaden, falls 'brew' nicht im PATH ist
+if ! command -v brew &> /dev/null; then
+    if [[ -f "/opt/homebrew/bin/brew" ]]; then
+        echo -e "${GREEN}   ✓ Homebrew unter /opt/homebrew gefunden. Aktiviere...${NC}"
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    elif [[ -f "/usr/local/bin/brew" ]]; then
+        echo -e "${GREEN}   ✓ Homebrew unter /usr/local gefunden. Aktiviere...${NC}"
+        eval "$(/usr/local/bin/brew shellenv)"
+    fi
 fi
 
 if ! command -v brew &> /dev/null; then
-    echo "   Homebrew nicht gefunden. Installiere Homebrew..."
+    echo -e "${YELLOW}   Homebrew nicht gefunden. Installiere Homebrew...${NC}"
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    echo "   Stelle Homebrew für diese Skript-Sitzung bereit..."
-    eval "$($HOMEBREW_PREFIX/bin/brew shellenv)"
-    echo "   Homebrew installiert."
+    
+    # Homebrew Shellenv für diese Session laden
+    if [[ "$(uname -m)" == "arm64" ]]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    else
+        eval "$(/usr/local/bin/brew shellenv)"
+    fi
 else
-    echo "   Homebrew bereits installiert. Stelle sicher, dass es für diese Sitzung bereit ist..."
-    eval "$($HOMEBREW_PREFIX/bin/brew shellenv)"
-    echo "   Homebrew wird aktualisiert..."
-    brew update
+    echo -e "${GREEN}   ✓ Homebrew bereits installiert und aktiv.${NC}"
 fi
 
-# --- 3. GitHub CLI (gh) ---
-echo ">>> 3. Überprüfe GitHub CLI (gh)..."
-if ! command -v gh &> /dev/null; then
-    echo "   GitHub CLI (gh) nicht gefunden. Installiere gh via Homebrew..."
-    brew install gh
-    echo "   gh installiert."
-else
-    echo "   GitHub CLI (gh) bereits installiert."
+# --- 3. Nix Installation ---
+echo -e "${BLUE}>>> 3. Überprüfe Nix Installation...${NC}"
+
+# Versuche Nix Umgebung zu laden, falls vorhanden (fix für Re-Run)
+if [ -e "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh" ]; then
+    . "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh"
 fi
 
-# --- 4. GitHub Authentifizierung via gh ---
-echo ">>> 4. GitHub Authentifizierung..."
-if ! gh auth status &>/dev/null; then
-    echo "   Nicht bei GitHub authentifiziert. Starte 'gh auth login'..."
-    echo "   Bitte folge den Anweisungen, um dich bei GitHub zu authentifizieren."
-    echo "   Wähle HTTPS als bevorzugtes Protokoll für Git-Operationen, wenn du dazu aufgefordert wirst."
-    echo "   Wähle 'Login with a web browser'."
-    gh auth login --hostname github.com --git-protocol https --web
-    echo "   Authentifizierung abgeschlossen (hoffentlich!)."
+if ! command -v nix &> /dev/null; then
+    echo -e "${YELLOW}   Nix nicht gefunden. Installiere Nix (Determinate Systems)...${NC}"
+    curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+    
+    # Nix Shellenv laden
+    if [ -e "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh" ]; then
+        . "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh"
+    fi
 else
-    echo "   Bereits bei GitHub authentifiziert."
+    echo -e "${GREEN}   ✓ Nix bereits installiert.${NC}"
 fi
 
-# --- 5. Dotfiles Repository klonen ---
-echo ">>> 5. Klone Dotfiles Repository ($REPO_URL)..."
-if [ -d "$DOTFILES_DIR" ]; then
-    echo "   Verzeichnis $DOTFILES_DIR existiert bereits. Überspringe Klonen."
-    echo "   Hinweis: Wenn du eine frische Kopie willst, lösche das Verzeichnis manuell und starte das Skript neu."
+# --- 4. SSH Key Setup ---
+echo -e "${BLUE}>>> 4. SSH Setup für GitHub...${NC}"
+SSH_KEY_PATH="$HOME/.ssh/id_ed25519"
+if [ ! -f "$SSH_KEY_PATH" ]; then
+    echo -e "${YELLOW}   Kein SSH Key gefunden. Generiere neuen Key...${NC}"
+    read -p "   Bitte gib deine E-Mail für den Key ein: " email
+    ssh-keygen -t ed25519 -C "$email" -f "$SSH_KEY_PATH"
+    
+    echo -e "${GREEN}   ✓ SSH Key generiert.${NC}"
+    echo -e "\n${YELLOW}   BITTE FÜGE FOLGENDEN PUBLIC KEY ZU GITHUB HINZU:${NC}"
+    echo -e "${YELLOW}   https://github.com/settings/ssh/new${NC}\n"
+    cat "$SSH_KEY_PATH.pub"
+    echo -e "\n"
+    echo -e "${YELLOW}   Drücke [ENTER], sobald du den Key auf GitHub hinzugefügt hast...${NC}"
+    read -r
 else
-    echo "   Klone $REPO_URL nach $DOTFILES_DIR..."
-    git clone "$REPO_URL" "$DOTFILES_DIR"
-    echo "   Repository geklont."
+    echo -e "${GREEN}   ✓ SSH Key bereits vorhanden. Überspringe Generierung.${NC}"
 fi
 
-# --- 6. Zum Dotfiles Verzeichnis wechseln und setup.sh ausführen ---
-echo ">>> 6. Wechsle zu $DOTFILES_DIR und führe setup.sh aus..."
-cd "$DOTFILES_DIR" || { echo "FEHLER: Konnte nicht zu $DOTFILES_DIR wechseln."; exit 1; }
+# --- 5. Repository Klonen ---
+REPO_DIR="$HOME/dotfiles"
+echo -e "${BLUE}>>> 5. Dotfiles Setup...${NC}"
 
-if [ -f "./setup.sh" ]; then
-    echo "   Führe ./setup.sh aus..."
-    # Stelle sicher, dass setup.sh ausführbar ist
-    chmod +x ./setup.sh
-    ./setup.sh
-    echo "   setup.sh wurde ausgeführt."
+if [ ! -d "$REPO_DIR" ]; then
+    echo -e "${YELLOW}   Klone Repository via SSH...${NC}"
+    # StrictHostKeyChecking=no verhindert die "Are you sure..." Frage beim ersten Connect
+    git clone git@github.com:smn-hrtzsch/dotfiles.git "$REPO_DIR"
+    cd "$REPO_DIR"
+    echo -e "${YELLOW}   Wechsle auf Branch $DOTFILES_BRANCH (Standard für Setup)...${NC}"
+    git checkout "$DOTFILES_BRANCH"
+    git submodule update --init --recursive
 else
-    echo "   FEHLER: setup.sh nicht in $DOTFILES_DIR gefunden!"
-    exit 1
+    echo -e "${GREEN}   ✓ Repository bereits vorhanden. Überspringe Klonen.${NC}"
+    cd "$REPO_DIR"
+    if git diff --quiet && git diff --cached --quiet; then
+        git fetch origin "$DOTFILES_BRANCH" || true
+        git checkout "$DOTFILES_BRANCH" || true
+        git submodule update --init --recursive
+    else
+        echo -e "${YELLOW}   Working tree has changes, skipping branch switch.${NC}"
+    fi
+    echo -e "${BLUE}   Info: Aktueller Branch: $(git branch --show-current)${NC}"
 fi
 
-echo ">>> Bootstrap für macOS Dotfiles Setup abgeschlossen!"
-echo ">>> Bitte überprüfe die Ausgaben und starte dein Terminal neu, um alle Änderungen zu übernehmen."
+# Branch wechseln (NUR FÜR DIE MIGRATIONSPHASE WICHTIG - VERALTET)
+# Wir entfernen den erzwungenen Checkout, damit man auch Test-Branches nutzen kann.
+# Falls man manuell testen will, muss man den Branch vorher wechseln.
 
-exit 0
+
+
+# --- 6. Nix Build anwenden ---
+echo -e "${BLUE}>>> 6. Bereite System-Konfiguration vor (nix-darwin build)...${NC}"
+
+# Wir bauen das System zuerst als normaler Nutzer. 
+# Das erstellt einen Symlink './result' im aktuellen Verzeichnis.
+nix build "./nix#darwinConfigurations.MacBook-Air-von-Simon.system" --extra-experimental-features "nix-command flakes"
+
+echo -e "${BLUE}>>> 7. Bereinige /etc Konflikte (Backup)...${NC}"
+for file in /etc/zshrc /etc/zshenv /etc/zprofile /etc/bashrc; do
+    if [ -f "$file" ] && ! grep -q "Nix-Darwin" "$file"; then
+        echo -e "${YELLOW}   Backing up $file to $file.before-nix-darwin${NC}"
+        sudo mv "$file" "$file.before-nix-darwin"
+    fi
+done
+
+echo -e "${BLUE}>>> 8. Aktiviere System-Konfiguration (nix-darwin switch)...${NC}"
+echo -e "${YELLOW}   Hinweis: sudo Passwort wird für die System-Aktivierung benötigt.${NC}"
+
+# --- App Store Login Reminder ---
+echo -e "\n${YELLOW}⚠️  WICHTIGER HINWEIS ZUM MAC APP STORE ⚠️${NC}"
+echo -e "Das Skript wird gleich versuchen, Apps aus dem App Store zu installieren."
+echo -e "Das Tool 'mas' kann sich NICHT selbst einloggen."
+echo -e "${BLUE}Bitte tue jetzt Folgendes:${NC}"
+echo -e "1. Öffne den Mac App Store."
+echo -e "2. Melde dich mit deiner Apple ID an."
+echo -e "3. Stelle sicher, dass du die Nutzungsbedingungen akzeptiert hast (z.B. indem du testweise eine kostenlose App lädst)."
+echo -e "\n${YELLOW}Drücke [ENTER], sobald du eingeloggt bist (oder wenn du es riskieren willst)...${NC}"
+read -r
+
+# Jetzt führen wir die Aktivierung aus.
+# WICHTIG: Wir rufen dies als normaler User auf! darwin-rebuild kümmert sich selbst um sudo,
+# wenn es nötig ist. Das verhindert, dass Homebrew fälschlicherweise als Root ausgeführt wird.
+sudo -H ./result/sw/bin/darwin-rebuild switch --flake ./nix#${DARWIN_HOST}
+
+# Aufräumen: Symlink entfernen
+rm ./result
+
+echo -e "${GREEN}>>> Bootstrap erfolgreich abgeschlossen! 🚀${NC}"
+echo -e "${GREEN}>>> Bitte starte dein Terminal neu oder logge dich aus und wieder ein.${NC}"

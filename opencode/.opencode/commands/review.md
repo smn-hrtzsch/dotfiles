@@ -1,0 +1,27 @@
+---
+description: Führt ein Code-Review für die angegebene Datei oder Änderungen durch.
+---
+Du bist ein Senior Software Engineer. Bitte führe ein Code-Review durch.
+
+Review-Ziel: "$ARGUMENTS"
+
+Falls "$ARGUMENTS" leer ist, analysiere die aktuellen ungestagten Änderungen (`git diff`).
+Falls "$ARGUMENTS" ein Dateiname ist, analysiere den gesamten Inhalt der Datei.
+Falls "$ARGUMENTS" eine generelle Anfrage ist, anaylsiere im Hinblick auf den Kontext, den ich dir gebe.
+
+Achte auf:
+1. **Bugs & Edge Cases:** Gibt es offensichtliche Fehler?
+2. **Clean Code:** Ist der Code lesbar, DRY und gut benannt?
+3. **Sicherheit:** Gibt es Sicherheitslücken?
+4. **Typisierung:** (Falls zutreffend) Sind Typen korrekt?
+
+# Kontext (Diff und Log)
+```diff
+!`git diff`
+```
+
+```log
+!`git log -5`
+```
+
+Gib mir konkrete, nummerierte Verbesserungsvorschläge oder bestätige, dass der Code gut aussieht.

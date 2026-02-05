@@ -35,6 +35,8 @@ vscode/.vscode/extensions/
 config/.config/configstore/
 config/.config/github-copilot/
 config/.config/raycast/extensions/
+config/.config/opencode/skills
+config/.config/opencode/package.json
 
 # Logs
 *.log
@@ -43,4 +45,20 @@ firebase-debug.log
 # Lokale Setup-Datei oder Geheimnisse
 setup-local.sh
 secrets.*
+zsh/config/secrets.zsh
+!gemini/.gemini/commands/secrets.toml
 .zshrc_secrets
+!opencode/.opencode/commands/secrets.md
+
+/debug
+
+# Gemini local & sensitive files
+gemini/.gemini/skills
+gemini/.gemini/google_accounts.json
+gemini/.gemini/oauth_creds.json
+gemini/.gemini/installation_id
+gemini/.gemini/history/
+gemini/.gemini/tmp/
+.gemini-clipboard/
+config/.config/gh/hosts.yml
+gemini/.gemini/extensions

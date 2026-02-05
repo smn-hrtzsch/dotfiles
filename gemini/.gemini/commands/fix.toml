@@ -7,21 +7,25 @@ Du bist ein autonomer Entwickler-Agent. Dein Ziel ist es, den Bug "{{args}}" zu 
 
 1. **Initialisierung (Sofort ausführen):**
    - Prüfe `git status`.
+   - Falls der Git-Status nicht sauber ist: **nicht** commiten oder Änderungen anfassen. Frage mich zuerst, wie wir mit den bestehenden Änderungen umgehen sollen.
    - Erstelle einen Branch nach dem Schema `fix/<kurze-slug-beschreibung>` basierend auf "{{args}}".
    - Wechsle (checkout) auf diesen Branch.
 
 2. **Bugfixing & Fokus:**
    - Analysiere und fixiere NUR das Problem: "{{args}}".
-   - Aktualisiere den Status in der `TO-DO.md` (falls vorhanden).
+   - Compiliere oder Baue das Projekt, um sicherzustellen, dass alles wie erwartet funktioniert
 
 3. **Abschluss & Feedback:**
     - Wenn der Fix bereit ist, **frage mich nach Feedback**.
     - **Erst nach meinem "OK":**
-      - Aktualisiere die `TO-DO.md`.
+      - Aktualisiere den Status in der `TO-DO.md` (falls vorhanden) **minimal-invasiv**: Finde ausschließlich den Eintrag zum behobenen Bug und ändere nur diesen. 
+        - Wenn der Bug in der Sektion `Bugs` steht, verschiebe **nur diesen Eintrag** in die Sektion `Fixed Bugs` und hake ihn dort ab.
+        - Wenn er nicht eindeutig auffindbar ist, **frage nach**, statt andere Einträge anzufassen.
+        - **Keine** Formatierung, Sortierung, Umordnung oder sonstige Änderungen an anderen Einträgen; manuelle Änderungen müssen erhalten bleiben.
       - **Commit:** Generiere eine Conventional Commit Message und führe `git commit` direkt aus.
       - Pushe den Branch.
-      - Erstelle eine PR mit `gh pr create --fill`.
-      - Merge die PR und lösche den Branch (nach Rückfrage).
+      - Erstelle eine PR..
+      - Merge die PR und lösche den Branch.
 
 # Kontext
 Aktueller Git Status:

@@ -1,0 +1,52 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "tui": {
+    "scroll_acceleration": {
+      "enabled": true
+    }
+  },
+  "permission": {
+    "edit": "allow",
+    "bash": {
+      "*": "ask",
+      "ls": "allow",
+      "ls *": "allow",
+      "dir": "allow",
+      "mkdir *": "allow",
+      "pwd": "allow",
+      "whoami": "allow",
+      "date": "allow",
+      "echo *": "allow",
+      "cat *": "allow",
+      "grep *": "allow",
+      "find *": "allow",
+      "git status": "allow",
+      "git status *": "allow",
+      "git diff": "allow",
+      "git diff *": "allow",
+      "git log": "allow",
+      "git log *": "allow",
+      "git show": "allow",
+      "git show *": "allow",
+      "git branch": "allow",
+      "git check-ignore *": "allow",
+      "git *": "allow",
+      "git checkout": "allow",
+      "git checkout *": "allow",
+      "git switch": "allow",
+      "git switch *": "allow",
+      "node -v": "allow",
+      "npm -v": "allow",
+      "python --version": "allow",
+      "python3 --version": "allow",
+      "dotnet *": "allow",
+      "head *": "allow",
+      "tail *": "allow",
+      "bun run dev": "allow",
+      "bun run build": "allow",
+      "gh pr create *": "allow",
+      "strings *": "allow",
+    }
+  },
+  "plugin": ["opencode-gemini-auth@latest"]
+}

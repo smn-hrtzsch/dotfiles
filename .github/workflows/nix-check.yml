@@ -1,0 +1,42 @@
+name: Nix Configuration Check
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: "write"
+  contents: "read"
+
+jobs:
+  check-macos:
+    name: Check macOS Configuration
+    runs-on: macos-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install Nix
+      uses: DeterminateSystems/nix-installer-action@v9
+
+    - name: Check Flake Syntax
+      run: nix flake check ./nix
+
+    - name: Build Darwin System (Dry Run)
+      run: nix build ./nix#darwinConfigurations.MacBook-Air-von-Simon.system
+
+  check-wsl:
+    name: Check WSL/Linux Configuration
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install Nix
+      uses: DeterminateSystems/nix-installer-action@v9
+
+    - name: Check Flake Syntax
+      run: nix flake check ./nix
+
+    - name: Build WSL Home Configuration
+      # Baut die Linux-Konfiguration "in echt" auf einem Linux-Runner
+      run: nix build ./nix#homeConfigurations.wsl.activationPackage
