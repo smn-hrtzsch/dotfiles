@@ -275,11 +275,26 @@ in
     # Manual Dotfiles
     ".ssh/config".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/ssh/config";
     ".npmrc".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/npm/.npmrc";
-    ".config/opencode/AGENTS.md".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/opencode/AGENTS.md";
-    ".config/opencode/config.json".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/opencode/config.json";
-    ".config/opencode/package.json".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/opencode/package.json";
-    ".config/opencode/bun.lock".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/opencode/bun.lock";
-    ".config/opencode/skills".source = config.lib.file.mkOutOfStoreSymlink anthropicSkillsDir;
+    ".config/opencode/AGENTS.md" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/opencode/AGENTS.md";
+      force = true;
+    };
+    ".config/opencode/config.json" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/opencode/config.json";
+      force = true;
+    };
+    ".config/opencode/package.json" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/opencode/package.json";
+      force = true;
+    };
+    ".config/opencode/bun.lock" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/opencode/bun.lock";
+      force = true;
+    };
+    ".config/opencode/skills" = {
+      source = config.lib.file.mkOutOfStoreSymlink anthropicSkillsDir;
+      force = true;
+    };
     ".opencode/commands".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/opencode/.opencode/commands";
 
     # Codex config and custom skills (managed via Home Manager)

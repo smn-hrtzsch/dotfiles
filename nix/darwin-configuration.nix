@@ -245,8 +245,15 @@ PY
       dockutil=${pkgs.dockutil}/bin/dockutil
       
       # Apps to add to the dock
+      helium_app=""
+      if [ -d "/Applications/Helium Browser.app" ]; then
+        helium_app="/Applications/Helium Browser.app"
+      elif [ -d "/Applications/Helium.app" ]; then
+        helium_app="/Applications/Helium.app"
+      fi
+
       apps=(
-        "/Applications/Helium.app"
+        "$helium_app"
         "/Applications/Brave Browser.app"
         "/Applications/Ghostty.app"
         "/Applications/Notion.app"
@@ -264,7 +271,7 @@ PY
       current_apps=$("$dockutil" --list 2>/dev/null | awk -F '\t' '$2 ~ /\.app$/ {print $2}')
       desired_apps=()
       for app in "''${apps[@]}"; do
-        if [ -e "$app" ]; then
+        if [ -n "$app" ] && [ -e "$app" ]; then
           desired_apps+=("$app")
         fi
       done
