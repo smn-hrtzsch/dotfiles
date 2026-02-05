@@ -118,8 +118,8 @@ in
 
     # Keyboard
     NSGlobalDomain = {
-      KeyRepeat = 2; # Standard-ish
-      InitialKeyRepeat = 15; # Standard delay
+      KeyRepeat = 3; # Slightly slower
+      InitialKeyRepeat = 20; # Slightly longer delay
       ApplePressAndHoldEnabled = false;
       
       # Text Editing

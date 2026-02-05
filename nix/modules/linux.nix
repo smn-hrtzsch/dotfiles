@@ -47,6 +47,8 @@ lib.mkIf pkgs.stdenv.isLinux {
   # XDG (Desktop Entries)
   xdg.enable = true;
 
+  manual.manpages.enable = false;
+
   home.packages = lib.optionals (!isWSL) (linuxGuiApps ++ linuxExtraPackages);
 
   # --- Linux Desktop Configuration (GNOME) ---
