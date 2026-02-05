@@ -324,7 +324,6 @@ PY
 
     echo "Configuring Terminal.app..."
     # Import Coolnight theme securely via plutil
-    TERMINAL_PLIST="$HOME/Library/Preferences/com.apple.Terminal.plist"
     TERMINAL_THEME_PATH="${dotfilesDir}/macos-terminal/Coolnight.terminal"
     
     if [ -f "$TERMINAL_THEME_PATH" ]; then
