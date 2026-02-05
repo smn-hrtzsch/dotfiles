@@ -145,7 +145,8 @@ in
   };
 
   # Post-Activation Script: Configure Dock, Wallpaper & Theme
-  system.activationScripts.postUserActivation.text = ''
+  system.activationScripts.postActivation.text = ''
+    sudo -H -u ${username} /bin/sh -lc "$(cat <<'EOF'
     echo "Setting Default Browser to Helium..."
     if command -v /opt/homebrew/bin/duti >/dev/null; then
       # Resolve Helium bundle id from app bundle (avoid resolving to Brave)
@@ -351,6 +352,8 @@ PY
 
     # Restart SystemUIServer to apply
     killall SystemUIServer || true
+EOF
+    )"
   '';
 
   # Optional Mac App Store installs (skip if not signed in)
@@ -387,6 +390,9 @@ ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: id: "        sudo -H -u $
 
   # Backwards compatibility
   system.stateVersion = 6;
+
+  # Primary user for user-scoped defaults
+  system.primaryUser = username;
 
   # Platform
   nixpkgs.hostPlatform = "aarch64-darwin";
