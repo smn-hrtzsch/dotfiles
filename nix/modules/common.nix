@@ -254,12 +254,25 @@ in
     ghostty_home="$HOME/.config/ghostty"
     ghostty_repo="${dotfilesDir}/config/.config/ghostty"
 
-    if [ -L "$ghostty_home" ]; then
-      link_target=$(readlink "$ghostty_home" || true)
-      if [ "$link_target" = "$ghostty_repo" ]; then
-        rm "$ghostty_home"
-        mkdir -p "$ghostty_home"
+    resolve_path() {
+      if command -v realpath >/dev/null 2>&1; then
+        realpath -m "$1" 2>/dev/null || echo "$1"
+      elif command -v readlink >/dev/null 2>&1; then
+        readlink -f "$1" 2>/dev/null || readlink "$1" 2>/dev/null || echo "$1"
+      else
+        echo "$1"
       fi
+    }
+
+    if [ -L "$ghostty_home" ]; then
+      link_target=$(resolve_path "$ghostty_home")
+      repo_target=$(resolve_path "$ghostty_repo")
+      case "$link_target" in
+        "$repo_target"|"$repo_target"/*)
+          rm -f "$ghostty_home"
+          mkdir -p "$ghostty_home"
+          ;;
+      esac
     fi
 
     if [ -e "$ghostty_repo/config" ]; then
