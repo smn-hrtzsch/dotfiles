@@ -367,18 +367,6 @@ in
     };
     ".npmrc".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/npm/.npmrc";
     ".opencode/commands".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/opencode/.opencode/commands";
-    ".config/opencode/AGENTS.md" = {
-      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/opencode/AGENTS.md";
-      force = true;
-    };
-    ".config/opencode/config.json" = {
-      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/opencode/config.json";
-      force = true;
-    };
-    ".config/opencode/skills" = {
-      source = config.lib.file.mkOutOfStoreSymlink anthropicSkillsDir;
-      force = true;
-    };
 
     # Codex config and custom skills (managed via Home Manager)
     ".codex/config.toml".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/config.toml";
