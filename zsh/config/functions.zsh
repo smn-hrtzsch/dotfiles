@@ -168,17 +168,19 @@ rebuild_wsl() {
 }
 
 rebuild_auto() {
+  local status=0
   if [[ "$(uname)" == "Darwin" ]]; then
-    rebuild_macos
+    rebuild_macos || status=1
   elif is_wsl; then
-    rebuild_wsl
+    rebuild_wsl || status=1
   else
-    rebuild_linux
+    rebuild_linux || status=1
   fi
 
-  if [ $? -eq 0 ]; then
+  if [ $status -eq 0 ]; then
     echo "✨ Rebuild successful!"
   fi
+  return $status
 }
 
 # CapyCard Android Runner
