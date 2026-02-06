@@ -341,7 +341,18 @@ in
 
   # Symlink Dotfiles
   home.file = {
-    # ~/.config is symlinked to dotfiles; avoid linking subpaths here
+    # .config/opencode
+    ".config/opencode/AGENTS.md".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/opencode/AGENTS.md";
+    ".config/opencode/config.json".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/opencode/config.json";
+    ".config/opencode/commands".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/opencode/.opencode/commands";
+    ".config/opencode/skills".source = config.lib.file.mkOutOfStoreSymlink anthropicSkillsDir;
+
+    # Other .config tools
+    ".config/gh".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/gh";
+    ".config/ghostty".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/ghostty";
+    ".config/wezterm".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/wezterm";
+    ".config/direnv".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/direnv";
+
     ".gitconfig" = {
       text = "";
       force = true;
@@ -366,7 +377,6 @@ in
       force = true;
     };
     ".npmrc".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/npm/.npmrc";
-    ".opencode/commands".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/opencode/.opencode/commands";
 
     # Codex config and custom skills (managed via Home Manager)
     ".codex/config.toml".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/config.toml";
