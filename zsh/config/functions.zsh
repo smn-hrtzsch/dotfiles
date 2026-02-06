@@ -179,10 +179,9 @@ rebuild_auto() {
 
   if [ $rebuild_status -eq 0 ]; then
     echo "✨ Rebuild successful!"
-    # Reload zsh configuration to apply changes immediately
-    if [ -f "$HOME/.zshrc" ]; then
-      source "$HOME/.zshrc"
-    fi
+    # The shell is re-executed by update-system if it was called from there.
+    # If rebuild was called directly, we just notify the user.
+    echo "💡 Note: To fully apply all changes, please restart your terminal or run: exec zsh"
   fi
   return $rebuild_status
 }
