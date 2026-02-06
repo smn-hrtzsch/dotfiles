@@ -1,5 +1,5 @@
 # Codex CLI config (managed via ~/dotfiles/codex)
-model = "gpt-5.2-codex"
+model = "gpt-5.3-codex"
 approval_policy = "on-request"
 sandbox_mode = "workspace-write"
 
