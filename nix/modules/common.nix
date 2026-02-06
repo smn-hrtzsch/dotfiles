@@ -350,7 +350,7 @@ in
     ".config/gh".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/gh";
     ".config/ghostty".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/ghostty";
     ".config/wezterm".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/wezterm";
-    ".config/direnv".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/direnv";
+    # ".config/direnv" is managed by programs.direnv
     ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/nvim";
     ".config/neofetch".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/neofetch";
     ".config/sketchybar".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/sketchybar";
