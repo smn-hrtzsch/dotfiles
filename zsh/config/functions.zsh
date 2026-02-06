@@ -179,6 +179,10 @@ rebuild_auto() {
 
   if [ $status -eq 0 ]; then
     echo "✨ Rebuild successful!"
+    # Reload zsh configuration to apply changes immediately
+    if [ -f "$HOME/.zshrc" ]; then
+      source "$HOME/.zshrc"
+    fi
   fi
   return $status
 }
