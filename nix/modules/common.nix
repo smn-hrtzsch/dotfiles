@@ -17,7 +17,6 @@ in
 {
   home.packages = with pkgs; [
     # Shell & Tools
-    stow
     unzip
     curl
     zsh-powerlevel10k
@@ -352,6 +351,18 @@ in
     ".config/ghostty".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/ghostty";
     ".config/wezterm".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/wezterm";
     ".config/direnv".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/direnv";
+    ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/nvim";
+    ".config/neofetch".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/neofetch";
+    ".config/sketchybar".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/sketchybar";
+    ".config/mpv".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/mpv";
+    ".config/raycast".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.config/raycast";
+
+    # Home root files
+    ".vscode".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/vscode/.vscode";
+    ".warp".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/warp/.warp";
+    ".condarc".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/conda/.condarc";
+    ".zprofile".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/zsh/.zprofile";
+    "npm-globals.txt".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/npm/npm-globals.txt";
 
     ".gitconfig" = {
       text = "";
