@@ -26,6 +26,7 @@ in
     eza
     zoxide
     neofetch
+    ripgrep
     fzf
     bat
     gh
