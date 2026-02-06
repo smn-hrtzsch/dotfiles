@@ -175,6 +175,10 @@ rebuild_auto() {
   else
     rebuild_linux
   fi
+
+  if [ $? -eq 0 ]; then
+    echo "✨ Rebuild successful!"
+  fi
 }
 
 # CapyCard Android Runner
