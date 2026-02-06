@@ -168,23 +168,23 @@ rebuild_wsl() {
 }
 
 rebuild_auto() {
-  local status=0
+  local rebuild_status=0
   if [[ "$(uname)" == "Darwin" ]]; then
-    rebuild_macos || status=1
+    rebuild_macos || rebuild_status=1
   elif is_wsl; then
-    rebuild_wsl || status=1
+    rebuild_wsl || rebuild_status=1
   else
-    rebuild_linux || status=1
+    rebuild_linux || rebuild_status=1
   fi
 
-  if [ $status -eq 0 ]; then
+  if [ $rebuild_status -eq 0 ]; then
     echo "✨ Rebuild successful!"
     # Reload zsh configuration to apply changes immediately
     if [ -f "$HOME/.zshrc" ]; then
       source "$HOME/.zshrc"
     fi
   fi
-  return $status
+  return $rebuild_status
 }
 
 # CapyCard Android Runner
