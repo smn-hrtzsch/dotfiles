@@ -53,6 +53,99 @@ lib.mkIf pkgs.stdenv.isLinux {
 
   home.packages = lib.optionals (!isWSL) (linuxGuiApps ++ linuxExtraPackages);
 
+  programs.wezterm = {
+    enable = true;
+    extraConfig = ''
+      local wezterm = require 'wezterm'
+      local config = wezterm.config_builder()
+
+      -- Start in WSL by default
+      ${if isWSL then "config.default_domain = 'WSL:WSL-Nix'" else ""}
+
+      -- Font
+      config.font = wezterm.font 'MesloLGS NF'
+      config.font_size = 12.0
+
+      -- Window
+      config.window_padding = {
+        left = 10,
+        right = 10,
+        top = 10,
+        bottom = 10,
+      }
+      config.window_background_opacity = 1.0
+      config.hide_tab_bar_if_only_one_tab = true
+
+      -- Cursor
+      config.default_cursor_style = 'BlinkingBar'
+
+      -- Colors (Coolnight Theme)
+      config.colors = {
+        foreground = '#CBE0F0',
+        background = '#181818',
+        cursor_bg = '#47FF9C',
+        cursor_fg = '#011423',
+        cursor_border = '#47FF9C',
+        selection_fg = '#CBE0F0',
+        selection_bg = '#585b70',
+
+        ansi = {
+          '#6f8a9e', -- Black
+          '#E52E2E', -- Red
+          '#44FFB1', -- Green
+          '#FFE073', -- Yellow
+          '#0FC5ED', -- Blue
+          '#a277ff', -- Magenta
+          '#24EAF7', -- Cyan
+          '#24EAF7', -- White
+        },
+        brights = {
+          '#6f8a9e', -- Black
+          '#E52E2E', -- Red
+          '#44FFB1', -- Green
+          '#FFE073', -- Yellow
+          '#A277FF', -- Blue
+          '#a277ff', -- Magenta
+          '#24EAF7', -- Cyan
+          '#24EAF7', -- White
+        },
+      }
+
+      -- Keybindings
+      config.keys = {
+        { key = 'UpArrow', mods = 'ALT|SHIFT', action = wezterm.action.ActivatePaneDirection 'Up' },
+        { key = 'DownArrow', mods = 'ALT|SHIFT', action = wezterm.action.ActivatePaneDirection 'Down' },
+        { key = 'LeftArrow', mods = 'ALT|SHIFT', action = wezterm.action.ActivatePaneDirection 'Left' },
+        { key = 'RightArrow', mods = 'ALT|SHIFT', action = wezterm.action.ActivatePaneDirection 'Right' },
+
+        { key = 'UpArrow', mods = 'ALT|CTRL', action = wezterm.action.AdjustPaneSize { 'Up', 5 } },
+        { key = 'DownArrow', mods = 'ALT|CTRL', action = wezterm.action.AdjustPaneSize { 'Down', 5 } },
+        { key = 'LeftArrow', mods = 'ALT|CTRL', action = wezterm.action.AdjustPaneSize { 'Left', 5 } },
+        { key = 'RightArrow', mods = 'ALT|CTRL', action = wezterm.action.AdjustPaneSize { 'Right', 5 } },
+
+        { key = 'd', mods = 'ALT', action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' } },
+        { key = 'd', mods = 'ALT|SHIFT', action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' } },
+
+        { key = 't', mods = 'ALT', action = wezterm.action.SpawnTab 'CurrentPaneDomain' },
+        { key = 'w', mods = 'ALT', action = wezterm.action.CloseCurrentPane { confirm = false } },
+
+        { key = 'c', mods = 'CTRL|SHIFT', action = wezterm.action.CopyTo 'Clipboard' },
+        { key = 'v', mods = 'CTRL|SHIFT', action = wezterm.action.PasteFrom 'Clipboard' },
+        { key = 'v', mods = 'CTRL', action = wezterm.action.PasteFrom 'Clipboard' },
+      }
+
+      for i = 1, 9 do
+        table.insert(config.keys, {
+          key = tostring(i),
+          mods = 'ALT',
+          action = wezterm.action.ActivateTab(i - 1),
+        })
+      end
+
+      return config
+    '';
+  };
+
   # --- Linux Desktop Configuration (GNOME) ---
   dconf = lib.mkIf (!isWSL) {
     enable = true;
