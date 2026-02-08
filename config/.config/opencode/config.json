@@ -53,6 +53,7 @@
       "ffmpeg *":"allow",
       "gh run list *":"allow",
       "gh run view *":"allow",
+      "convert *":"allow",
     }
   },
   "plugin": ["opencode-gemini-auth@latest"]
