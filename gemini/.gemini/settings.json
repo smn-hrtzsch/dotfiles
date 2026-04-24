@@ -5,6 +5,11 @@
     "previewFeatures": true,
     "checkpointing": {
       "enabled": true
+    },
+    "sessionRetention": {
+      "warningAcknowledged": true,
+      "enabled": true,
+      "maxAge": "30d"
     }
   },
   "security": {
