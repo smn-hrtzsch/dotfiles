@@ -70,3 +70,5 @@ export BUN_INSTALL="$HOME/.bun"
 
 # Opencode default editor
 export EDITOR="code --wait"
+
+export PATH="$PATH":"$HOME/.pub-cache/bin"

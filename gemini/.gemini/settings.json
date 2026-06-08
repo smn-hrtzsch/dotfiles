@@ -43,9 +43,6 @@
     }
   },
   "experimental": {
-    "codebaseInvestigatorSettings": {
-      "maxNumTurns": 20
-    },
     "skills": true
   },
   "agents": {
