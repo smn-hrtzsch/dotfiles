@@ -56,6 +56,12 @@
       "convert *": "allow",
       "uname *": "allow",
       "latexmk *": "allow",
+      "dart *": "allow",
+      "flutter *": "allow",
+      "firebase *": "allow",
+      "gcloud *": "allow",
+      "gh pr checks *": "allow",
+      "gh pr view *": "allow",
     }
   },
   "plugin": ["opencode-gemini-auth@latest"]
