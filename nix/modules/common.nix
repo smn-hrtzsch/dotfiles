@@ -12,6 +12,7 @@ let
     "opencode-refactor"
     "opencode-review"
     "opencode-secrets"
+    "opencode-ship"
   ];
 in
 {
@@ -223,7 +224,7 @@ in
         if [ -d "$skill" ]; then
           name=$(basename "$skill")
           case "$name" in
-            opencode-commit|opencode-execute|opencode-feature|opencode-fix|opencode-plan|opencode-refactor|opencode-review|opencode-secrets)
+            opencode-commit|opencode-execute|opencode-feature|opencode-fix|opencode-plan|opencode-refactor|opencode-review|opencode-secrets|opencode-ship)
               continue
               ;;
           esac
@@ -319,6 +320,10 @@ in
     };
     ".codex/skills/opencode-secrets" = {
       source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-secrets";
+      force = true;
+    };
+    ".codex/skills/opencode-ship" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-ship";
       force = true;
     };
   };
