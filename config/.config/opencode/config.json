@@ -76,6 +76,8 @@
       "gh repo view *": "allow",
       "gh repo list *": "allow",
       "gh pr diff *": "allow",
+      "wc *": "allow",
+      "rg *": "allow",
     }
   },
   "plugin": ["opencode-gemini-auth@latest"]
