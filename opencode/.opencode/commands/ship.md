@@ -1,0 +1,34 @@
+---
+description: Committet alle Änderungen (Conventional Commit), pusht den Branch, erstellt einen PR und mergt diesen.
+---
+Führe den gesamten Release-Workflow für deine Änderungen durch: Committen, Pushen, PR erstellen und in `main` mergen.
+
+**Deine Aufgabe:**
+1. **Änderungen stagen & committen:**
+   - Prüfe `git status`. Falls ungestagte Änderungen vorhanden sind, füge sie mit `git add` hinzu.
+   - Generiere eine **perfekte Commit-Message** nach Conventional Commits basierend auf den ungestagten (`git diff`) und gestagten (`git diff --staged`) Änderungen.
+     - Format: `<type>(<scope>): <description>`
+     - Types: feat, fix, docs, style, refactor, test, chore.
+     - Verwende eine kurze, prägnante englische Beschreibung im Imperativ (z. B. "add ship command" oder "fix crash on startup").
+   - Führe den Commit aus: `git commit -m "..."`.
+2. **Branch pushen:**
+   - Ermittle den aktuellen Branch-Namen. Falls du auf `main` oder `master` bist, frage zuerst nach, da ein direkter Merge per PR auf dieselbe Branch nicht möglich ist.
+   - Pushe den aktuellen Branch zu `origin`. Falls der Remote-Branch noch nicht existiert, verwende `git push -u origin <branch-name>`.
+3. **PR erstellen & mergen:**
+   - Erstelle einen Pull Request nach `main` mit der GitHub CLI (`gh pr create --fill` oder gib einen passenden Titel und Beschreibung an).
+   - Merge den Pull Request und lösche den lokalen sowie Remote-Branch mit `gh pr merge --merge --delete-branch`.
+
+Hier ist der aktuelle Status:
+```
+!`git status`
+```
+
+Hier sind die ungestagten Änderungen:
+```diff
+!`git diff`
+```
+
+Hier sind die bereits gestagten Änderungen:
+```diff
+!`git diff --staged`
+```
