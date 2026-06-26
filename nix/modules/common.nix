@@ -326,5 +326,42 @@ in
       source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-ship";
       force = true;
     };
+
+    ".gemini/antigravity-cli/skills/opencode-commit" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-commit";
+      force = true;
+    };
+    ".gemini/antigravity-cli/skills/opencode-execute" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-execute";
+      force = true;
+    };
+    ".gemini/antigravity-cli/skills/opencode-feature" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-feature";
+      force = true;
+    };
+    ".gemini/antigravity-cli/skills/opencode-fix" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-fix";
+      force = true;
+    };
+    ".gemini/antigravity-cli/skills/opencode-plan" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-plan";
+      force = true;
+    };
+    ".gemini/antigravity-cli/skills/opencode-refactor" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-refactor";
+      force = true;
+    };
+    ".gemini/antigravity-cli/skills/opencode-review" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-review";
+      force = true;
+    };
+    ".gemini/antigravity-cli/skills/opencode-secrets" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-secrets";
+      force = true;
+    };
+    ".gemini/antigravity-cli/skills/opencode-ship" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/codex/.codex/skills/opencode-ship";
+      force = true;
+    };
   };
 }
