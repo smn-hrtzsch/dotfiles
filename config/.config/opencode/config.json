@@ -84,6 +84,7 @@
       "curl *": "allow",
       "wget *": "allow",
       "ping *": "allow",
+      "printf *": "allow",
     }
   },
   "plugin": ["opencode-gemini-auth@latest"]
