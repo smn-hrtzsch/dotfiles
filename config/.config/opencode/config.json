@@ -78,6 +78,8 @@
       "gh pr diff *": "allow",
       "wc *": "allow",
       "rg *": "allow",
+      "npm test *": "allow",
+      "ruby *": "allow",
     }
   },
   "plugin": ["opencode-gemini-auth@latest"]
