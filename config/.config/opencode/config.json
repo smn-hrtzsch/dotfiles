@@ -80,6 +80,10 @@
       "rg *": "allow",
       "npm test *": "allow",
       "ruby *": "allow",
+      "sleep *": "allow",
+      "curl *": "allow",
+      "wget *": "allow",
+      "ping *": "allow",
     }
   },
   "plugin": ["opencode-gemini-auth@latest"]
