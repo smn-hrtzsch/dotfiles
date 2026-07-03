@@ -90,6 +90,14 @@ I follow the **Conventional Commits 1.0.0** specification:
 
 
 
+
+
+
+
+
+
+
+
 notify = ["/Users/simon/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended"]
 
   [optional body]
@@ -105,7 +113,7 @@ notify = ["/Users/simon/.codex/computer-use/Codex Computer Use.app/Contents/Shar
   - Add `BREAKING CHANGE: <description>` in the footer.
 - **Rules:** English, imperative description ("add" not "added"), no trailing period in header.
 """
-model_reasoning_effort = "xhigh"
+model_reasoning_effort = "low"
 personality = "pragmatic"
 
 [features]
@@ -173,12 +181,12 @@ diffRemoved = "#f44747"
 skill = "#000080"
 
 [marketplaces.openai-bundled]
-last_updated = "2026-06-27T06:22:42Z"
+last_updated = "2026-07-03T11:31:18Z"
 source_type = "local"
 source = "/Users/simon/.codex/.tmp/bundled-marketplaces/openai-bundled"
 
 [marketplaces.openai-primary-runtime]
-last_updated = "2026-06-27T14:26:06Z"
+last_updated = "2026-07-01T11:42:41Z"
 source_type = "local"
 source = "/Users/simon/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
 
@@ -214,12 +222,12 @@ NODE_REPL_NODE_MODULE_DIRS = "/Applications/Codex.app/Contents/Resources/cua_nod
 NODE_REPL_NODE_PATH = "/Applications/Codex.app/Contents/Resources/cua_node/bin/node"
 NODE_REPL_TRUSTED_CODE_PATHS = "/Users/simon/.codex"
 CODEX_HOME = "/Users/simon/.codex"
-NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "59e7bb81812ddd5f102e1d580335166e552c91686b5726218a985b59b4f89ca1"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "60e4902788f207f88fd09344dfeafe07769488bdb2924bbb12b322c3b9d2b999"
 BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
 NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.623.42026"
+BROWSER_USE_CODEX_APP_VERSION = "26.623.101652"
 CODEX_CLI_PATH = "/Applications/Codex.app/Contents/Resources/codex"
 
 [projects."/Users/simon/Documents/Voleo"]

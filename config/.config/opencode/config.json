@@ -85,6 +85,14 @@
       "wget *": "allow",
       "ping *": "allow",
       "printf *": "allow",
+      "gh pr comment *": "allow",
+      "gh pr edit *": "allow",
+      "gh pr reopen *": "allow",
+      "gh pr close *": "allow",
+      "gh pr merge *": "allow",
+      "gh pr review *": "allow",
+      "gh pr status *": "allow",
+      "gh issue comment *": "allow",
     }
   },
   "plugin": ["opencode-gemini-auth@latest"]
